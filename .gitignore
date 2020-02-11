@@ -13,3 +13,5 @@ composer.phar
 deploy-config.php
 /web/assets/
 /tests/
+/config/db.php
+/config/mail.php
