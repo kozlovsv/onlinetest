@@ -11,6 +11,5 @@ Thumbs.db
 composer.phar
 
 deploy-config.php
-/config/db.php
 /web/assets/
 /tests/

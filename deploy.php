@@ -41,23 +41,18 @@ server('prod', $prod_domain, $prod_port)
     ->env('deploy_path', $prod_deploy_path);
 
 // Репозиторий проекта
-set('repository', "https://$repository_user:$repository_password@bitbucket.org/atonex/profsouz.git");
+set('repository', "https://github.com/kozlovsv/onlinetest.git");
 
-// Расшарить директории, доступные из web
-set('shared_dirs', array_merge(get('shared_dirs'), [
-    'web/uploads',
+// Расшарить файлы
+set('shared_files', array_merge(get('shared_files'), [
+    'config/db.conf',
+    'config/mail.conf',
 ]));
 
-// Создать директории необходимые приложению
-task('deploy:create_dirs', function () {
-    cd('{{release_path}}');
-    run('mkdir -p web/uploads/documents');
-});
 
 // Выставить права на директории
 task('deploy:permissions_dirs', function () {
     cd('{{release_path}}');
-    run('chmod 0777 web/uploads');
     run('chmod 0777 web/assets');
     run('chmod 0777 runtime');
 });
@@ -83,7 +78,6 @@ task('deploy:dblog_update', function () {
     run('php yii migrate up --migrationPath=@yii/log/migrations/ --interactive=0');
 });
 
-
 // Очистка кэша
 task('deploy:cache_clear', function () {
     cd('{{release_path}}');
@@ -91,7 +85,6 @@ task('deploy:cache_clear', function () {
 });
 
 task('deploy:custom', [
-    'deploy:create_dirs',
     'deploy:permissions_dirs',
     'deploy:rbac_update',
 ]);

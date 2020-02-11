@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=vword',
-    'username' => 'vword',
-    'password' => 'oxHrjcDn',
+    'username' => 'root',
+    'password' => 'vindex',
     'charset' => 'utf8',
     'enableSchemaCache' => true,
 ];

@@ -69,18 +69,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => YII_ENV_DEV,
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'encryption' => 'ssl',
-                'host' => 'smtp.mail.ru',
-                'username' => 'info@atonex.ru',
-                'password' => 'MOnF5H71',
-                'port' => '465',
-            ],
-        ],
+        'mailer' => require(__DIR__ . '/mail.php'),
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -94,11 +83,11 @@ $config = [
                 ],
             ],
         ],
-        'db' => YII_ENV_DEV ? require(__DIR__ . '/db.php') : require(__DIR__ . '/db-prod.php'),
+        'db' => require(__DIR__ . '/db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'baseUrl' => YII_ENV_DEV ? 'http://words.loc' : 'http://words.atonex.ru',
+            'baseUrl' => YII_ENV_DEV ? 'http://words.loc' : 'http://onlinetest.atonex.ru',
             'rules' => [
                 'login' => 'site/login',
                 'logout' => 'site/logout',
