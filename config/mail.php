@@ -1,7 +1,7 @@
 <?php
 return  [
     'class' => 'yii\swiftmailer\Mailer',
-    'useFileTransport' => YII_ENV_DEV,
+    'useFileTransport' => true,
     'transport' => [
         'class' => 'Swift_SmtpTransport',
         'encryption' => 'ssl',
