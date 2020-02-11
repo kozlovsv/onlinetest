@@ -3,6 +3,7 @@
     "description": "Vocabulary words tests",
     "keywords": ["yii2", "framework", "project"],
     "type": "project",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.0",
         "yiisoft/yii2": "~2.0.14",
@@ -13,7 +14,6 @@
         "kozlovsv/yii2-crud": "@dev",
         "bower-asset/pnotify": "~3.2.0"
     },
-
     "require-dev": {
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",

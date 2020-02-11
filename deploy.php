@@ -86,7 +86,6 @@ task('deploy:cache_clear', function () {
 
 task('deploy:custom', [
     'deploy:permissions_dirs',
-    'deploy:rbac_update',
 ]);
 
 task('reload:php-fpm', function () {
@@ -98,6 +97,8 @@ after('rollback', 'reload:php-fpm');
 
 // Запустить задачи
 after('deploy:update_code', 'deploy:env_prod');
+after('deploy:vendors', 'deploy:rbac_update');
+after('deploy:vendors', 'deploy:dblog_update');
 after('deploy:run_migrations', 'deploy:custom');
 after('deploy:run_migrations', 'deploy:cache_clear');
 after('deploy:run_migrations', 'deploy:dblog_update');
