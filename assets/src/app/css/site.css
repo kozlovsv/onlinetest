@@ -1,0 +1,423 @@
+html,
+body {
+    font-family: Arial, sans-serif !important;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.wrap > .map-container {
+    padding-top: 50px;
+}
+
+.wrap > .container-fluid {
+    padding: 60px 15px 20px;
+}
+
+/* =============================  Customise Bootstrap =============================*/
+/* --------------------  Headers ------------------------*/
+h1, h2, h3 {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+h3 {
+    font-size: 14px;
+    font-weight: bold;
+}
+a {
+    color: #137ac9;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -5px;
+    padding: 0 0 5px;
+}
+
+.wrap > .container-fluid {
+    padding: 60px 15px 20px;
+}
+
+
+/* --------------------  Navbar ------------------------*/
+
+.navbar-inverse {
+    background-color: #18234a;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+    font-size: 16px;
+    padding-top: 16px;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav .open > a {
+    color: #fff;
+    background-color: #192041;
+}
+.navbar-inverse .navbar-nav .open > a:focus,
+.navbar-inverse .navbar-nav .open > a:hover,
+.navbar-inverse .navbar-nav .open > a:active {
+    color: #fff;
+    background-color: #192041;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    background-color: #191a34;
+}
+
+@media (max-width: 1089px) {
+    html, body {
+        font-size: 12px !important;
+    }
+
+    .navbar-header {
+        float: none;
+        margin-right: -15px !important;
+    }
+
+    .navbar-left, .navbar-right {
+        float: none !important;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar-nav {
+        float: none !important;
+        margin-top: 7px;
+    }
+
+    .navbar-nav > li {
+        float: none;
+    }
+
+    .navbar-nav > li > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .collapse.in {
+        display: block !important;
+    }
+}
+
+
+/* --------------------  Table ------------------------*/
+
+.table-striped > thead > tr > th {
+    background-color: #f9f9f9;
+}
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings', serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: "\e113";
+}
+
+a.desc:after {
+    content: "\e114";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+
+/* --------------------- breadcrumb ---------------------*/
+.breadcrumb {
+    margin-bottom: 5px;
+    padding: 7px 0;
+    background-color: #fff; }
+
+.breadcrumb li {
+    max-width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+.breadcrumb li:last-child, .breadcrumb li:last-child a {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333; }
+/* =============================  /Customise Bootstrap =============================*/
+
+/* =============================  YII2 CRUD Customise =============================*/
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+.auth-editor {
+    margin-top: 10px;
+}
+
+.auth-editor select {
+    width: 100%;
+    height: 350px;
+}
+
+.auth-editor label {
+    font-weight: 600;
+}
+
+.btn-create {
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.form-horizontal {
+    margin-top: 25px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 3px;
+}
+
+.modal-header {
+    padding-bottom: 0;
+    border: 0;
+}
+
+.modal-body {
+    padding: 0 20px 20px 20px;
+}
+
+.modal-body h1 {
+    margin-top: 0;
+}
+
+.modal-body .scroll {
+    margin-bottom: 20px;
+    padding: 15px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.required > label:after {
+    content: " *";
+    color: #c55;
+}
+
+.grid-view table {
+    color: #000;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.grid-view table thead tr th a:after {
+    font-size: 14px;
+    padding-left: 4px;
+}
+
+.grid-view table tbody tr.quick td:first-child {
+    border-left: 5px solid #a52a2a;
+}
+
+.grid-view table tbody tr.selected td {
+    background-color: #ffffdd;
+}
+
+.grid-view table tbody tr td {
+    max-width: 400px;
+}
+
+.grid-view table tbody tr td.tbl-action {
+    font-size: 14px;
+    width: 1%;
+}
+
+.grid-view table tfoot {
+    font-weight: bold;
+}
+
+.grid-view {
+    margin-top: 5px;
+}
+
+.grid-view .action-column {
+    width: 1%;
+}
+
+.grid-view .page-panel {
+    position: fixed;
+    bottom: 0;
+}
+
+.grid-view .navbar-fixed-bottom {
+    background: #fff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: 50px;
+}
+
+.grid-view .navbar-fixed-bottom .summary {
+    float: left;
+    padding-top: 15px;
+}
+
+.grid-view .navbar-fixed-bottom .pagination {
+    float: right;
+    margin: 0;
+    padding-top: 8px;
+}
+
+.detail-view {
+    margin-top: 5px;
+}
+
+.detail-view th {
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.select2 {
+    min-width: 195px !important;
+}
+
+.help-block {
+    margin-top: 2px;
+    margin-bottom: 3px;
+}
+
+/* Search Form (filters) */
+.search .search-field.active input, .search .search-field.active .select2-selection {
+    background-color: #ffffdd;
+}
+
+.search > div {
+    padding-left: 0;
+    padding-right: 4px;
+}
+
+/* =============================  /YII2 CRUD Customise =============================*/
+
+/* Site Login */
+.site-login {
+    padding-top: 80px;
+}
+
+.site-login h1 {
+    font-size: 30px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+
+#login-form .form-group .form-control {
+    height: auto;
+    padding: 10px 10px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+#login-form .form-group button {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+}
+
+/* Search Form (filters) */
+
+.search .search-field.active input, .search .search-field.active .select2-selection {
+    background-color: #ffffdd; }
+
+.search > div {
+    padding-left: 0;
+    padding-right: 4px;
+}
+
+.tab-content {
+    margin-top: 15px;
+}
+
+.auth-editor {
+    margin-top:10px
+}
+
+.auth-editor select {
+    height:350px;
+    width:100%;
+    overflow:auto;
+    margin-top:7px
+}
+.auth-editor label{
+    font-weight:600
+}
