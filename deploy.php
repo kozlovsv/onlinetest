@@ -45,8 +45,8 @@ set('repository', "https://github.com/kozlovsv/onlinetest.git");
 
 // Расшарить файлы
 set('shared_files', array_merge(get('shared_files'), [
-    'config/db.conf',
-    'config/mail.conf',
+    'config/db.php',
+    'config/mail.php',
 ]));
 
 
