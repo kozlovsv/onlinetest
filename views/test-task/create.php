@@ -23,7 +23,7 @@ $this->title = 'Пройти тест';
                     'model' => $model,
                     'attributes' => [
                         'letters' => [
-                            'type' => FormBuilder::INPUT_CHECKBOX_LIST,
+                            'type' => FormBuilder::INPUT_CHECKBOX_BUTTON_GROUP,
                             'items' => CreateTestTaskForm::mapLetters(),
                             'options' => ['class' => 'form-inline', 'style' => 'margin-bottom: 25px']
                         ],

@@ -23,7 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="form-group">
                         <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                     </div>
-                    <?= Html::a('Забыли пароль?', ['site/request-password-reset']) ?>
+                    <div class="pull-left">
+                        <?= Html::a('Забыли пароль?', ['site/request-password-reset']) ?>
+                    </div>
+                    <div class="pull-right">
+                        <?= Html::a('Регистрация', ['site/registration']) ?>
+                    </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>

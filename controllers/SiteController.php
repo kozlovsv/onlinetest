@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\form\LoginForm;
 use app\models\form\PasswordResetRequestForm;
+use app\models\form\RegistrationForm;
 use app\models\form\ResetPasswordForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -141,6 +142,30 @@ class SiteController extends Controller
         }
 
         return $this->render('reset-password', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionRegistration()
+    {
+        $this->layout = 'empty';
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegistrationForm();
+        if ($model->load(Yii::$app->request->post())){
+            if ($user = $model->registration()) {
+                Yii::$app->user->login($user);
+                Yii::$app->session->setFlash('success', 'Вы успешно зарегистрировались в системе.');
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('registration', [
             'model' => $model,
         ]);
     }

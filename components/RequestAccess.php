@@ -20,6 +20,7 @@ class RequestAccess extends AccessControl
             'actions' => [
                 'login',
                 'error',
+                'registration',
                 'request-password-reset',
                 'reset-password',
             ],

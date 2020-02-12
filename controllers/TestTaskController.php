@@ -68,6 +68,7 @@ class TestTaskController extends CrudController
      */
     public function createModel()
     {
+        $this->addFlashMessages = false;
         $this->model =  new CreateTestTaskForm();
         return $this->model;
     }
