@@ -81,6 +81,7 @@ class RegistrationForm extends Model
             $user->login = $this->login;
             $user->email = $this->email;
             $user->name = $this->name;
+            $user->auth_key = '';
             $user->setPassword($this->password);
             $user->setScenario(User::SCENARIO_EDIT_USER);
             $user->roles = [User::ROLE_STUDENT];
