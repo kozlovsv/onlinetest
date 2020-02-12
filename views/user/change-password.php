@@ -1,22 +1,25 @@
 <?php
 
-use kozlovsv\crud\helpers\CrudButton;
-use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\helpers\ReturnUrl;
+use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
+use kozlovsv\crud\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\form\RegistrationForm */
+/* @var $model app\models\form\ChangePasswordForm */
 
-$this->title = 'Создать пользователя';
+$this->title = 'Изменить пароль';
 $this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ReturnUrl::getBackUrl()];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->getName(), 'url' => ['view', 'id' => $model->getId()]];
+$this->params['breadcrumbs'][] = 'Изменить пароль';
 ?>
-<div class="user-create">
+
+<div class="user-update">
     <?php
+
     $form = ActiveForm::begin();
 
 
@@ -25,12 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'form' => $form,
             'model' => $model,
             'attributes' => [
-                'login',
-                'name',
-                'email',
-                'password' => [
-                    'type' => FormBuilder::INPUT_PASSWORD
-                ]
+                'password:fa:user',
             ]
         ]
     );

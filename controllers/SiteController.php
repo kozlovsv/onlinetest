@@ -158,7 +158,7 @@ class SiteController extends Controller
 
         $model = new RegistrationForm();
         if ($model->load(Yii::$app->request->post())){
-            if ($user = $model->registration()) {
+            if ($user = $model->save()) {
                 Yii::$app->user->login($user);
                 Yii::$app->session->setFlash('success', 'Вы успешно зарегистрировались в системе.');
                 return $this->goHome();

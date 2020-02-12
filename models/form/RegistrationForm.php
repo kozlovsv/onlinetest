@@ -14,6 +14,11 @@ use yii\helpers\VarDumper;
 class RegistrationForm extends Model
 {
     /**
+     * @var int
+     */
+    public $id;
+
+    /**
      * @var string
      */
     public $login;
@@ -65,7 +70,7 @@ class RegistrationForm extends Model
      * Зарегистрировать
      * @return User|null
      */
-    public function registration()
+    public function save()
     {
         if (!$this->validate()) {
             return null;
@@ -80,7 +85,8 @@ class RegistrationForm extends Model
             $user->setScenario(User::SCENARIO_EDIT_USER);
             $user->roles = [User::ROLE_STUDENT];
             if ($user->save(false)) {
-                $user->sendRegistrationEmail();
+                $this->id = $user->id;
+                $this->sendRegistrationEmail();
                 return $user;
             } else {
                 throw new Exception('Не удалось сохранить данные о пользователе: ' . VarDumper::dumpAsString($user->errors));
@@ -90,6 +96,19 @@ class RegistrationForm extends Model
             Yii::error("Ошибка при регистрации: {$e->getMessage()}\r\n{$e->getTraceAsString()}");
             return null;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function sendRegistrationEmail()
+    {
+        if (!$this->email) return true;
+        return Yii::$app->mailer->compose('registration', ['form' => $this])
+            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
+            ->setTo($this->email)
+            ->setSubject('Регистрация на портале ' . Yii::$app->name)
+            ->send();
     }
 
 }

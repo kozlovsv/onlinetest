@@ -287,17 +287,4 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(TestTask::class, ['user_id' => 'id']);
     }
-
-    /**
-     * @return bool
-     */
-    public function sendRegistrationEmail()
-    {
-        if (!$this->email) return true;
-        return Yii::$app->mailer->compose('registration', ['user' => $this])
-            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
-            ->setTo($this->email)
-            ->setSubject('Регистрация на портале ' . Yii::$app->name)
-            ->send();
-    }
 }

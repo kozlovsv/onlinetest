@@ -19,6 +19,7 @@ $this->title = 'Пройти тест';
                 $form = ActiveForm::begin(['type' => ActiveForm::TYPE_VERTICAL]);
                 echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header', 'style' => 'font-size: 25px']);
                 echo FormBuilder::widget([
+                    'rowOptions' => ['class' => 'lead'],
                     'form' => $form,
                     'model' => $model,
                     'attributes' => [

@@ -1,9 +1,10 @@
 <?php
 
 use kozlovsv\crud\helpers\CrudButton;
+use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
-use yii\helpers\Html;
 use kozlovsv\crud\helpers\ReturnUrl;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -22,6 +23,7 @@ $isModal = true;
         [
             'buttonsLeft' => [
                 CrudButton::editButton($model::tableName(), $model->getPrimaryKey(), $isModal),
+                CrudButton::button(Html::icon('option-horizontal') . ' Сменить пароль', $model::tableName(), ['change-password', 'id' => $model->getPrimaryKey(), ReturnUrl::REQUEST_PARAM_NAME => Url::to(['view', 'id' => $model->getPrimaryKey()])], ['class' => 'btn btn-warning', 'data-modal' => 1]),
                 CrudButton::cancelButton('Закрыть'),
             ],
             'buttonsRight' => [

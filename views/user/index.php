@@ -47,7 +47,7 @@ echo GridView::widget(
             'login',
             'name',
             'email',
-            'created_at',
+            'created_at:date',
         ],
     ]
 );
