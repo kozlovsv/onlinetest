@@ -15,7 +15,7 @@ use kozlovsv\crud\widgets\ToolBarPanel;
 /* @var $searchModel app\models\search\TestTaskSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Пройденные тесты';
+$this->title = 'Мои тесты';
 $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = false;
@@ -57,8 +57,24 @@ echo GridView::widget(
         'permissionCategory' => $searchModel::tableName(),
         'columns' => [
             'statusLabel',
-            'created_at:date',
+            'created_at:datetime',
+            'questionsCount',
+            'uniqueLettersString',
+            'grade',
         ],
+        'rowOptions'=> /**
+         * @param $model TestTask
+         * @return array
+         */ function($model){
+                if($model->status == TestTask::STATUS_NEW){
+                    return ['class' => 'danger'];
+                } elseif ($model->grade == 5) {
+                    return ['class' => 'success'];
+                } elseif ($model->grade == 4) {
+                    return ['class' => 'info'];
+                }
+                return ['class' => 'warning'];
+         },
     ]
 );
 

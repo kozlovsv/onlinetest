@@ -8,8 +8,10 @@ use app\models\search\TestTaskSearch;
 use app\models\TestTask;
 use Exception;
 use kozlovsv\crud\controllers\CrudController;
+use kozlovsv\crud\helpers\ModelPermission;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -22,10 +24,11 @@ class TestTaskController extends CrudController
     public function init()
     {
         parent::init();
+        $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['next'],
-                'allow' => '@',
+                'actions' => ['next', 'repass'],
+                'allow' => ModelPermission::canCreate($permissionCategory),
             ],
         ];
     }
@@ -84,21 +87,22 @@ class TestTaskController extends CrudController
     public function actionNext($id)
     {
         try {
-            $model = $this->findModel($id);
-            $question = $model->getTestTaskQuestions()->andWhere(['answer' => ''])->orderBy('id')->one();
+            $testTask = $this->findModel($id);
+            $question = $testTask->getTestTaskQuestions()->andWhere(['answer' => ''])->orderBy('id')->one();
 
             if (!$question) {
-                $model->status = TestTask::STATUS_FINISHED;
-                $model->save(false);
+                $testTask->status = TestTask::STATUS_FINISHED;
+                $testTask->passed_at = new Expression('NOW()');
+                $testTask->save(false);
                 if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Тест успешно пройден');
                 return $this->redirect(Url::to(['view', 'id' => $id]));
             }
             $post = Yii::$app->request->post();
-            $form = new ChooseAnswerForm(['testTaskQuestion' => $question]);
-            if ($form->load($post) && $form->save()) {
+            $model = new ChooseAnswerForm(['testTaskQuestion' => $question]);
+            if ($model->load($post) && $model->save()) {
                 return $this->redirect(Url::to(['next', 'id' => $id]));
             }
-            return $this->renderIfAjax('next', ['model' => $form]);
+            return $this->renderIfAjax('next', compact('model', 'testTask'));
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -108,6 +112,13 @@ class TestTaskController extends CrudController
             }
             return $this->goBackAfterCreate();
         }
+    }
+
+    public function actionRepass($id)
+    {
+        $testTask = $this->findModel($id);
+        $testTask->reNew();
+        return $this->redirect(Url::to(['next', 'id' => $id]));
     }
 
 }

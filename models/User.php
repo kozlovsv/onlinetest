@@ -40,6 +40,7 @@ class User extends ActiveRecord implements IdentityInterface
     const SCENARIO_RESET_PASSWORD = 'reset-password';
     const SCENARIO_EDIT_USER = 'edit-user';
 
+
     const ROLE_ADMINISTRATOR = 'administrator';
     const ROLE_TEACHER = 'teacher';
     const ROLE_STUDENT = 'student';
@@ -57,10 +58,9 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function scenarios()
     {
-        return array_merge(parent::scenarios(), [
-            self::SCENARIO_RESET_PASSWORD => ['login'],
-            self::SCENARIO_EDIT_USER => ['login','email', 'name', 'roles'],
-        ]);
+        return array_merge(parent::scenarios(),
+            [self::SCENARIO_RESET_PASSWORD => ['login'],
+            self::SCENARIO_EDIT_USER => ['login','email', 'name']]);
     }
 
     /**
@@ -71,11 +71,10 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['login', 'name'], 'required'],
             [['roles'], 'safe'],
-            [['login', 'email', 'name', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
+            [['login', 'email', 'name'] , 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['login'], 'unique', 'message' => 'Пользователь с таким логином уже зарегистрирован.'],
             [['email'], 'email'],
-            [['password_reset_token'], 'unique'],
         ];
     }
 

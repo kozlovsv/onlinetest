@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\auth\models\AuthItem;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
@@ -12,16 +13,25 @@ use kozlovsv\crud\helpers\Html;
 
 $form = ActiveForm::begin();
 
+$attributes =  [
+    'login:fa:user',
+    'name:fa:user',
+    'email:fa:user',
+];
+
+if (Yii::$app->user->can('auth.manage')) {
+    $attributes['roles'] = [
+        'type' => FormBuilder::INPUT_CHECKBOX_LIST,
+        'items' => AuthItem::roleMap(),
+    ];
+}
+
 
 echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header']);
 echo FormBuilder::widget([
         'form' => $form,
         'model' => $model,
-        'attributes' => [
-            'login:fa:user',
-            'name:fa:user',
-            'email:fa:user',
-        ]
+        'attributes' => $attributes,
     ]
 );
 

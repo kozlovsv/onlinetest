@@ -49,8 +49,9 @@ class TestTaskQuestion extends ActiveRecord
         return [
             'id' => 'ID',
             'vocabulary_word_id' => 'Словарное слово',
-            'answer' => 'Ответ',
+            'answer' => 'Ваш ответ',
             'result' => 'Результат',
+            'resultLabel' => 'Результат',
         ];
     }
 
@@ -72,5 +73,13 @@ class TestTaskQuestion extends ActiveRecord
     public function getVocabularyWord()
     {
         return $this->hasOne(VocabularyWord::class, ['id' => 'vocabulary_word_id']);
+    }
+
+    public function getResultLabel() {
+        return $this->result ? 'Правильно' : 'Ошибка';
+    }
+
+    public static function clear($taskId) {
+        self::updateAll(['answer' => '', 'result' => 0], ['test_task_id' => $taskId]);
     }
 }

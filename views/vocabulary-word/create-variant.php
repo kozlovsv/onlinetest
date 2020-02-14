@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'variant1:fa:file-word',
                     'variant2:fa:file-word',
                     'variant3:fa:file-word',
+                    'variant4:fa:file-word',
+                    'variant5:fa:file-word',
                 ]
             ]
         );

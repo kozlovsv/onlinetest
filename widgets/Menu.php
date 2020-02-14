@@ -63,7 +63,7 @@ class Menu extends Widget
                 'visible' => Yii::$app->user->can('test_task.create'),
             ],
             [
-                'label' => 'Пройденные тесты',
+                'label' => 'Мои тесты',
                 'url' => ['/test-task/index'],
                 'visible' => Yii::$app->user->can('test_task.view'),
             ],

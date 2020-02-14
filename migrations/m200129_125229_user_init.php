@@ -16,7 +16,6 @@ class m200129_125229_user_init extends Migration
         $user->name = 'Козлов Сергей Владимирович';
         $user->setPassword('vera9aug99');
         $user->auth_key = '1';
-        $user->setScenario(User::SCENARIO_EDIT_USER);
         $user->roles = ['administrator'];
         return $user->save();
     }

@@ -16,6 +16,8 @@ use yii\base\Model;
  * @property string $variant1 Неправильный вариант 1
  * @property string $variant2 Неправильный вариант 2
  * @property string $variant3 Неправильный вариант 3
+ * @property string $variant4 Неправильный вариант 4
+ * @property string $variant5 Неправильный вариант 5
 **/
 
 class VocabularyWordForm extends Model
@@ -36,6 +38,14 @@ class VocabularyWordForm extends Model
      * @var string
      */
     public $variant3;
+    /**
+     * @var string
+     */
+    public $variant4;
+    /**
+     * @var string
+     */
+    public $variant5;
 
     /**
      * {@inheritdoc}
@@ -44,7 +54,7 @@ class VocabularyWordForm extends Model
     {
         return [
             [['title', 'variant1'], 'required'],
-            [['title', 'variant1', 'variant2', 'variant3'], 'string', 'max' => 255],
+            [['title', 'variant1', 'variant2', 'variant3', 'variant4', 'variant5'], 'string', 'max' => 255],
             [['title'], 'unique', 'message' => 'Данное слово уже есть в базе', 'targetClass' => VocabularyWord::class, 'targetAttribute' => 'title'],
         ];
     }
@@ -60,6 +70,8 @@ class VocabularyWordForm extends Model
             'variant1' => 'Неправильный вариант 1',
             'variant2' => 'Неправильный вариант 2',
             'variant3' => 'Неправильный вариант 3',
+            'variant4' => 'Неправильный вариант 4',
+            'variant5' => 'Неправильный вариант 5',
         ];
     }
 
@@ -86,6 +98,8 @@ class VocabularyWordForm extends Model
             insertWordVariant($this->variant1, $word->id);
             insertWordVariant($this->variant2, $word->id);
             insertWordVariant($this->variant3, $word->id);
+            insertWordVariant($this->variant4, $word->id);
+            insertWordVariant($this->variant5, $word->id);
             $transaction->commit();
             return true;
         } catch (Exception $e) {

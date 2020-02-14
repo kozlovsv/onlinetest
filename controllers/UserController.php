@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\form\ChangePasswordForm;
 use app\models\form\RegistrationForm;
 use app\models\search\UserSearch;
+use app\models\User;
 use Exception;
 use kozlovsv\crud\controllers\CrudController;
 use kozlovsv\crud\helpers\ModelPermission;
@@ -77,5 +78,13 @@ class UserController extends CrudController
             }
             return $this->goBackAfterUpdate();
         }
+    }
+
+    public function findModel($id)
+    {
+        /** @var User $model */
+        $model = parent::findModel($id);
+        if (!Yii::$app->user->can('auth.manage')) $model->setScenario(User::SCENARIO_EDIT_USER);
+        return $model;
     }
 }

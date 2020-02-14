@@ -37,10 +37,10 @@ $this->title = 'Пройти тест';
 
             echo ToolBarPanelContainer::widget([
                     'buttonsRight' => [
-                        CrudButton::cancelButton('Отмена', ['index'], $options = ['class' => 'btn btn-primary btn-lg form-cancel']),
+                        CrudButton::cancelButton('Отмена', ['index'], $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
                     ],
                     'buttonsLeft' => [
-                        CrudButton::saveButton('Начать', $options = ['class' => 'btn btn-primary btn-lg']),
+                        CrudButton::saveButton('Начать', $options = ['class' => 'btn btn-success btn-lg']),
                     ],
                     'options' => ['class' => 'form-group', 'style' => 'margin: 20px 0 50px 0'],
                 ]
