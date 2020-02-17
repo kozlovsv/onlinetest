@@ -176,7 +176,7 @@ class TestTask extends ActiveRecord
      */
     public function getUniqueLetters()
     {
-        $letters = $this->getTestTaskQuestions()->select('letter.title')->joinWith('vocabularyWord.letter')->orderBy('letter.id')->asArray()->all();
+        $letters = $this->getTestTaskQuestions()->select(['letter.title', 'test_task_question.vocabulary_word_id'])->joinWith('vocabularyWord.letter')->orderBy('letter.id')->asArray()->all();
         return array_unique(array_column($letters, 'title'));
     }
 
