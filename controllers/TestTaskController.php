@@ -6,6 +6,7 @@ use app\models\form\ChooseAnswerForm;
 use app\models\form\CreateTestTaskForm;
 use app\models\search\TestTaskSearch;
 use app\models\TestTask;
+use app\models\TestTaskQuestion;
 use Exception;
 use kozlovsv\crud\controllers\CrudController;
 use kozlovsv\crud\helpers\ModelPermission;
@@ -27,7 +28,7 @@ class TestTaskController extends CrudController
         $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['next', 'repass'],
+                'actions' => ['next', 'repass', 'error-answer'],
                 'allow' => ModelPermission::canCreate($permissionCategory),
             ],
         ];
@@ -67,6 +68,20 @@ class TestTaskController extends CrudController
     }
 
     /**
+     * @param $id
+     * @return TestTaskQuestion
+     * @throws NotFoundHttpException
+     */
+    public function findQuestionModel($id)
+    {
+        $model = TestTaskQuestion::find()->andWhere(['id' => $id, 'result' => 0])->one();
+        if ($model === null) {
+            throw new NotFoundHttpException('Запись не найдена');
+        }
+        return $model;
+    }
+
+    /**
      * @return CreateTestTaskForm
      */
     public function createModel()
@@ -100,7 +115,10 @@ class TestTaskController extends CrudController
             $post = Yii::$app->request->post();
             $model = new ChooseAnswerForm(['testTaskQuestion' => $question]);
             if ($model->load($post) && $model->save()) {
-                return $this->redirect(Url::to(['next', 'id' => $id]));
+                if ($model->checkResult())
+                    return $this->redirect(Url::to(['next', 'id' => $id]));
+                else
+                    return $this->redirect(Url::to(['error-answer', 'id' => $question->id]));
             }
             return $this->renderIfAjax('next', compact('model', 'testTask'));
         } catch (Exception $e) {
@@ -112,6 +130,12 @@ class TestTaskController extends CrudController
             }
             return $this->goBackAfterCreate();
         }
+    }
+
+    public function actionErrorAnswer($id)
+    {
+       $model = $this->findQuestionModel($id);
+       return $this->renderIfAjax('error-answer', compact('model'));
     }
 
     public function actionRepass($id)

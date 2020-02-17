@@ -16,6 +16,11 @@ class ChooseAnswerForm extends Model
     public $choice;
 
     /**
+     * @var bool
+     */
+    public $result;
+
+    /**
      * @var TestTaskQuestion
      */
     public $testTaskQuestion;
@@ -56,17 +61,23 @@ class ChooseAnswerForm extends Model
         return $res;
     }
 
+    public function checkResult() {
+        if (is_null($this->result)) {
+            $word = VocabularyWord::findOne($this->testTaskQuestion->vocabulary_word_id);
+            $this->result = $word->title == $this->choice;
+        }
+        return $this->result;
+    }
+
     public function save()
     {
         if (!$this->validate()) {
             return false;
         }
-        $word = VocabularyWord::findOne($this->testTaskQuestion->vocabulary_word_id);
-        $result = $word->title == $this->choice;
+        $this->checkResult();
         $this->testTaskQuestion->answer = $this->choice;
-        $this->testTaskQuestion->result = $result;
-        $this->testTaskQuestion->save(false);
-        return true;
+        $this->testTaskQuestion->result = $this->result;
+        return $this->testTaskQuestion->save(false);
     }
 
 }
