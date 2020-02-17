@@ -51,8 +51,8 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
         [
             'buttonsLeft' => [
                 CrudButton::cancelButton('Назад'),
-                $model->canTestContinue() ? Html::a('Продолжить тест', ['next', 'id' => $model->id], ['class' => 'btn btn-success']) : '',
-                $model->canTestRePass() ? Html::a('Пройти тест заново', ['repass', 'id' => $model->id], ['class' => 'btn btn-warning', 'data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]) : '',
+                $model->canTestContinue() ? Html::a('Продолжить', ['next', 'id' => $model->id], ['class' => 'btn btn-success']) : '',
+                $model->canTestRePass() ? Html::a('Пройти заново', ['repass', 'id' => $model->id], ['class' => 'btn btn-warning', 'data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]) : '',
             ],
             'buttonsRight' => [
                 CrudButton::deleteButton($model::tableName(), $model->getPrimaryKey()),
