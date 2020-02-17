@@ -223,7 +223,7 @@ class TestTask extends ActiveRecord
     }
 
     public function canTestRePass() {
-        return ModelPermission::canCreate(self::tableName()) && ($this->getQuestionsCount() == $this->getQuestionsPassedCount()) && ($this->user_id == Yii::$app->user->id);
+        return ModelPermission::canCreate(self::tableName()) && ($this->user_id == Yii::$app->user->id);
     }
 
     /**

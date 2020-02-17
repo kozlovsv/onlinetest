@@ -4,6 +4,7 @@ use app\models\TestTask;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\GridView;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
+use yii\bootstrap\Progress;
 use yii\data\ArrayDataProvider;
 use yii\helpers\Html;
 use kozlovsv\crud\helpers\ReturnUrl;
@@ -62,6 +63,7 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
     ?>
     <div class="clearfix"></div>
     <?php
+    /** @noinspection PhpUndefinedFieldInspection */
     echo yii\widgets\DetailView::widget(
         [
             'model' => $model,
@@ -78,6 +80,12 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
                     'visible' => $model->getQuestionsStayCount() == 0,
                     'contentOptions' => ['class' => $gradeClass],
                     'captionOptions' => ['class' => $gradeClass],
+                    'format' => 'raw',
+                    'value' => Progress::widget([
+                        'label' => $model->rating,
+                        'percent' => $model->rating,
+                        'barOptions' => ['class' => 'progress-bar-info'],
+                    ])
                 ],
                 'statusLabel',
                 'created_at:datetime',
