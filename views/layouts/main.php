@@ -16,13 +16,13 @@ use yii\widgets\Breadcrumbs;
     <div class="wrap">
         <?php
         NavBar::begin([
-            'brandLabel' => Html::icon('home'),
-            'brandUrl' => Yii::$app->homeUrl,
+            'brandLabel' => Html::icon('plus'),
+            'brandUrl' => ['test-task/create'],
             'innerContainerOptions' => [
                 'class' => 'container-fluid'
             ],
             'options' => [
-                'class' => 'navbar-default navbar-fixed-top nav-stacked navbar',
+                'class' => 'navbar-inverse navbar-fixed-top nav-stacked navbar',
             ],
         ]);
         echo Menu::widget();

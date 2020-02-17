@@ -16,6 +16,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = true;
 
+$this->registerJs(
+    '$(document).keydown(function (e) {
+        if (e.which == 45) {
+            e.preventDefault();
+            $( "#create-variant" ).click();
+        }
+    });'
+);
+
 Pjax::begin([
     'id' => 'pjax-content',
     'formSelector' => false,
@@ -24,7 +33,7 @@ Pjax::begin([
 echo ToolBarPanel::widget(
     [
         'buttons' => [
-            CrudButton::createButton($searchModel::tableName(), $isModal, 'Добавить с вариантами', ['create-variant']),
+            CrudButton::createButton($searchModel::tableName(), $isModal, 'Добавить с вариантами', ['create-variant'], ['id' => 'create-variant']),
             CrudButton::createButton($searchModel::tableName(), $isModal),
             SearchPanel::widget([
                 'model' => $searchModel,

@@ -57,7 +57,7 @@ a {
 /* --------------------  Navbar ------------------------*/
 
 .navbar-inverse {
-    background-color: #18234a;
+    background-color: #045772;
 }
 
 .navbar-inverse .navbar-brand {
@@ -70,72 +70,20 @@ a {
 }
 .navbar-inverse .navbar-nav .open > a {
     color: #fff;
-    background-color: #192041;
+    background-color: #006666;
 }
 .navbar-inverse .navbar-nav .open > a:focus,
 .navbar-inverse .navbar-nav .open > a:hover,
 .navbar-inverse .navbar-nav .open > a:active {
     color: #fff;
-    background-color: #192041;
+    background-color: #006666;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-    background-color: #191a34;
+    background-color: #045772;
 }
-
-@media (max-width: 1089px) {
-    html, body {
-        font-size: 12px !important;
-    }
-
-    .navbar-header {
-        float: none;
-        margin-right: -15px !important;
-    }
-
-    .navbar-left, .navbar-right {
-        float: none !important;
-    }
-
-    .navbar-toggle {
-        display: block;
-    }
-
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .navbar-fixed-top {
-        top: 0;
-        border-width: 0 0 1px;
-    }
-
-    .navbar-collapse.collapse {
-        display: none !important;
-    }
-
-    .navbar-nav {
-        float: none !important;
-        margin-top: 7px;
-    }
-
-    .navbar-nav > li {
-        float: none;
-    }
-
-    .navbar-nav > li > a {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .collapse.in {
-        display: block !important;
-    }
-}
-
 
 /* --------------------  Table ------------------------*/
 

@@ -25,14 +25,14 @@ class CreateTestTaskForm extends Model
     /**
      * @var int
      */
-    public $cnt_words = 10;
+    public $cnt_words = 0;
 
     /**
      * @var array
      */
     public $letters = [];
 
-    const CNT_WORDS_RANGE = [10, 20, 30];
+    const CNT_WORDS_RANGE = [0, 10, 20, 30];
 
     public function rules()
     {
@@ -61,6 +61,13 @@ class CreateTestTaskForm extends Model
         return ArrayHelper::map($items, 'id', 'title');
     }
 
+    public static function mapCntWords()
+    {
+        $map = array_combine(CreateTestTaskForm::CNT_WORDS_RANGE, CreateTestTaskForm::CNT_WORDS_RANGE);
+        $map[0] = 'Все';
+        return $map;
+    }
+
     public function save()
     {
         if (!$this->validate()) {
@@ -69,7 +76,9 @@ class CreateTestTaskForm extends Model
 
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
-            $words = VocabularyWord::find()->select(['id'])->where(['letter_id' => array_values($this->letters)])->orderBy(new Expression('rand()'))->limit($this->cnt_words)->asArray()->all();
+            $words = VocabularyWord::find()->select(['id'])->where(['letter_id' => array_values($this->letters)])->orderBy(new Expression('rand()'));
+            if ($this->cnt_words) $words = $words->limit($this->cnt_words);
+            $words = $words->asArray()->all();
             assert($words);
             $testTask = new TestTask();
             $testTask->user_id = Yii::$app->user->id;

@@ -30,7 +30,7 @@ $this->title = 'Пройти тест';
                         ],
                         'cnt_words' => [
                             'type' => FormBuilder::INPUT_DROPDOWN_LIST,
-                            'items' => array_combine(CreateTestTaskForm::CNT_WORDS_RANGE, CreateTestTaskForm::CNT_WORDS_RANGE),
+                            'items' => CreateTestTaskForm::mapCntWords(),
                         ],
                     ]
                 ]);
