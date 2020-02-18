@@ -7,6 +7,7 @@ namespace app\models\form;
 use app\models\TestTaskQuestion;
 use app\models\VocabularyWord;
 use yii\base\Model;
+use yii\db\Expression;
 
 class ChooseAnswerForm extends Model
 {
@@ -53,7 +54,7 @@ class ChooseAnswerForm extends Model
     public function mapQuesions(){
         $word = VocabularyWord::findOne($this->testTaskQuestion->vocabulary_word_id);
         $res = [$word->title];
-        foreach ($word->getVocabularyWordVariants()->asArray()->all() as $word) {
+        foreach ($word->getVocabularyWordVariants()->orderBy(new Expression('rand()'))->limit(2)->asArray()->all() as $word) {
             $res[] = $word['title'];
         }
         shuffle($res);

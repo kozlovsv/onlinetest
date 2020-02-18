@@ -43,7 +43,11 @@ $isModal = true;
                 'login',
                 'name',
                 'email',
-                'created_at',
+                'created_at:datetime',
+                [
+                  'attribute' => 'rolesString',
+                  'visible' =>   Yii::$app->user->can('auth.manage')
+                ]
             ],
         ]
     );

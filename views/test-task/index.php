@@ -57,10 +57,11 @@ echo GridView::widget(
         'permissionCategory' => $searchModel::tableName(),
         'columns' => [
             'statusLabel',
-            'created_at:datetime',
-            'questionsCount',
+            'trainingStatusLabel',
             'uniqueLettersString',
+            'questionsCount',
             'grade',
+            'created_at:datetime',
         ],
         'rowOptions'=> /**
          * @param $model TestTask

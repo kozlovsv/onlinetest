@@ -2,11 +2,12 @@
 
 use app\models\TestTask;
 use kozlovsv\crud\helpers\CrudButton;
+use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\GridView;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
+use yii\bootstrap\ButtonDropdown;
 use yii\bootstrap\Progress;
 use yii\data\ArrayDataProvider;
-use yii\helpers\Html;
 use kozlovsv\crud\helpers\ReturnUrl;
 
 
@@ -14,7 +15,7 @@ use kozlovsv\crud\helpers\ReturnUrl;
 /* @var $model TestTask */
 
 $this->title = "Тест № {$model->id}";
-$this->params['breadcrumbs'][] = ['label' => 'Пройденные тесты', 'url' => ReturnUrl::getBackUrl()];
+$this->params['breadcrumbs'][] = ['label' => 'Мои тесты', 'url' => ReturnUrl::getBackUrl()];
 $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = false;
@@ -41,6 +42,8 @@ function getGradeColor($model)
 }
 
 $gradeClass = getGradeColor($model);
+$statusClass = ($model->status == TestTask::STATUS_NEW) ? 'warning' : 'success';
+$trainingStatusClass = ($model->training_status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
 
 ?>
@@ -50,9 +53,27 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
     echo ToolBarPanelContainer::widget(
         [
             'buttonsLeft' => [
-                CrudButton::cancelButton('Назад'),
-                $model->canTestContinue() ? Html::a('Продолжить', ['next', 'id' => $model->id], ['class' => 'btn btn-success']) : '',
-                $model->canTestRePass() ? Html::a('Пройти заново', ['repass', 'id' => $model->id], ['class' => 'btn btn-warning', 'data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]) : '',
+                CrudButton::cancelButton(Html::icon('arrow-left')),
+                $model->canTest() ? ButtonDropdown::widget([
+                    'label' => 'Тест',
+                    'options' => ['class' => 'btn-info'],
+                    'dropdown' => [
+                        'items' => [
+                            ['label' => 'Продолжить', 'url' => ['next', 'id' => $model->id], 'visible' => $model->canTestContinue()],
+                            ['label' => 'Пройти заново', 'url' => ['repass', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]],
+                        ],
+                    ],
+                ]) : '',
+                $model->canTest() ? ButtonDropdown::widget([
+                    'label' => 'Обучение',
+                    'options' => ['class' => 'btn-success'],
+                    'dropdown' => [
+                        'items' => [
+                            ['label' => 'Продолжить', 'url' => ['study', 'id' => $model->id], 'visible' => $model->canStudyContinue()],
+                            ['label' => 'Пройти заново', 'url' => ['restudy', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти обучение заново?']]],
+                        ],
+                    ],
+                ]) : '',
             ],
             'buttonsRight' => [
                 CrudButton::deleteButton($model::tableName(), $model->getPrimaryKey()),
@@ -87,7 +108,16 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
                         'barOptions' => ['class' => 'progress-bar-info'],
                     ])
                 ],
-                'statusLabel',
+                [
+                    'attribute' => 'statusLabel',
+                    'contentOptions' => ['class' => $statusClass],
+                    'captionOptions' => ['class' => $statusClass],
+                ],
+                [
+                    'attribute' => 'trainingStatusLabel',
+                    'contentOptions' => ['class' => $trainingStatusClass],
+                    'captionOptions' => ['class' => $trainingStatusClass],
+                ],
                 'created_at:datetime',
                 'passed_at:datetime',
                 'questionsCount',
@@ -103,7 +133,7 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
     );
     ?>
     <div class="clearfix" style="margin-bottom: 10px"></div>
-        <?php
+    <?php
     if ($model->getQuestionsPassedCount() > 0) {
         echo Html::tag('h1', 'Ответы');
         echo GridView::widget(

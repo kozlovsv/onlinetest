@@ -25,7 +25,7 @@ $config = [
             'cookieValidationKey' => 'w7RojP9ecfQT3gXJjGiRnzxFmE',
         ],
         'authManager' => [
-            'class' => 'app\components\DbManager',
+            'class' => 'app\components\AuthManager',
             'cache' => 'cache',
         ],
         'cache' => [

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\form\ChooseAnswerForm;
 use app\models\form\CreateTestTaskForm;
+use app\models\form\StudyForm;
 use app\models\search\TestTaskSearch;
 use app\models\TestTask;
 use app\models\TestTaskQuestion;
@@ -22,16 +23,30 @@ use yii\web\Response;
  */
 class TestTaskController extends CrudController
 {
+    public $layout = 'test.php';
+
     public function init()
     {
         parent::init();
         $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['next', 'repass', 'error-answer'],
+                'actions' => ['next', 'repass', 'error-answer', 'study', 'restudy'],
                 'allow' => ModelPermission::canCreate($permissionCategory),
             ],
         ];
+    }
+
+    public function actionIndex()
+    {
+        $this->layout = 'main.php';
+        return parent::actionIndex();
+    }
+
+    public function actionView($id)
+    {
+        $this->layout = 'main.php';
+        return parent::actionView($id);
     }
 
     /**
@@ -87,7 +102,7 @@ class TestTaskController extends CrudController
     public function createModel()
     {
         $this->addFlashMessages = false;
-        $this->model =  new CreateTestTaskForm();
+        $this->model = new CreateTestTaskForm();
         return $this->model;
     }
 
@@ -96,7 +111,7 @@ class TestTaskController extends CrudController
      */
     public function goBackAfterCreate()
     {
-        return $this->redirect(Url::to(['next', 'id' => $this->model->id]));
+        return $this->model->study_mode ? $this->redirect(Url::to(['study', 'id' => $this->model->id])) : $this->redirect(Url::to(['next', 'id' => $this->model->id]));
     }
 
     public function actionNext($id)
@@ -132,17 +147,50 @@ class TestTaskController extends CrudController
         }
     }
 
+    public function actionStudy($id)
+    {
+        try {
+            $testTask = $this->findModel($id);
+            $question = $testTask->getTestTaskQuestions()->andWhere(['training_result' => 0])->orderBy('id')->one();
+
+            if (!$question) {
+                $testTask->training_status = TestTask::STATUS_FINISHED;
+                $testTask->save(false);
+                if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Обучение успешно пройдено');
+                return $this->redirect(Url::to(['view', 'id' => $id]));
+            }
+            $post = Yii::$app->request->post();
+            //dd($post);
+            $model = new StudyForm(['testTaskQuestion' => $question]);
+            if ($model->load($post) && $model->save()) {
+                return $this->redirect(Url::to(['study', 'id' => $id]));
+            }
+            return $this->renderIfAjax('study', compact('model'));
+        } catch (Exception $e) {
+            if (YII_ENV_DEV) throw $e;
+            Yii::error($e->getMessage());
+            return $this->goBackAfterCreate();
+        }
+    }
+
     public function actionErrorAnswer($id)
     {
-       $model = $this->findQuestionModel($id);
-       return $this->renderIfAjax('error-answer', compact('model'));
+        $model = $this->findQuestionModel($id);
+        return $this->renderIfAjax('error-answer', compact('model'));
     }
 
     public function actionRepass($id)
     {
         $testTask = $this->findModel($id);
-        $testTask->reNew();
+        $testTask->reNewTest();
         return $this->redirect(Url::to(['next', 'id' => $id]));
+    }
+
+    public function actionRestudy($id)
+    {
+        $testTask = $this->findModel($id);
+        $testTask->reNewStudy();
+        return $this->redirect(Url::to(['study', 'id' => $id]));
     }
 
 }

@@ -17,7 +17,7 @@ class Menu extends Widget
      * Префикс кэш-ключа
      * @var string
      */
-    protected $keyPrefix = 'menu-user';
+    const CACHE_PREFIX = 'menu-user';
 
     /**
      * Собрать меню
@@ -47,7 +47,7 @@ class Menu extends Widget
      */
     protected function getCacheKey()
     {
-        return $this->keyPrefix . Yii::$app->user->id;
+        return self::CACHE_PREFIX . Yii::$app->user->id;
     }
 
     /**

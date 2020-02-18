@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property int $status Статус
  * @property string $created_at Дата создания
  * @property string $passed_at Дата прохождения
+ * @property int $training_status Статус обучения
  *
  *
  * @property User $user
@@ -54,12 +55,14 @@ class TestTask extends ActiveRecord
             'id' => '№',
             'user_id' => 'Ученик',
             'user.name' => 'Ученик',
-            'status' => 'Статус',
-            'statusLabel' => 'Статус',
+            'status' => 'Тестирование',
+            'statusLabel' => 'Тестирование',
+            'training_status' => 'Обучение',
+            'trainingStatusLabel' => 'Обучение',
             'created_at' => 'Создан',
             'passed_at' => 'Пройден',
-            'questionsCount' => 'Количество слов',
-            'uniqueLettersString' => 'Выбранные буквы',
+            'questionsCount' => 'Кол-во слов',
+            'uniqueLettersString' => 'Буквы',
             'questionsStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
             'rating' => 'Правильных ответов, %',
@@ -204,8 +207,8 @@ class TestTask extends ActiveRecord
     public static function statusMap()
     {
         return [
-            self::STATUS_NEW => 'Не закончен',
-            self::STATUS_FINISHED => 'Пройден',
+            self::STATUS_NEW => 'Не пройдено',
+            self::STATUS_FINISHED => 'Пройдено',
         ];
     }
 
@@ -218,21 +221,43 @@ class TestTask extends ActiveRecord
         return isset($map[$this->status]) ? $map[$this->status] : $this->status;
     }
 
-    public function canTestContinue() {
-        return ModelPermission::canCreate(self::tableName()) && ($this->getQuestionsCount() > $this->getQuestionsPassedCount()) && ($this->user_id == Yii::$app->user->id);
+    /**
+     * @return int|mixed
+     */
+    public function getTrainingStatusLabel()
+    {
+        $map = self::statusMap();
+        return isset($map[$this->training_status]) ? $map[$this->training_status] : $this->status;
     }
 
-    public function canTestRePass() {
+    public function canTestContinue() {
+        return $this->canTest() && ($this->getQuestionsCount() > $this->getQuestionsPassedCount());
+    }
+
+    public function canStudyContinue() {
+        return $this->canTest() && ($this->training_status == self::STATUS_NEW);
+    }
+
+    public function canTest() {
         return ModelPermission::canCreate(self::tableName()) && ($this->user_id == Yii::$app->user->id);
     }
 
     /**
      * Обновить тест. Очистить пройденные материалы.
      */
-    public function reNew(){
+    public function reNewTest(){
         $this->status = self::STATUS_NEW;
         $this->passed_at = null;
         $this->save(false, ['status', 'passed_at']);
-        TestTaskQuestion::clear($this->id);
+        TestTaskQuestion::clearTest($this->id);
+    }
+
+    /**
+     * Обучение заново
+     */
+    public function reNewStudy(){
+        $this->training_status = self::STATUS_NEW;
+        $this->save(false, ['training_status']);
+        TestTaskQuestion::clearStudy($this->id);
     }
 }

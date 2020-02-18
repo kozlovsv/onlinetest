@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this View */
+
 /* @var $content string */
 
 use app\widgets\Menu;
@@ -30,11 +31,15 @@ use yii\widgets\Breadcrumbs;
             'options' => ['class' => 'nav navbar-nav navbar-right'],
             'items' => [
                 [
-
-                    'label' => Html::icon('log-out'),
-                    'url' => '/site/logout',
-                    'linkOptions' => [
-                        'data' => ['method' => 'post'],
+                    'label' => Yii::$app->user->identity->name,
+                    'items' => [
+                        [
+                            'label' => Html::icon('log-out'),
+                            'url' => '/site/logout',
+                            'linkOptions' => [
+                                'data' => ['method' => 'post'],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -50,6 +55,6 @@ use yii\widgets\Breadcrumbs;
             <?= $content ?>
         </div>
     </div>
-    <?= Dialog::widget() ?>
+<?= Dialog::widget() ?>
 <?php
 $this->endContent();

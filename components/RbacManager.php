@@ -36,7 +36,7 @@ class RbacManager extends Component
 
     /**
      * Менеджер
-     * @var \yii\rbac\DbManager
+     * @var AuthManager
      */
     protected $authManager;
 
