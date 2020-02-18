@@ -33,7 +33,7 @@ echo ToolBarPanelContainer::widget([
         'buttonsLeft' => [
             CrudButton::saveButton('Я запомнил!', ['class' => 'btn btn-success btn-lg'])
         ],
-        'options' => ['class' => 'form-group', 'style' => 'margin: 40px 0 50px 0'],
+        'options' => ['class' => 'form-group', 'style' => 'margin: 40px 0 80px 0'],
     ]
 );
 
