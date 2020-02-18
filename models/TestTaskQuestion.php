@@ -85,7 +85,7 @@ class TestTaskQuestion extends ActiveRecord
         self::updateAll(['answer' => '', 'result' => 0], ['test_task_id' => $taskId]);
     }
 
-    public static function clearStudy($taskId) {
+    public static function clearTraining($taskId) {
         self::updateAll(['training_result' => 0], ['test_task_id' => $taskId]);
     }
 }

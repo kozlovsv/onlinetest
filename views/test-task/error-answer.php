@@ -21,7 +21,7 @@ echo ToolBarPanelContainer::widget([
             CrudButton::cancelButton('Закончить тест', ['view', 'id' => $model->test_task_id], ['class' => 'btn btn-warning btn-lg form-cancel']),
         ],
         'buttonsLeft' => [
-            Html::a('Я выучил!', ['next', 'id' => $model->test_task_id], ['class' => 'btn btn-success btn-lg'])
+            Html::a('Я выучил!', ['test', 'id' => $model->test_task_id], ['class' => 'btn btn-success btn-lg'])
         ],
         'options' => ['class' => 'form-group', 'style' => 'margin: 20px 0 50px 0'],
     ]

@@ -37,6 +37,7 @@ class TestTask extends ActiveRecord
     private $_questionsCount;
     private $_rating;
     private $_questionsPassed;
+    private $_questionsTrained;
 
     /**
      * {@inheritdoc}
@@ -111,6 +112,18 @@ class TestTask extends ActiveRecord
             $this->_questionsPassed = $this->getTestTaskQuestions()->andWhere(['!=', 'answer', ''])->count();
         }
         return $this->_questionsPassed;
+    }
+
+    /**
+     * Получить количество выученных вопросов в тесте.
+     * @return int
+     */
+    public function getQuestionsTrainedCount()
+    {
+        if (is_null($this->_questionsTrained)) {
+            $this->_questionsTrained = $this->getTestTaskQuestions()->andWhere(['training_result' => 1])->count();
+        }
+        return $this->_questionsTrained;
     }
 
     /**
@@ -234,7 +247,7 @@ class TestTask extends ActiveRecord
         return $this->canTest() && ($this->getQuestionsCount() > $this->getQuestionsPassedCount());
     }
 
-    public function canStudyContinue() {
+    public function canTrainingContinue() {
         return $this->canTest() && ($this->training_status == self::STATUS_NEW);
     }
 
@@ -255,9 +268,9 @@ class TestTask extends ActiveRecord
     /**
      * Обучение заново
      */
-    public function reNewStudy(){
+    public function reNewTraining(){
         $this->training_status = self::STATUS_NEW;
         $this->save(false, ['training_status']);
-        TestTaskQuestion::clearStudy($this->id);
+        TestTaskQuestion::clearTraining($this->id);
     }
 }

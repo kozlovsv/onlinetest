@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\form\ChooseAnswerForm;
 use app\models\form\CreateTestTaskForm;
-use app\models\form\StudyForm;
+use app\models\form\TrainingForm;
 use app\models\search\TestTaskSearch;
 use app\models\TestTask;
 use app\models\TestTaskQuestion;
@@ -31,7 +31,7 @@ class TestTaskController extends CrudController
         $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['next', 'repass', 'error-answer', 'study', 'restudy'],
+                'actions' => ['test', 're-test', 'error-answer', 'training', 're-training'],
                 'allow' => ModelPermission::canCreate($permissionCategory),
             ],
         ];
@@ -111,10 +111,10 @@ class TestTaskController extends CrudController
      */
     public function goBackAfterCreate()
     {
-        return $this->model->study_mode ? $this->redirect(Url::to(['study', 'id' => $this->model->id])) : $this->redirect(Url::to(['next', 'id' => $this->model->id]));
+        return $this->model->training_mode ? $this->redirect(Url::to(['training', 'id' => $this->model->id])) : $this->redirect(Url::to(['test', 'id' => $this->model->id]));
     }
 
-    public function actionNext($id)
+    public function actionTest($id)
     {
         try {
             $testTask = $this->findModel($id);
@@ -131,11 +131,11 @@ class TestTaskController extends CrudController
             $model = new ChooseAnswerForm(['testTaskQuestion' => $question]);
             if ($model->load($post) && $model->save()) {
                 if ($model->checkResult())
-                    return $this->redirect(Url::to(['next', 'id' => $id]));
+                    return $this->redirect(Url::to(['test', 'id' => $id]));
                 else
                     return $this->redirect(Url::to(['error-answer', 'id' => $question->id]));
             }
-            return $this->renderIfAjax('next', compact('model', 'testTask'));
+            return $this->renderIfAjax('test', compact('model', 'testTask'));
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -147,7 +147,7 @@ class TestTaskController extends CrudController
         }
     }
 
-    public function actionStudy($id)
+    public function actionTraining($id)
     {
         try {
             $testTask = $this->findModel($id);
@@ -161,11 +161,11 @@ class TestTaskController extends CrudController
             }
             $post = Yii::$app->request->post();
             //dd($post);
-            $model = new StudyForm(['testTaskQuestion' => $question]);
+            $model = new TrainingForm(['testTaskQuestion' => $question]);
             if ($model->load($post) && $model->save()) {
-                return $this->redirect(Url::to(['study', 'id' => $id]));
+                return $this->redirect(Url::to(['training', 'id' => $id]));
             }
-            return $this->renderIfAjax('study', compact('model'));
+            return $this->renderIfAjax('training', compact('model'));
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -179,18 +179,18 @@ class TestTaskController extends CrudController
         return $this->renderIfAjax('error-answer', compact('model'));
     }
 
-    public function actionRepass($id)
+    public function actionReTest($id)
     {
         $testTask = $this->findModel($id);
         $testTask->reNewTest();
-        return $this->redirect(Url::to(['next', 'id' => $id]));
+        return $this->redirect(Url::to(['test', 'id' => $id]));
     }
 
-    public function actionRestudy($id)
+    public function actionReTraining($id)
     {
         $testTask = $this->findModel($id);
-        $testTask->reNewStudy();
-        return $this->redirect(Url::to(['study', 'id' => $id]));
+        $testTask->reNewTraining();
+        return $this->redirect(Url::to(['training', 'id' => $id]));
     }
 
 }

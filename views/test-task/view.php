@@ -46,6 +46,48 @@ $statusClass = ($model->status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $trainingStatusClass = ($model->training_status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
 
+/**
+ * @param TestTask $model
+ * @return string
+ */
+
+function getButtonTest($model){
+    if (!$model->canTest()) return '';
+    if ($model->getQuestionsPassedCount() == 0) return Html::a('Тест', ['test', 'id' => $model->id], ['class' => 'btn btn-info']);
+
+    return ButtonDropdown::widget([
+        'label' => 'Тест',
+        'options' => ['class' => 'btn-info'],
+        'dropdown' => [
+            'items' => [
+                ['label' => 'Продолжить', 'url' => ['test', 'id' => $model->id], 'visible' => $model->canTestContinue()],
+                ['label' => 'Пройти заново', 'url' => ['re-test', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]],
+            ],
+        ],
+    ]);
+}
+
+/**
+ * @param TestTask $model
+ * @return string
+ */
+
+function getButtonTraining($model){
+    if (!$model->canTest()) return '';
+    if ($model->getQuestionsTrainedCount() == 0) return Html::a('Обучение', ['training', 'id' => $model->id], ['class' => 'btn btn-success']);
+
+    return ButtonDropdown::widget([
+        'label' => 'Обучение',
+        'options' => ['class' => 'btn-success'],
+        'dropdown' => [
+            'items' => [
+                ['label' => 'Продолжить', 'url' => ['training', 'id' => $model->id], 'visible' => $model->canTrainingContinue()],
+                ['label' => 'Пройти заново', 'url' => ['re-training', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти обучение заново?']]],
+            ],
+        ],
+    ]);
+}
+
 ?>
 <div class="test-task-view">
     <h1><?= Html::encode("$this->title ") ?></h1>
@@ -54,26 +96,8 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
         [
             'buttonsLeft' => [
                 CrudButton::cancelButton(Html::icon('arrow-left')),
-                $model->canTest() ? ButtonDropdown::widget([
-                    'label' => 'Тест',
-                    'options' => ['class' => 'btn-info'],
-                    'dropdown' => [
-                        'items' => [
-                            ['label' => 'Продолжить', 'url' => ['next', 'id' => $model->id], 'visible' => $model->canTestContinue()],
-                            ['label' => 'Пройти заново', 'url' => ['repass', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти тест заново? Все ранее веденные ответы пропадут.']]],
-                        ],
-                    ],
-                ]) : '',
-                $model->canTest() ? ButtonDropdown::widget([
-                    'label' => 'Обучение',
-                    'options' => ['class' => 'btn-success'],
-                    'dropdown' => [
-                        'items' => [
-                            ['label' => 'Продолжить', 'url' => ['study', 'id' => $model->id], 'visible' => $model->canStudyContinue()],
-                            ['label' => 'Пройти заново', 'url' => ['restudy', 'id' => $model->id], 'linkOptions' => ['data' => ['confirm' => 'Пройти обучение заново?']]],
-                        ],
-                    ],
-                ]) : '',
+                getButtonTest($model),
+                getButtonTraining($model),
             ],
             'buttonsRight' => [
                 CrudButton::deleteButton($model::tableName(), $model->getPrimaryKey()),

@@ -7,7 +7,7 @@ namespace app\models\form;
 use app\models\TestTaskQuestion;
 use yii\base\Model;
 
-class StudyForm extends Model
+class TrainingForm extends Model
 {
     /**
      * @var int

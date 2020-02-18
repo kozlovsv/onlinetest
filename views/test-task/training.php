@@ -1,7 +1,7 @@
 <?php
 
 
-use app\models\form\StudyForm;
+use app\models\form\TrainingForm;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\ActiveForm;
@@ -9,7 +9,7 @@ use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 
 /* @var $this yii\web\View */
-/* @var $model StudyForm */
+/* @var $model TrainingForm */
 
 
 $this->title = 'Обучение слову ' . $model->testTaskQuestion->vocabularyWord->title;

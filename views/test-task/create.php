@@ -29,7 +29,7 @@ echo FormBuilder::widget([
             'type' => FormBuilder::INPUT_DROPDOWN_LIST,
             'items' => CreateTestTaskForm::mapCntWords(),
         ],
-        'study_mode' => [
+        'training_mode' => [
             'type' => FormBuilder::INPUT_CHECKBOX,
         ],
 

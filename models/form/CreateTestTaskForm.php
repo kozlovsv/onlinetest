@@ -35,7 +35,7 @@ class CreateTestTaskForm extends Model
     /**
      * @var bool
      */
-    public $study_mode = false;
+    public $training_mode = false;
 
     const CNT_WORDS_RANGE = [0, 10, 20, 30];
 
@@ -44,7 +44,7 @@ class CreateTestTaskForm extends Model
         return [
             [['letters'], 'required', 'message' => 'Выберите хотябы одну букву'],
             [['cnt_words'], 'integer'],
-            [['study_mode'], 'boolean'],
+            [['training_mode'], 'boolean'],
             ['cnt_words', 'in', 'range' => self::CNT_WORDS_RANGE],
         ];
     }
@@ -57,7 +57,7 @@ class CreateTestTaskForm extends Model
         return [
             'cnt_words' => 'Выберите количество слов',
             'letters' => 'Выберите буквы',
-            'study_mode' => 'Режим обучения'
+            'training_mode' => 'Режим обучения'
         ];
     }
 
