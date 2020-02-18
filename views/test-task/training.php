@@ -23,9 +23,9 @@ echo Html::tag('h2', Html::encode("Слово {$testTask->getCurrentTrainingNumQ
 echo Progress::widget([
     'percent' => $testTask->getPassingTrainingPercent(),
     'barOptions' => ['class' => 'progress-bar-info'],
+    'options' => ['style' => 'margin-bottom: 40px'],
 ]);
-echo Html::tag('h1', 'Запомните слово', ['class' => 'form-header', 'style' => 'font-size: 25px']);
-echo Html::tag('h1', Html::icon('ok') . '  ' . Html::encode($model->testTaskQuestion->vocabularyWord->title), ['style' => 'font-size: 25px; color: #5cb85c']);
+echo Html::tag('h1', Html::icon('ok') . '  ' . Html::encode($model->testTaskQuestion->vocabularyWord->title), ['class' => 'form-header', 'style' => 'font-size: 30px; color: #5cb85c']);
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
             CrudButton::cancelButton('Закончить', ['view', 'id' => $model->testTaskQuestion->test_task_id], ['class' => 'btn btn-warning btn-lg form-cancel']),
@@ -33,7 +33,7 @@ echo ToolBarPanelContainer::widget([
         'buttonsLeft' => [
             CrudButton::saveButton('Я запомнил!', ['class' => 'btn btn-success btn-lg'])
         ],
-        'options' => ['class' => 'form-group', 'style' => 'margin: 20px 0 50px 0'],
+        'options' => ['class' => 'form-group', 'style' => 'margin: 40px 0 50px 0'],
     ]
 );
 
