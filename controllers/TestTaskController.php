@@ -165,7 +165,7 @@ class TestTaskController extends CrudController
             if ($model->load($post) && $model->save()) {
                 return $this->redirect(Url::to(['training', 'id' => $id]));
             }
-            return $this->renderIfAjax('training', compact('model'));
+            return $this->renderIfAjax('training', compact('model', 'testTask'));
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());

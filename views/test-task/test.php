@@ -18,9 +18,9 @@ $this->title = 'Как пишется правильно';
 
 $form = ActiveForm::begin(['type' => ActiveForm::TYPE_VERTICAL]);
 echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header', 'style' => 'font-size: 25px']);
-echo Html::tag('h2', Html::encode("Вопрос {$testTask->getCurrentNumQuestion()} из {$testTask->getQuestionsCount()}"));
+echo Html::tag('h2', Html::encode("Вопрос {$testTask->getCurrentTestNumQuestion()} из {$testTask->getQuestionsCount()}"));
 echo Progress::widget([
-    'percent' => $testTask->getPassedPercent(),
+    'percent' => $testTask->getPassingTestPercent(),
     'barOptions' => ['class' => 'progress-bar-info'],
 ]);
 echo FormBuilder::widget([

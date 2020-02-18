@@ -44,7 +44,7 @@ function getGradeColor($model)
 $gradeClass = getGradeColor($model);
 $statusClass = ($model->status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $trainingStatusClass = ($model->training_status == TestTask::STATUS_NEW) ? 'warning' : 'success';
-$questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
+$questionsStayCountClass = $model->getQuestionsTestStayCount() <> 0 ? 'danger' : '';
 
 /**
  * @param TestTask $model
@@ -53,7 +53,7 @@ $questionsStayCountClass = $model->getQuestionsStayCount() <> 0 ? 'danger' : '';
 
 function getButtonTest($model){
     if (!$model->canTest()) return '';
-    if ($model->getQuestionsPassedCount() == 0) return Html::a('Тест', ['test', 'id' => $model->id], ['class' => 'btn btn-info']);
+    if ($model->getQuestionsPassedTestCount() == 0) return Html::a('Тест', ['test', 'id' => $model->id], ['class' => 'btn btn-info']);
 
     return ButtonDropdown::widget([
         'label' => 'Тест',
@@ -71,10 +71,9 @@ function getButtonTest($model){
  * @param TestTask $model
  * @return string
  */
-
 function getButtonTraining($model){
     if (!$model->canTest()) return '';
-    if ($model->getQuestionsTrainedCount() == 0) return Html::a('Обучение', ['training', 'id' => $model->id], ['class' => 'btn btn-success']);
+    if ($model->getQuestionsPassedTrainingCount() == 0) return Html::a('Обучение', ['training', 'id' => $model->id], ['class' => 'btn btn-success']);
 
     return ButtonDropdown::widget([
         'label' => 'Обучение',
@@ -86,6 +85,58 @@ function getButtonTraining($model){
             ],
         ],
     ]);
+}
+
+/**
+ * @param TestTask $model
+ * @param $trainingStatusClass
+ * @return array
+ * @throws Exception
+ */
+
+function getTrainingStatusAttribute($model, $trainingStatusClass) {
+    if ($model->training_status == TestTask::STATUS_FINISHED || $model->getQuestionsPassedTrainingCount() == 0) {
+        return [
+            'attribute' => 'trainingStatusLabel',
+            'contentOptions' => ['class' => $trainingStatusClass],
+            'captionOptions' => ['class' => $trainingStatusClass],
+        ];
+    }
+    return [
+        'attribute' => 'training_status',
+        'format' => 'raw',
+        'value' => Progress::widget([
+            'label' => $model->passedTrainingPercent,
+            'percent' => $model->passedTrainingPercent,
+            'barOptions' => ['class' => 'progress-bar-success'],
+        ])
+    ];
+}
+
+/**
+ * @param TestTask $model
+ * @param $statusClass
+ * @return array
+ * @throws Exception
+ */
+
+function getTestStatusAttribute($model, $statusClass) {
+    if ($model->status == TestTask::STATUS_FINISHED || $model->getQuestionsPassedTestCount() == 0) {
+       return  [
+            'attribute' => 'statusLabel',
+            'contentOptions' => ['class' => $statusClass],
+            'captionOptions' => ['class' => $statusClass],
+        ];
+    }
+    return [
+        'attribute' => 'status',
+        'format' => 'raw',
+        'value' => Progress::widget([
+            'label' => $model->passedTestPercent,
+            'percent' => $model->passedTestPercent,
+            'barOptions' => ['class' => 'progress-bar-success'],
+        ])
+    ];
 }
 
 ?>
@@ -116,13 +167,13 @@ function getButtonTraining($model){
                 'user.name',
                 [
                     'attribute' => 'grade',
-                    'visible' => $model->getQuestionsStayCount() == 0,
+                    'visible' => $model->getQuestionsTestStayCount() == 0,
                     'contentOptions' => ['class' => $gradeClass],
                     'captionOptions' => ['class' => $gradeClass],
                 ],
                 [
                     'attribute' => 'rating',
-                    'visible' => $model->getQuestionsStayCount() == 0,
+                    'visible' => $model->getQuestionsTestStayCount() == 0,
                     'contentOptions' => ['class' => $gradeClass],
                     'captionOptions' => ['class' => $gradeClass],
                     'format' => 'raw',
@@ -132,22 +183,14 @@ function getButtonTraining($model){
                         'barOptions' => ['class' => 'progress-bar-info'],
                     ])
                 ],
-                [
-                    'attribute' => 'statusLabel',
-                    'contentOptions' => ['class' => $statusClass],
-                    'captionOptions' => ['class' => $statusClass],
-                ],
-                [
-                    'attribute' => 'trainingStatusLabel',
-                    'contentOptions' => ['class' => $trainingStatusClass],
-                    'captionOptions' => ['class' => $trainingStatusClass],
-                ],
+                getTestStatusAttribute($model, $statusClass),
+                getTrainingStatusAttribute($model, $trainingStatusClass),
                 'created_at:datetime',
                 'passed_at:datetime',
                 'questionsCount',
                 [
-                    'attribute' => 'questionsStayCount',
-                    'visible' => $model->getQuestionsStayCount() > 0,
+                    'attribute' => 'questionsTestStayCount',
+                    'visible' => $model->getQuestionsTestStayCount() > 0,
                     'contentOptions' => ['class' => 'danger'],
                     'captionOptions' => ['class' => 'danger'],
                 ],
@@ -158,7 +201,7 @@ function getButtonTraining($model){
     ?>
     <div class="clearfix" style="margin-bottom: 10px"></div>
     <?php
-    if ($model->getQuestionsPassedCount() > 0) {
+    if ($model->getQuestionsPassedTestCount() > 0) {
         echo Html::tag('h1', 'Ответы');
         echo GridView::widget(
             [

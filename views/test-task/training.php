@@ -2,20 +2,28 @@
 
 
 use app\models\form\TrainingForm;
+use app\models\TestTask;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
+use yii\bootstrap\Progress;
 
 /* @var $this yii\web\View */
 /* @var $model TrainingForm */
+/* @var $testTask TestTask */
 
 
 $this->title = 'Обучение слову ' . $model->testTaskQuestion->vocabularyWord->title;
 
 $form = ActiveForm::begin(['type' => ActiveForm::TYPE_VERTICAL]);
 
+echo Html::tag('h2', Html::encode("Слово {$testTask->getCurrentTrainingNumQuestion()} из {$testTask->getQuestionsCount()}"));
+echo Progress::widget([
+    'percent' => $testTask->getPassingTrainingPercent(),
+    'barOptions' => ['class' => 'progress-bar-info'],
+]);
 echo Html::tag('h1', 'Запомните слово', ['class' => 'form-header', 'style' => 'font-size: 25px']);
 echo Html::tag('h1', Html::icon('ok') . '  ' . Html::encode($model->testTaskQuestion->vocabularyWord->title), ['style' => 'font-size: 25px; color: #5cb85c']);
 echo ToolBarPanelContainer::widget([

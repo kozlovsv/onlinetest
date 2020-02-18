@@ -21,6 +21,8 @@ use yii\db\ActiveRecord;
  *
  * @property User $user
  * @property TestTaskQuestion[] $testTaskQuestions
+ * @property int passedTrainingPercent
+ * @property int passedTestPercent
  */
 class TestTask extends ActiveRecord
 {
@@ -64,7 +66,7 @@ class TestTask extends ActiveRecord
             'passed_at' => 'Пройден',
             'questionsCount' => 'Кол-во слов',
             'uniqueLettersString' => 'Буквы',
-            'questionsStayCount' => 'Осталось пройти',
+            'questionsTestStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
             'rating' => 'Правильных ответов, %',
         ];
@@ -106,7 +108,7 @@ class TestTask extends ActiveRecord
      * Получить количество пройденных вопросов в тесте.
      * @return int
      */
-    public function getQuestionsPassedCount()
+    public function getQuestionsPassedTestCount()
     {
         if (is_null($this->_questionsPassed)){
             $this->_questionsPassed = $this->getTestTaskQuestions()->andWhere(['!=', 'answer', ''])->count();
@@ -118,7 +120,7 @@ class TestTask extends ActiveRecord
      * Получить количество выученных вопросов в тесте.
      * @return int
      */
-    public function getQuestionsTrainedCount()
+    public function getQuestionsPassedTrainingCount()
     {
         if (is_null($this->_questionsTrained)) {
             $this->_questionsTrained = $this->getTestTaskQuestions()->andWhere(['training_result' => 1])->count();
@@ -127,32 +129,83 @@ class TestTask extends ActiveRecord
     }
 
     /**
-     * Осталось пройти
+     * Осталось пройти вопросов в тесте
      * @return int
      */
-    public function getQuestionsStayCount()
+    public function getQuestionsTestStayCount()
     {
-        return $this->getQuestionsCount() - $this->getQuestionsPassedCount();
+        return $this->getQuestionsCount() - $this->getQuestionsPassedTestCount();
     }
 
     /**
-     * Получить номер текущего вопроса
+     * Осталось выучить вопросов
      * @return int
      */
-    public function getCurrentNumQuestion()
+    public function getQuestionsTrainingStayCount()
     {
-        return $this->getQuestionsPassedCount() + 1;
+        return $this->getQuestionsCount() - $this->getQuestionsPassedTrainingCount();
+    }
+
+    /**
+     * Получить номер текущего вопроса в тесте
+     * @return int
+     */
+    public function getCurrentTestNumQuestion()
+    {
+        return $this->getQuestionsPassedTestCount() + 1;
+    }
+
+    /**
+     * Получить номер текущего вопроса в обучении
+     * @return int
+     */
+    public function getCurrentTrainingNumQuestion()
+    {
+        return $this->getQuestionsPassedTrainingCount() + 1;
     }
 
     /**
      * % пройденного теста.
      * @return int
      */
-    public function getPassedPercent()
+    public function getPassingTestPercent()
     {
         $cnt = $this->getQuestionsCount();
         if ($cnt == 0)  return 0;
-        return intval(round(($this->getCurrentNumQuestion() / $cnt) * 100, 2));
+        return intval(round(($this->getCurrentTestNumQuestion() / $cnt) * 100, 2));
+    }
+
+    /**
+     * % проходимого обучения. Кол-во уже изученных + 1 текущий вопрос / Общее кол-во).
+     * @return int
+     */
+    public function getPassingTrainingPercent()
+    {
+        $cnt = $this->getQuestionsCount();
+        if ($cnt == 0)  return 0;
+        return intval(round(($this->getCurrentTrainingNumQuestion() / $cnt) * 100, 2));
+    }
+
+    /**
+     * Общий % пройденного обучения (Кол-во уже изученных / Общее кол-во).
+     * @return int
+     */
+    public function getPassedTrainingPercent()
+    {
+        $cnt = $this->getQuestionsCount();
+        if ($cnt == 0)  return 0;
+        return intval(round(($this->getQuestionsPassedTrainingCount() / $cnt) * 100, 2));
+    }
+
+    /**
+     * Общий % пройденного ntcnbhjdfybz (Кол-во уже отвеченных / Общее кол-во).
+     * @return int
+     */
+    public function getPassedTestPercent()
+    {
+        $cnt = $this->getQuestionsCount();
+        if ($cnt == 0)  return 0;
+        return intval(round(($this->getQuestionsPassedTestCount() / $cnt) * 100, 2));
     }
 
     /**
@@ -244,7 +297,7 @@ class TestTask extends ActiveRecord
     }
 
     public function canTestContinue() {
-        return $this->canTest() && ($this->getQuestionsCount() > $this->getQuestionsPassedCount());
+        return $this->canTest() && ($this->status == self::STATUS_NEW);
     }
 
     public function canTrainingContinue() {
