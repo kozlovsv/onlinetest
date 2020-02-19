@@ -68,7 +68,7 @@ class TestTask extends ActiveRecord
             'uniqueLettersString' => 'Буквы',
             'questionsTestStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
-            'rating' => 'Правильных ответов, %',
+            'rating' => 'Рейтинг, %',
         ];
     }
 
