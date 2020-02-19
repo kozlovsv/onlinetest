@@ -106,7 +106,7 @@ function getTrainingStatusAttribute($model, $trainingStatusClass) {
         'attribute' => 'training_status',
         'format' => 'raw',
         'value' => Progress::widget([
-            'label' => $model->passedTrainingPercent,
+            'label' => $model->getQuestionsPassedTrainingCount() . ' / ' . $model->getQuestionsCount(),
             'percent' => $model->passedTrainingPercent,
             'barOptions' => ['class' => 'progress-bar-success'],
         ])
@@ -132,7 +132,7 @@ function getTestStatusAttribute($model, $statusClass) {
         'attribute' => 'status',
         'format' => 'raw',
         'value' => Progress::widget([
-            'label' => $model->passedTestPercent,
+            'label' => $model->getQuestionsPassedTestCount() . ' / ' . $model->getQuestionsCount(),
             'percent' => $model->passedTestPercent,
             'barOptions' => ['class' => 'progress-bar-success'],
         ])
@@ -157,14 +157,14 @@ function getTestStatusAttribute($model, $statusClass) {
         ]
     );
     ?>
-    <div class="clearfix"></div>
+    <div class="clearfix" style="margin-bottom: 10px"></div>
     <?php
+    echo Html::tag('h1', Html::encode($model->user->name));
     /** @noinspection PhpUndefinedFieldInspection */
     echo yii\widgets\DetailView::widget(
         [
             'model' => $model,
             'attributes' => [
-                'user.name',
                 [
                     'attribute' => 'grade',
                     'visible' => $model->getQuestionsTestStayCount() == 0,
@@ -185,16 +185,18 @@ function getTestStatusAttribute($model, $statusClass) {
                 ],
                 getTestStatusAttribute($model, $statusClass),
                 getTrainingStatusAttribute($model, $trainingStatusClass),
+            ],
+        ]
+    );
+    /** @noinspection PhpUndefinedFieldInspection */
+    echo yii\widgets\DetailView::widget(
+        [
+            'model' => $model,
+            'attributes' => [
+                'questionsCount',
+                'uniqueLettersString',
                 'created_at:datetime',
                 'passed_at:datetime',
-                'questionsCount',
-                [
-                    'attribute' => 'questionsTestStayCount',
-                    'visible' => $model->getQuestionsTestStayCount() > 0,
-                    'contentOptions' => ['class' => 'danger'],
-                    'captionOptions' => ['class' => 'danger'],
-                ],
-                'uniqueLettersString',
             ],
         ]
     );

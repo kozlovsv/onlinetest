@@ -64,7 +64,7 @@ class CreateTestTaskForm extends Model
 
     public static function mapLetters()
     {
-        $items = Letter::find()->orderBy(['id' => SORT_ASC])->all();
+        $items = Letter::find()->where(['exists', VocabularyWord::find()->select('id')->where('vocabulary_word.letter_id = letter.id')])->orderBy(['id' => SORT_ASC])->all();
         return ArrayHelper::map($items, 'id', 'title');
     }
 
