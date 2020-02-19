@@ -58,8 +58,8 @@ class TestTask extends ActiveRecord
             'id' => '№',
             'user_id' => 'Ученик',
             'user.name' => 'Ученик',
-            'status' => 'Тестирование',
-            'statusLabel' => 'Тестирование',
+            'status' => 'Тест',
+            'statusLabel' => 'Тест',
             'training_status' => 'Обучение',
             'trainingStatusLabel' => 'Обучение',
             'created_at' => 'Создан',
@@ -273,6 +273,17 @@ class TestTask extends ActiveRecord
     public static function statusMap()
     {
         return [
+            self::STATUS_NEW => 'Не пройден',
+            self::STATUS_FINISHED => 'Пройден',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function trainingStatusMap()
+    {
+        return [
             self::STATUS_NEW => 'Не пройдено',
             self::STATUS_FINISHED => 'Пройдено',
         ];
@@ -292,7 +303,7 @@ class TestTask extends ActiveRecord
      */
     public function getTrainingStatusLabel()
     {
-        $map = self::statusMap();
+        $map = self::trainingStatusMap();
         return isset($map[$this->training_status]) ? $map[$this->training_status] : $this->status;
     }
 
