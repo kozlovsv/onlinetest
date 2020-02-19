@@ -18,7 +18,7 @@ class VocabularyWordSearch extends VocabularyWord
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'letter_id'], 'integer'],
             [['title'], 'safe'],
         ];
     }
@@ -45,6 +45,7 @@ class VocabularyWordSearch extends VocabularyWord
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         $this->load($params);
@@ -58,6 +59,7 @@ class VocabularyWordSearch extends VocabularyWord
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'letter_id' => $this->letter_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);

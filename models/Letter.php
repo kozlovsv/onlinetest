@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\traits\MapTrait;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -15,6 +16,8 @@ use yii\db\ActiveRecord;
  */
 class Letter extends ActiveRecord
 {
+    use MapTrait;
+
     const DEFAULT_ID = 1;
 
     /**

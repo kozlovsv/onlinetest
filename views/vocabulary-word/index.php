@@ -1,9 +1,12 @@
 <?php
 
+use app\models\Letter;
 use kozlovsv\crud\helpers\CrudButton;
+use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\GridView;
 use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\SearchPanel;
+use kozlovsv\crud\widgets\Select2;
 use kozlovsv\crud\widgets\ToolBarPanel;
 
 
@@ -38,6 +41,13 @@ echo ToolBarPanel::widget(
             SearchPanel::widget([
                 'model' => $searchModel,
                 'attributes' => [
+                    'letter_id' => [
+                        'type' => FormBuilder::INPUT_WIDGET,
+                        'widgetClass' => Select2::class,
+                        'options' => [
+                            'data' => Letter::map('id', 'title'),
+                        ],
+                    ],
                     'title',
                 ],
             ]),
@@ -51,6 +61,7 @@ echo GridView::widget(
         'isModal' => $isModal,
         'permissionCategory' => $searchModel::tableName(),
         'columns' => [
+            'id',
             'letter.title',
             'title',
         ],
