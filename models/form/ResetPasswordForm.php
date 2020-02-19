@@ -2,6 +2,7 @@
 
 namespace app\models\form;
 
+use Yii;
 use yii\base\Model;
 use yii\base\InvalidArgumentException;
 use app\models\User;
@@ -19,7 +20,7 @@ class ResetPasswordForm extends Model
     /**
      * @var User
      */
-    private $_user;
+    public $user;
 
     /**
      * @param string $token
@@ -31,11 +32,11 @@ class ResetPasswordForm extends Model
         if (empty($token) || !is_string($token)) {
             throw new InvalidArgumentException('Неверный адрес для сброса пароля');
         }
-        $this->_user = User::findByPasswordResetToken($token);
-        if (!$this->_user) {
+        $this->user = User::findByPasswordResetToken($token);
+        if (!$this->user) {
             throw new InvalidArgumentException('Ошибка сброса пароля');
         }
-        $this->_user->setScenario(User::SCENARIO_RESET_PASSWORD);
+        $this->user->setScenario(User::SCENARIO_RESET_PASSWORD);
         parent::__construct($config);
     }
 
@@ -65,9 +66,25 @@ class ResetPasswordForm extends Model
      */
     public function resetPassword()
     {
-        $user = $this->_user;
+        $user = $this->user;
         $user->setPassword($this->password);
         $user->removePasswordResetToken();
-        return $user->save(false);
+        if ($user->save(false)) {
+            return $this->sendResetEmail();
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function sendResetEmail()
+    {
+        if (empty($this->user->email)) return true;
+        return Yii::$app->mailer->compose('password', ['form' => $this])
+            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
+            ->setTo($this->user->email)
+            ->setSubject('Данные для входа в систему ' . Yii::$app->name)
+            ->send();
     }
 }

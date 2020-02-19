@@ -110,5 +110,4 @@ class RegistrationForm extends Model
             ->setSubject('Регистрация на портале ' . Yii::$app->name)
             ->send();
     }
-
 }
