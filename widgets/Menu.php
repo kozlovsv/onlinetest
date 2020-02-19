@@ -2,6 +2,7 @@
 
 namespace app\widgets;
 
+use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\Nav;
 use Yii;
 use yii\bootstrap\Widget;
@@ -66,6 +67,10 @@ class Menu extends Widget
                 'label' => 'Мои тесты',
                 'url' => ['/test-task/index'],
                 'visible' => Yii::$app->user->can('test_task.view'),
+            ],
+            [
+                'label' => Html::icon('question-sign'),
+                'url' => ['/site/help'],
             ],
             [
                 'label' => 'Управление',

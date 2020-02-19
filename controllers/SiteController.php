@@ -72,6 +72,14 @@ class SiteController extends Controller
     /**
      * @return string
      */
+    public function actionHelp()
+    {
+        return $this->render('help');
+    }
+
+    /**
+     * @return string
+     */
     public function actionLogin()
     {
         $this->layout = 'empty';
