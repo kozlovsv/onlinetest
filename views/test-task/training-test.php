@@ -28,11 +28,11 @@ echo Progress::widget([
 echo Html::tag('h1', Html::icon('ok') . '  ' . Html::encode($question->vocabularyWord->title), ['class' => 'form-header', 'style' => 'font-size: 30px; color: #5cb85c']);
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
-            CrudButton::cancelButton('Закончить', ['view', 'id' => $question->test_task_id], ['class' => 'btn btn-warning btn-lg form-cancel']),
+            CrudButton::cancelButton('Закрыть', ['view', 'id' => $question->test_task_id], ['class' => 'btn btn-warning btn-lg form-cancel']),
         ],
         'buttonsLeft' => [
-            Html::a('Назад', Url::to(['/test-task/training-test', 'id' => $question->test_task_id, 'offset' => $offset - 1]), ['class' => 'btn btn-info btn-lg' . ($offset > 0 ? '' : ' disabled')]),
-            Html::a('Дальше', Url::to(['/test-task/training-test', 'id' => $question->test_task_id, 'offset' => $offset + 1]), ['class' => 'btn btn-success btn-lg']),
+            Html::a(Html::icon('arrow-left'), Url::to(['/test-task/training-test', 'id' => $question->test_task_id, 'offset' => $offset - 1]), ['class' => 'btn btn-info btn-lg' . ($offset > 0 ? '' : ' disabled')]),
+            Html::a(Html::icon('arrow-right'), Url::to(['/test-task/training-test', 'id' => $question->test_task_id, 'offset' => $offset + 1]), ['class' => 'btn btn-success btn-lg']),
         ],
         'options' => ['class' => 'form-group', 'style' => 'margin: 40px 0 80px 0'],
     ]
