@@ -409,7 +409,8 @@ a.desc:after {
 
 .tree-row {
     display: grid;
-    grid-auto-columns: calc((100% - 24px)/3);
+    /*grid-auto-columns: calc((100% - 24px)/3);*/
+    grid-auto-columns: calc(100% / 2);
     grid-auto-flow: column;
     grid-column-gap: 12px;
     justify-content: center;
