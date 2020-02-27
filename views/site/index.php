@@ -14,27 +14,6 @@ use yii\helpers\Url;
 $this->title = Yii::$app->params['brand'];
 $this->registerLinkTag(['rel' => 'stylesheet', 'href' => 'https://fonts.googleapis.com/css?family=Alice&display=swap']);
 
-$this->registerCss("
-.modal {
-  text-align: center;
-}
-
-@media screen and (min-width: 768px) { 
-  .modal:before {
-    display: inline-block;
-    vertical-align: middle;
-    content: \" \";
-    height: 100%;
-  }
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-}
-");
-
 function getLevelClass($level, $levelCount) {
     if (!$level) return '';
     if ($level >= $levelCount) return ' level-full';
