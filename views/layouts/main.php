@@ -17,8 +17,8 @@ use yii\widgets\Breadcrumbs;
     <div class="wrap">
         <?php
         NavBar::begin([
-            'brandLabel' => Html::icon('plus'),
-            'brandUrl' => ['test-task/create'],
+            'brandLabel' => Html::icon('home'),
+            'brandUrl' => Yii::$app->homeUrl,
             'innerContainerOptions' => [
                 'class' => 'container-fluid'
             ],

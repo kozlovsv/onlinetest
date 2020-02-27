@@ -4,6 +4,7 @@ namespace app\models;
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "vocabulary_word".
@@ -75,6 +76,42 @@ class VocabularyWord extends ActiveRecord
     public function getLetter()
     {
         return $this->hasOne(Letter::class, ['id' => 'letter_id']);
+    }
+
+    /**
+     * @param int $letterId
+     * @param int $wordsCount
+     * @return array
+     */
+    public static function getNotLearnedWords($letterId, $wordsCount = 0){
+        $learnedWordsQuery = UserAchievement::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
+        $words = VocabularyWord::find()
+            ->select(['id'])
+            ->where(['letter_id' => $letterId])
+            ->andWhere(['not in', 'id', $learnedWordsQuery]);
+        if ($wordsCount) {
+            $words = $words->limit($wordsCount);
+        }
+        $words = $words->orderBy(new Expression('rand()'));
+        return  $words->asArray()->all();
+    }
+
+    /**
+     * @param array $letterId
+     * @param int $wordsCount
+     * @return array
+     */
+    public static function geLearnedWords($letterId, $wordsCount = 0){
+        $learnedWordsQuery = UserAchievement::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
+        $words = VocabularyWord::find()
+            ->select(['id'])
+            ->where(['letter_id' => $letterId])
+            ->andWhere(['in', 'id', $learnedWordsQuery]);
+        if ($wordsCount) {
+            $words = $words->limit($wordsCount);
+        }
+        $words = $words->orderBy(new Expression('rand()'));
+        return  $words->asArray()->all();
     }
 
 }

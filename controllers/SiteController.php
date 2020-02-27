@@ -6,6 +6,9 @@ use app\models\form\LoginForm;
 use app\models\form\PasswordResetRequestForm;
 use app\models\form\RegistrationForm;
 use app\models\form\ResetPasswordForm;
+use app\models\Letter;
+use app\models\LetterLevel;
+use app\models\UserAchievement;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
@@ -66,15 +69,29 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        $letters = Letter::find()->orderBy(['id' => SORT_ASC])->all();
+        $lettersLevel = LetterLevel::mapCntLevel();
+        $cntLevels = UserAchievement::getLevelsForLetters();
+        $chunckLetters = [];
 
-    /**
-     * @return string
-     */
-    public function actionHelp()
-    {
-        return $this->render('help');
+        $storage = [];
+        $flag = true;
+        foreach ($letters as  $i => $letter) {
+            if ($flag) {
+                $storage[] = $letter;
+                $flag = false;
+            } else {
+                $storage[] = $letter;
+                if (count($storage) < 2) {
+                    continue;
+                } else {
+                    $flag = true;
+                }
+            }
+            $chunckLetters[] = $storage;
+            $storage = [];
+        }
+        return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel'));
     }
 
     /**

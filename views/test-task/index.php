@@ -1,7 +1,6 @@
 <?php
 
 use app\models\TestTask;
-use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\DatePicker;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\GridView;
@@ -28,7 +27,6 @@ Pjax::begin([
 echo ToolBarPanel::widget(
     [
         'buttons' => [
-            CrudButton::createButton($searchModel::tableName(), $isModal, 'Пройти новый тест'),
             SearchPanel::widget([
                 'model' => $searchModel,
                 'attributes' => [
@@ -57,7 +55,6 @@ echo GridView::widget(
         'permissionCategory' => $searchModel::tableName(),
         'columns' => [
             'statusLabel',
-            'trainingStatusLabel',
             'uniqueLettersString',
             'questionsCount',
             'grade',

@@ -13,7 +13,6 @@ use yii\db\ActiveRecord;
  * @property int $vocabulary_word_id Словарное слово
  * @property string $answer Ответ
  * @property int $result Результат
- * @property int $training_result Результат обучения
  *
  * @property TestTask $testTask
  * @property VocabularyWord $vocabularyWord
@@ -53,7 +52,6 @@ class TestTaskQuestion extends ActiveRecord
             'answer' => 'Ваш ответ',
             'result' => 'Результат',
             'resultLabel' => 'Результат',
-            'training_result' => 'Результат обучения',
         ];
     }
 
@@ -85,7 +83,9 @@ class TestTaskQuestion extends ActiveRecord
         self::updateAll(['answer' => '', 'result' => 0], ['test_task_id' => $taskId]);
     }
 
-    public static function clearTraining($taskId) {
-        self::updateAll(['training_result' => 0], ['test_task_id' => $taskId]);
+    public function clearAnswer() {
+        $this->answer = '';
+        $this->result = 0;
+        return $this->save(false, ['answer', 'result']);
     }
 }

@@ -9,6 +9,7 @@ use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use yii\bootstrap\Progress;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model ChooseAnswerForm */
@@ -33,12 +34,15 @@ echo FormBuilder::widget([
             'items' => $model->mapQuesions(),
             'options' => ['class' => ['btn-group-vertical', 'btn-group-lg'], 'style' => 'display: block; margin-top:10px; border-top-right-radius: 4px;']
         ],
+        'test_task_question_id' => [
+            'type' => FormBuilder::INPUT_HIDDEN
+        ]
     ]
 ]);
 
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
-            CrudButton::cancelButton('Закончить тест', ['view', 'id' => $testTask->id], $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
+            CrudButton::cancelButton('Закончить тест', $testTask->is_repetition ?  ['view', 'id' => $testTask->id] : Url::home(), $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
         ],
         'buttonsLeft' => [
             CrudButton::saveButton('Ответить', $options = ['class' => 'btn btn-success btn-lg']),

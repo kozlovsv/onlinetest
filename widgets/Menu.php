@@ -2,7 +2,6 @@
 
 namespace app\widgets;
 
-use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\Nav;
 use Yii;
 use yii\bootstrap\Widget;
@@ -59,7 +58,7 @@ class Menu extends Widget
     {
         return [
             [
-                'label' => 'Пройти тест',
+                'label' => 'Проверить знания',
                 'url' => ['/test-task/create'],
                 'visible' => Yii::$app->user->can('test_task.create'),
             ],
@@ -67,10 +66,6 @@ class Menu extends Widget
                 'label' => 'Мои тесты',
                 'url' => ['/test-task/index'],
                 'visible' => Yii::$app->user->can('test_task.view'),
-            ],
-            [
-                'label' => Html::icon('question-sign'),
-                'url' => ['/site/help'],
             ],
             [
                 'label' => 'Управление',
@@ -91,12 +86,17 @@ class Menu extends Widget
                         'visible' => Yii::$app->user->can('auth.manage'),
                     ],
                     [
+                        'label' => 'Уровни букв',
+                        'url' => ['/letter-level/index'],
+                        'visible' => Yii::$app->user->can('letter_level.view'),
+                    ],
+                    [
                         'label' => 'Логи приложения',
                         'url' => ['/log/index'],
                         'visible' => Yii::$app->user->can('log.view'),
                     ],
                 ],
-            ],
+            ]
         ];
     }
 }

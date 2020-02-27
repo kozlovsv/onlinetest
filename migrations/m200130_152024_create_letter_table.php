@@ -21,7 +21,7 @@ class m200130_152024_create_letter_table extends Migration
         ]);
         $this->addCommentOnTable(self::TABLE_NAME, 'Буквы');
 
-        $letters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'];
+        $letters = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Э', 'Ю', 'Я'];
         foreach ($letters as $letter) {
             $this->insert(self::TABLE_NAME, ['title' => $letter]);
         }

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\query\TestTaskQuery;
+use Exception;
 use kozlovsv\crud\helpers\ModelPermission;
 use Yii;
 use yii\db\ActiveQuery;
@@ -16,9 +17,11 @@ use yii\db\ActiveRecord;
  * @property int $status Статус
  * @property string $created_at Дата создания
  * @property string $passed_at Дата прохождения
- * @property int $training_status Статус обучения
+ * @property int $is_repetition Повторение?
+ * @property int|null $letter_id Буква
  *
  *
+ * @property Letter $letter
  * @property User $user
  * @property TestTaskQuestion[] $testTaskQuestions
  * @property int passedTrainingPercent
@@ -39,7 +42,7 @@ class TestTask extends ActiveRecord
     private $_questionsCount;
     private $_rating;
     private $_questionsPassed;
-    private $_questionsTrained;
+
 
     /**
      * {@inheritdoc}
@@ -60,15 +63,16 @@ class TestTask extends ActiveRecord
             'user.name' => 'Ученик',
             'status' => 'Тест',
             'statusLabel' => 'Тест',
-            'training_status' => 'Обучение',
-            'trainingStatusLabel' => 'Обучение',
             'created_at' => 'Создан',
             'passed_at' => 'Пройден',
-            'questionsCount' => 'Кол-во слов',
-            'uniqueLettersString' => 'Буквы',
+            'questionsCount' => 'Cлов',
+            'uniqueLettersString' => 'Б',
             'questionsTestStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
             'rating' => 'Рейтинг, %',
+            'is_repetition' => 'Повторение?',
+            'isRepetitionLabel' => 'Повторение?',
+            'letter_id' => 'Буква',
         ];
     }
 
@@ -90,6 +94,16 @@ class TestTask extends ActiveRecord
     public function getTestTaskQuestions()
     {
         return $this->hasMany(TestTaskQuestion::class, ['test_task_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Letter]].
+     *
+     * @return ActiveQuery
+     */
+    public function getLetter()
+    {
+        return $this->hasOne(Letter::class, ['id' => 'letter_id']);
     }
 
     /**
@@ -116,17 +130,6 @@ class TestTask extends ActiveRecord
         return $this->_questionsPassed;
     }
 
-    /**
-     * Получить количество выученных вопросов в тесте.
-     * @return int
-     */
-    public function getQuestionsPassedTrainingCount()
-    {
-        if (is_null($this->_questionsTrained)) {
-            $this->_questionsTrained = $this->getTestTaskQuestions()->andWhere(['training_result' => 1])->count();
-        }
-        return $this->_questionsTrained;
-    }
 
     /**
      * Осталось пройти вопросов в тесте
@@ -137,14 +140,6 @@ class TestTask extends ActiveRecord
         return $this->getQuestionsCount() - $this->getQuestionsPassedTestCount();
     }
 
-    /**
-     * Осталось выучить вопросов
-     * @return int
-     */
-    public function getQuestionsTrainingStayCount()
-    {
-        return $this->getQuestionsCount() - $this->getQuestionsPassedTrainingCount();
-    }
 
     /**
      * Получить номер текущего вопроса в тесте
@@ -156,15 +151,6 @@ class TestTask extends ActiveRecord
     }
 
     /**
-     * Получить номер текущего вопроса в обучении
-     * @return int
-     */
-    public function getCurrentTrainingNumQuestion()
-    {
-        return $this->getQuestionsPassedTrainingCount() + 1;
-    }
-
-    /**
      * % пройденного теста.
      * @return int
      */
@@ -173,28 +159,6 @@ class TestTask extends ActiveRecord
         $cnt = $this->getQuestionsCount();
         if ($cnt == 0)  return 0;
         return intval(round(($this->getCurrentTestNumQuestion() / $cnt) * 100, 2));
-    }
-
-    /**
-     * % проходимого обучения. Кол-во уже изученных + 1 текущий вопрос / Общее кол-во).
-     * @return int
-     */
-    public function getPassingTrainingPercent()
-    {
-        $cnt = $this->getQuestionsCount();
-        if ($cnt == 0)  return 0;
-        return intval(round(($this->getCurrentTrainingNumQuestion() / $cnt) * 100, 2));
-    }
-
-    /**
-     * Общий % пройденного обучения (Кол-во уже изученных / Общее кол-во).
-     * @return int
-     */
-    public function getPassedTrainingPercent()
-    {
-        $cnt = $this->getQuestionsCount();
-        if ($cnt == 0)  return 0;
-        return intval(round(($this->getQuestionsPassedTrainingCount() / $cnt) * 100, 2));
     }
 
     /**
@@ -279,17 +243,6 @@ class TestTask extends ActiveRecord
     }
 
     /**
-     * @return array
-     */
-    public static function trainingStatusMap()
-    {
-        return [
-            self::STATUS_NEW => 'Не пройдено',
-            self::STATUS_FINISHED => 'Пройдено',
-        ];
-    }
-
-    /**
      * @return int|mixed
      */
     public function getStatusLabel()
@@ -297,22 +250,8 @@ class TestTask extends ActiveRecord
         $map = self::statusMap();
         return isset($map[$this->status]) ? $map[$this->status] : $this->status;
     }
-
-    /**
-     * @return int|mixed
-     */
-    public function getTrainingStatusLabel()
-    {
-        $map = self::trainingStatusMap();
-        return isset($map[$this->training_status]) ? $map[$this->training_status] : $this->status;
-    }
-
-    public function canTestContinue() {
-        return $this->canTest() && ($this->status == self::STATUS_NEW);
-    }
-
-    public function canTrainingContinue() {
-        return $this->canTest() && ($this->training_status == self::STATUS_NEW);
+    public function getisRepetitionLabel() {
+        return $this->is_repetition ? 'Да' : 'Нет';
     }
 
     public function canTest() {
@@ -324,17 +263,45 @@ class TestTask extends ActiveRecord
      */
     public function reNewTest(){
         $this->status = self::STATUS_NEW;
+        $this->is_repetition = 1;
         $this->passed_at = null;
-        $this->save(false, ['status', 'passed_at']);
+        $this->save(false, ['status', 'passed_at', 'is_repetition']);
         TestTaskQuestion::clearTest($this->id);
     }
 
+
     /**
-     * Обучение заново
+     * @param $words array
+     * @param bool $isRepetition
+     * @param int $letterId
+     * @return TestTask|null
      */
-    public function reNewTraining(){
-        $this->training_status = self::STATUS_NEW;
-        $this->save(false, ['training_status']);
-        TestTaskQuestion::clearTraining($this->id);
+    public static function createTestTaskForCurrentUser($words, $isRepetition, $letterId = 0){
+        if (!$words) return null;
+        $transaction = Yii::$app->getDb()->beginTransaction();
+        try {
+            $testTask = new TestTask();
+            $testTask->user_id = Yii::$app->user->id;
+            $testTask->status = TestTask::STATUS_NEW;
+            $testTask->is_repetition = $isRepetition;
+            if (!$isRepetition) {
+                assert($letterId);
+                $testTask->letter_id = $letterId;
+            }
+            if (!$testTask->save(false)) throw new Exception('Не удалось сохранить новый тест в БД');
+
+            foreach ($words as $word)  {
+                $testTaskQuestion = new TestTaskQuestion();
+                $testTaskQuestion->test_task_id = $testTask->id;
+                $testTaskQuestion->vocabulary_word_id = $word['id'];
+                if (!$testTaskQuestion->save(false)) throw new Exception('Не удалось сохранить вопрос нового теста в БД');
+            }
+            $transaction->commit();
+            return $testTask;
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            Yii::error('Создание нового теста.' . $e->getMessage());
+            return null;
+        }
     }
 }

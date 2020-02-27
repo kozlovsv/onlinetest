@@ -2,7 +2,7 @@
 
 $config = [
     'id' => 'basic',
-    'name' => 'Словарный диктант',
+    'name' => 'Словарные слова',
     'language' => 'ru',
     'sourceLanguage' => 'ru-RU',
     'charset' => 'UTF-8',

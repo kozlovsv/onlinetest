@@ -12,6 +12,8 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property string $title Буква
  *
+ * @property LetterLevel $letterLevel
+ * @property UserAchievement[] $userAchievements
  * @property VocabularyWord[] $vocabularyWords
  */
 class Letter extends ActiveRecord
@@ -50,6 +52,27 @@ class Letter extends ActiveRecord
             'title' => 'Буква',
         ];
     }
+
+    /**
+     * Gets query for [[LetterLevel]].
+     *
+     * @return ActiveQuery
+     */
+    public function getLetterLevel()
+    {
+        return $this->hasOne(LetterLevel::class, ['letter_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserAchievements]].
+     *
+     * @return ActiveQuery
+     */
+    public function getUserAchievements()
+    {
+        return $this->hasMany(UserAchievement::class, ['letter_id' => 'id']);
+    }
+
 
     /**
      * Gets query for [[VocabularyWords]].

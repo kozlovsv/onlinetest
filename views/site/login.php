@@ -8,7 +8,7 @@ use app\models\form\LoginForm;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-$this->title = 'Словарный диктант | Вход в систему';
+$this->title = 'Словарные слова | Вход в систему';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">

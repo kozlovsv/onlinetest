@@ -33,6 +33,7 @@ use yii\web\IdentityInterface;
  *
  * @property AuthItem[] $roles Список ролей
  * @property TestTask[] $testTasks
+ * @property UserAchievement[] $userAchievements
  */
 
 class User extends ActiveRecord implements IdentityInterface
@@ -298,5 +299,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function getTestTasks()
     {
         return $this->hasMany(TestTask::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserAchievements]].
+     *
+     * @return ActiveQuery
+     */
+    public function getUserAchievements()
+    {
+        return $this->hasMany(UserAchievement::class, ['user_id' => 'id']);
     }
 }

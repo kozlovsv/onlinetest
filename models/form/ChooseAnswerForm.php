@@ -4,10 +4,12 @@
 namespace app\models\form;
 
 
+use app\models\TestTask;
 use app\models\TestTaskQuestion;
 use app\models\VocabularyWord;
 use yii\base\Model;
 use yii\db\Expression;
+use yii\web\NotFoundHttpException;
 
 class ChooseAnswerForm extends Model
 {
@@ -22,21 +24,28 @@ class ChooseAnswerForm extends Model
     public $result;
 
     /**
+     * @var int
+     */
+    public $test_task_question_id;
+
+    /**
      * @var TestTaskQuestion
      */
-    public $testTaskQuestion;
+    private $_testTaskQuestion;
 
-    public function init()
-    {
-        parent::init();
-        assert($this->testTaskQuestion && $this->testTaskQuestion instanceof TestTaskQuestion);
+    public function getTestTaskQuestion() {
+        if (is_null($this->_testTaskQuestion)) {
+            $this->_testTaskQuestion = $this->getCurrentTestTaskQuestion();
+        }
+        return $this->_testTaskQuestion;
     }
 
     public function rules()
     {
         return [
-            [['choice'], 'required', 'message' => 'Необходимо выбрать хотя бы один вариант'],
+            [['choice', 'test_task_question_id'], 'required', 'message' => 'Необходимо выбрать хотя бы один вариант'],
             [['choice'], 'string'],
+            [['test_task_question_id'], 'integer'],
         ];
     }
 
@@ -52,7 +61,8 @@ class ChooseAnswerForm extends Model
 
 
     public function mapQuesions(){
-        $word = VocabularyWord::findOne($this->testTaskQuestion->vocabulary_word_id);
+        assert($this->getTestTaskQuestion());
+        $word = VocabularyWord::findOne($this->getTestTaskQuestion()->vocabulary_word_id);
         $res = [$word->title];
         foreach ($word->getVocabularyWordVariants()->orderBy(new Expression('rand()'))->limit(2)->asArray()->all() as $word) {
             $res[] = $word['title'];
@@ -63,22 +73,45 @@ class ChooseAnswerForm extends Model
     }
 
     public function checkResult() {
+        assert($this->getTestTaskQuestion());
         if (is_null($this->result)) {
-            $word = VocabularyWord::findOne($this->testTaskQuestion->vocabulary_word_id);
+            $word = VocabularyWord::findOne($this->getTestTaskQuestion()->vocabulary_word_id);
             $this->result = $word->title == $this->choice;
         }
         return $this->result;
     }
 
-    public function save()
+    public function save($saveBadResult)
     {
         if (!$this->validate()) {
             return false;
         }
         $this->checkResult();
-        $this->testTaskQuestion->answer = $this->choice;
-        $this->testTaskQuestion->result = $this->result;
-        return $this->testTaskQuestion->save(false);
+        if (!$this->result && !$saveBadResult) return true;
+        $question = $this->getTestTaskQuestion();
+        $question->answer = $this->choice;
+        $question->result = $this->result;
+        return $question->save(false, ['answer', 'result']);
     }
 
+    protected function getCurrentTestTaskQuestion()
+    {
+        $_testTaskQuestion = TestTaskQuestion::findOne($this->test_task_question_id);
+        if ($_testTaskQuestion === null) {
+            throw new NotFoundHttpException('Запись не найдена');
+        }
+        return $_testTaskQuestion;
+    }
+
+    /**
+     * @param TestTask $testTask
+     * @return TestTaskQuestion|null
+     */
+    public function getNextQuestion($testTask) {
+        $this->_testTaskQuestion =  $testTask->getTestTaskQuestions()->andWhere(['answer' => ''])->orderBy(new Expression('rand()'))->one();
+        if ($this->_testTaskQuestion !== null) {
+            $this->test_task_question_id = $this->_testTaskQuestion->id;
+        }
+        return $this->_testTaskQuestion;
+    }
 }

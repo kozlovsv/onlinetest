@@ -10,7 +10,7 @@ use kozlovsv\crud\widgets\ToolBarPanelContainer;
 /* @var $this yii\web\View */
 /* @var $model CreateTestTaskForm */
 
-$this->title = 'Пройти тест';
+$this->title = 'Проверка знаний';
 
 $form = ActiveForm::begin(['type' => ActiveForm::TYPE_VERTICAL]);
 
@@ -29,16 +29,12 @@ echo FormBuilder::widget([
             'type' => FormBuilder::INPUT_DROPDOWN_LIST,
             'items' => CreateTestTaskForm::mapCntWords(),
         ],
-        'training_mode' => [
-            'type' => FormBuilder::INPUT_CHECKBOX,
-        ],
-
     ]
 ]);
 
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
-            CrudButton::cancelButton('Отмена', ['index'], $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
+            CrudButton::cancelButton('Отмена', ['/'], $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
         ],
         'buttonsLeft' => [
             CrudButton::saveButton('Начать', $options = ['class' => 'btn btn-success btn-lg']),
