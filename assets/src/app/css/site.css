@@ -387,6 +387,7 @@ a.desc:after {
     padding-bottom: 324px;
     position: relative;
 }
+
 .skill-tree {
     align-items: center;
     display: flex;
@@ -419,17 +420,13 @@ a.desc:after {
     margin: 0 auto;
     width: 100%;
     display: inline-block;
-    max-width: 98px;
+    max-width: 96px;
     position: relative;
 }
 
 .tree-node-click {
     cursor: pointer;
     -webkit-focus-ring-color: none
-}
-
-.tree-node-click:focus {
-    outline: none;
 }
 
 .tree-node-inner {
@@ -444,6 +441,7 @@ a.desc:after {
 .tree-node-letter-block {
     padding-top: 100%;
     position: relative;
+    width: 100%;
 }
 
 .tree-node-letter-ring {
@@ -476,7 +474,7 @@ a.desc:after {
 
 .tree-node-letter {
     font-family: 'Alice', serif;
-    font-size: 45px;
+    font-size: 42px;
     color: #045772;
 }
 
