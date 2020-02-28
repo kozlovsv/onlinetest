@@ -156,7 +156,6 @@ class TestTaskController extends CrudController
                 }
 
                 if ($testTask->is_repetition) {
-                    if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Тест успешно пройден');
                     return $this->redirect(Url::to(['repetition-finish', 'id' => $testTask->id]));
                 } else {
                     return $this->redirect(Url::to(['win', 'id' => $testTask->id]));
