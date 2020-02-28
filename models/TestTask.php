@@ -313,7 +313,12 @@ class TestTask extends ActiveRecord
     }
 
     public static function getPandaLevel(){
-        return TestTask::find()->own()->finished()->passedToday()->andWhere(['>=', 'rating', self::GRADE_4])->groupBy('letter_id')->count();
+        return TestTask::find()
+            ->own()
+            ->finished()
+            ->passedToday()
+            ->andWhere(['is_repetition' => 1])
+            ->andWhere(['>=', 'rating', self::GRADE_4])->groupBy('letter_id')->count();
     }
 
     public function finishTest(){
