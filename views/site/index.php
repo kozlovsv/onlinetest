@@ -33,9 +33,10 @@ echo LetterPopup::widget();
 <div class="site-index">
     <div class="skill-main">
         <div class="skill-tree">
+            <?php foreach($chunckLetters as $cn => $chunck) : ?>
             <div class="tree-box">
                 <div class="tree-section">
-                    <?php foreach($chunckLetters as $letters) : ?>
+                    <?php foreach($chunck as $letters) : ?>
                             <div class="tree-row">
                                 <?php foreach ($letters as $letter) :
                                     $letterId = $letter['id'];
@@ -73,6 +74,28 @@ echo LetterPopup::widget();
                     <?php endforeach; ?>
                 </div>
             </div>
+            <div class="tree-box">
+                <div class="level-section">
+                    <div class="level-line-section">
+                        <hr class="level-line"/>
+                    </div>
+                    <div>
+                        <div class="level-img-section">
+                            <div class="level-img-section-inner">
+                                <div class="level-img-section-inner-castle-box">
+                                    <img alt="castle" class="level-img-section-inner-castle" src="/images/castle-complete.svg">
+                                </div>
+                                <div class="level-img-text">
+                                    <div class="level-img-text-inner">
+                                        <svg height="100%" viewBox="0 0 12 24" width="100%" xmlns="http://www.w3.org/2000/svg"><text dy="25%" fill="currentColor" text-anchor="middle" x="50%" y="50%"><?=$cn + 1;?></text></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach;?>
         </div>
     </div>
 </div>

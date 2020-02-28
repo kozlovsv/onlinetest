@@ -91,6 +91,7 @@ class SiteController extends Controller
             $chunckLetters[] = $storage;
             $storage = [];
         }
+        $chunckLetters = array_chunk($chunckLetters, 5);
         return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel'));
     }
 
