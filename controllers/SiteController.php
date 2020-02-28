@@ -8,6 +8,7 @@ use app\models\form\RegistrationForm;
 use app\models\form\ResetPasswordForm;
 use app\models\Letter;
 use app\models\LetterLevel;
+use app\models\TestTask;
 use app\models\UserAchievement;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -92,7 +93,8 @@ class SiteController extends Controller
             $storage = [];
         }
         $chunckLetters = array_chunk($chunckLetters, 5);
-        return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel'));
+        $pandaLevel = TestTask::getPandaLevel();
+        return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel', 'pandaLevel'));
     }
 
     /**

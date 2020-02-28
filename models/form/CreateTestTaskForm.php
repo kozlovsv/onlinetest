@@ -22,7 +22,7 @@ class CreateTestTaskForm extends Model
     /**
      * @var int
      */
-    public $cnt_words = 0;
+    public $cnt_words = 10;
 
     /**
      * @var array
@@ -70,7 +70,7 @@ class CreateTestTaskForm extends Model
             return false;
         }
         $words = $this->getWords();
-        $testTask = TestTask::createTestTaskForCurrentUser($words, true);
+        $testTask = TestTask::createTestTaskForCurrentUser($words, true, $this->letters[0]);
         if (!$testTask) return false;
         $this->id = $testTask->id;
         return true;

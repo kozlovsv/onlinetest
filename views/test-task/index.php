@@ -55,8 +55,7 @@ echo GridView::widget(
         'permissionCategory' => $searchModel::tableName(),
         'columns' => [
             'statusLabel',
-            'uniqueLettersString',
-            'questionsCount',
+            'letter.title',
             'grade',
             'created_at:datetime',
         ],

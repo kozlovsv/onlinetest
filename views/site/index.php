@@ -5,9 +5,11 @@
  * @var array $chunckLetters
  * @var array $cntLevels
  * @var array $lettersLevel
+ * @var array $pandaLevel
  *
  */
 
+use app\models\TestTask;
 use app\widgets\LetterPopup;
 use yii\helpers\Url;
 
@@ -96,6 +98,26 @@ echo LetterPopup::widget();
                 </div>
             </div>
             <?php endforeach;?>
+        </div>
+        <div class="panda-bubble-box">
+            <div class="panda-bubble-box-inner" style="z-index: 500">
+                <div class="panda-bubble-box-panda">
+                    <a title="Накорми панду!" href="/test-task/create" class="panda-bubble">
+                        <img alt="Голодная панда" src="/images/panda2.svg" style="height: 60px; width: 60px">
+                    </a>
+                </div>
+            </div>
+            <div class="panda-bubble-box-inner" style="transform: rotate(135deg);">
+                <img alt="Круг" src="/images/<?=getLevelRingSvg($pandaLevel, TestTask::CNT_PANDA_IS_FULL)?>">
+            </div>
+            <div class="panda-bubble-box-inner">
+                <div class="tree-node-corona">
+                    <div style="height: 100%; width: 100%; font-size: 13px;">
+                        <img alt="Достижения" class="tree-node-corona-img" src="/images/<?= $pandaLevel ? 'corona.svg' : 'corona-disabled.svg'?>">
+                        <div class="tree-node-corona-level-text"><?= $pandaLevel ? $pandaLevel : ''?></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

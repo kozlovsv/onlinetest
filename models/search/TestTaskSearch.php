@@ -40,7 +40,7 @@ class TestTaskSearch extends TestTask
      */
     public function search($params)
     {
-        $query = TestTask::find()->own();
+        $query = TestTask::find()->own()->with('letter');
 
         // add conditions that should always apply here
 
@@ -62,8 +62,6 @@ class TestTaskSearch extends TestTask
             'status' => $this->status,
             'DATE(created_at)' => DateTimeHelper::convertBySave($this->created_at)
         ]);
-        $query->andFilterWhere(['like', 'status', $this->status]);
-
         return $dataProvider;
     }
 }

@@ -8,6 +8,7 @@ use kozlovsv\crud\helpers\ModelPermission;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "test_task".
@@ -19,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $passed_at Дата прохождения
  * @property int $is_repetition Повторение?
  * @property int|null $letter_id Буква
+ * @property int $rating Рейтинг
  *
  *
  * @property Letter $letter
@@ -39,10 +41,22 @@ class TestTask extends ActiveRecord
      */
     const STATUS_FINISHED = 1;
 
-    private $_questionsCount;
-    private $_rating;
-    private $_questionsPassed;
+    /**
+     * Рейтинг для оценки 5
+     */
+    const GRADE_5 = 90;
+    /**
+     * Рейтинг для оценки 4
+     */
+    const GRADE_4 = 75;
+    /**
+     * Рейтинг для оценки 3
+     */
+    const GRADE_3 = 60;
 
+    const CNT_PANDA_IS_FULL = 5;
+    private $_questionsCount;
+    private $_questionsPassed;
 
     /**
      * {@inheritdoc}
@@ -66,7 +80,7 @@ class TestTask extends ActiveRecord
             'created_at' => 'Создан',
             'passed_at' => 'Пройден',
             'questionsCount' => 'Cлов',
-            'uniqueLettersString' => 'Б',
+            'uniqueLettersString' => 'Буквы',
             'questionsTestStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
             'rating' => 'Рейтинг, %',
@@ -176,17 +190,12 @@ class TestTask extends ActiveRecord
      * Получить результат теста в %.
      * @return float
      */
-    public function getRating()
+    public function calcRating()
     {
-        if (is_null($this->_rating)){
-            $cnt = $this->getQuestionsCount();
-            $this->_rating = 0;
-            if ($cnt <> 0){
-                $res = $this->getTestTaskQuestions()->sum('result');
-                $this->_rating = round(($res / $cnt) * 100, 1);
-            }
-        }
-        return $this->_rating;
+        $cnt = $this->getQuestionsCount();
+        if ($cnt == 0 || $this->status == self::STATUS_NEW) return 0;
+        $res = $this->getTestTaskQuestions()->sum('result');
+        return  round(($res / $cnt) * 100, 0);
     }
 
     /**
@@ -196,10 +205,10 @@ class TestTask extends ActiveRecord
     public function getGrade()
     {
         if ($this->status == self::STATUS_NEW) return 0;
-        $rating = $this->getRating();
-        if ($rating >= 90) return 5;
-        if ($rating >= 75) return 4;
-        if ($rating >= 60) return 3;
+        $rating = $this->rating;
+        if ($rating >= self::GRADE_5) return 5;
+        if ($rating >= self::GRADE_4) return 4;
+        if ($rating >= self::GRADE_3) return 3;
         return 2;
     }
 
@@ -276,7 +285,7 @@ class TestTask extends ActiveRecord
      * @param int $letterId
      * @return TestTask|null
      */
-    public static function createTestTaskForCurrentUser($words, $isRepetition, $letterId = 0){
+    public static function createTestTaskForCurrentUser($words, $isRepetition, $letterId){
         if (!$words) return null;
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
@@ -284,10 +293,8 @@ class TestTask extends ActiveRecord
             $testTask->user_id = Yii::$app->user->id;
             $testTask->status = TestTask::STATUS_NEW;
             $testTask->is_repetition = $isRepetition;
-            if (!$isRepetition) {
-                assert($letterId);
-                $testTask->letter_id = $letterId;
-            }
+            assert($letterId);
+            $testTask->letter_id = $letterId;
             if (!$testTask->save(false)) throw new Exception('Не удалось сохранить новый тест в БД');
 
             foreach ($words as $word)  {
@@ -303,5 +310,17 @@ class TestTask extends ActiveRecord
             Yii::error('Создание нового теста.' . $e->getMessage());
             return null;
         }
+    }
+
+    public static function getPandaLevel(){
+        return TestTask::find()->own()->finished()->passedToday()->andWhere(['>=', 'rating', self::GRADE_4])->groupBy('letter_id')->count();
+    }
+
+    public function finishTest(){
+        $this->status = TestTask::STATUS_FINISHED;
+        $this->passed_at = new Expression('NOW()');
+        $this->rating = $this->calcRating();
+        $this->save(false);
+        UserAchievement::addAchievement($this);
     }
 }

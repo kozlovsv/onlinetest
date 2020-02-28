@@ -34,33 +34,10 @@ class TestTaskController extends CrudController
         $permissionCategory = $this->getPermissionCategory();
         $this->accessRules = [
             [
-                'actions' => ['test', 'test-letter', 're-test', 'letter-popup', 'letter-full-popup', 'test-cancel', 'training-letter', 'training-test', 'win'],
+                'actions' => ['test', 'test-letter', 're-test', 'letter-popup', 'letter-full-popup', 'test-cancel', 'training-letter', 'training-test', 'win', 'repetition-finish'],
                 'allow' => ModelPermission::canCreate($permissionCategory),
             ],
         ];
-    }
-
-    public function actionIndex()
-    {
-        $this->layout = 'main.php';
-        return parent::actionIndex();
-    }
-
-    public function actionWin($id)
-    {
-        $model = $this->findModel($id);
-        if ($model->status != TestTask::STATUS_FINISHED || empty($model->letter_id)) {
-            throw new NotFoundHttpException('Запись не найдена');
-        }
-        $letterLevel = LetterLevel::find()->andWhere(['letter_id' => $model->letter_id])->one();
-        $level = UserAchievement::find()->andWhere(['letter_id' => $model->letter_id])->count();
-        return $this->render('win', compact('model', 'letterLevel', 'level'));
-    }
-
-        public function actionView($id)
-    {
-        $this->layout = 'main.php';
-        return parent::actionView($id);
     }
 
     /**
@@ -171,10 +148,7 @@ class TestTaskController extends CrudController
             if (!$question) {
                 $transaction = Yii::$app->getDb()->beginTransaction();
                 try {
-                    $testTask->status = TestTask::STATUS_FINISHED;
-                    $testTask->passed_at = new Expression('NOW()');
-                    $testTask->save(false);
-                    UserAchievement::addAchievement($testTask);
+                    $testTask->finishTest();
                     $transaction->commit();
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -183,7 +157,7 @@ class TestTaskController extends CrudController
 
                 if ($testTask->is_repetition) {
                     if ($this->addFlashMessages) Yii::$app->session->setFlash('success', 'Тест успешно пройден');
-                    return $this->redirect(Url::to(['view', 'id' => $testTask->id]));
+                    return $this->redirect(Url::to(['repetition-finish', 'id' => $testTask->id]));
                 } else {
                     return $this->redirect(Url::to(['win', 'id' => $testTask->id]));
                 }
@@ -294,5 +268,41 @@ class TestTaskController extends CrudController
         }
         $level = UserAchievement::getLevel($id);
         return $this->renderAjax('letter-full-popup', compact('letter', 'level'));
+    }
+
+    public function actionIndex()
+    {
+        $this->layout = 'main.php';
+        return parent::actionIndex();
+    }
+
+    public function actionWin($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->status != TestTask::STATUS_FINISHED || empty($model->letter_id)) {
+            throw new NotFoundHttpException('Запись не найдена');
+        }
+        $letterLevel = LetterLevel::find()->andWhere(['letter_id' => $model->letter_id])->one();
+        $level = UserAchievement::find()->andWhere(['letter_id' => $model->letter_id])->count();
+        return $this->render('win', compact('model', 'letterLevel', 'level'));
+    }
+
+    public function actionRepetitionFinish($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->status != TestTask::STATUS_FINISHED) {
+            throw new NotFoundHttpException('Запись не найдена');
+        }
+        $pandaLevel = TestTask::getPandaLevel();
+        if ($model->rating >= TestTask::GRADE_4)
+            return $this->render('repetition-win', compact('model', 'pandaLevel'));
+        else
+            return $this->render('repetition-fail', compact('model'));
+    }
+
+    public function actionView($id)
+    {
+        $this->layout = 'main.php';
+        return parent::actionView($id);
     }
 }

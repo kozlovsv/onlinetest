@@ -614,3 +614,64 @@ a.desc:after {
     position: absolute;
     width: 100%;
 }
+
+/* -- Panda Box ----*/
+
+.panda-bubble-box {
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.panda-bubble-box-inner {
+    top: 60px;
+    position: fixed;
+    right: 16px;
+    pointer-events: auto;
+    z-index: 198;
+    height: 96px;
+    width: 96px;
+}
+
+.panda-bubble-box-panda {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+}
+
+.panda-bubble {
+    width: 60px;
+    height: 60px;
+    padding: 0!important;
+    background: none;
+    color: #afafaf;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    touch-action: manipulation;
+    text-decoration: none;
+}
+
+@media (min-width: 700px) {
+
+    .site-index{
+        margin: 0 auto;
+        max-width: 1140px;
+        min-width: 900px;
+        padding: 24px;
+    }
+
+    .skill-main{
+        margin-top: 0;
+        padding-bottom: 0;
+    }
+
+    .panda-bubble-box-inner {
+        bottom: 40px;
+        right: auto;
+    }
+}
