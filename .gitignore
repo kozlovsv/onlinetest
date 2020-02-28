@@ -14,4 +14,3 @@ deploy-config.php
 /tests/
 /config/db.php
 /config/mail.php
-/web/assets/
