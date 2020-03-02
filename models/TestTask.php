@@ -318,7 +318,7 @@ class TestTask extends ActiveRecord
             ->finished()
             ->passedToday()
             ->andWhere(['is_repetition' => 1])
-            ->andWhere(['>=', 'rating', self::GRADE_4])->groupBy('letter_id')->count();
+            ->andWhere(['>=', 'rating', self::GRADE_4])->count();
     }
 
     public function finishTest(){

@@ -22,14 +22,14 @@ class CreateTestTaskForm extends Model
     /**
      * @var int
      */
-    public $cnt_words = 10;
+    public $cnt_words = 20;
 
     /**
      * @var array
      */
     public $letters = [];
 
-    const CNT_WORDS_RANGE = [0, 10, 20, 30];
+    const CNT_WORDS_RANGE = [0, 20, 30];
 
     public function rules()
     {
