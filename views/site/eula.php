@@ -1,10 +1,5 @@
-<?php
-
-use yii\web\View;
-
-/* @var $this View */
-?>
 <div class="jumbotron">
+    <a href="/"><img alt="atonex" src="/images/atonex-blue.png" class="img-responsive center-block"/></a>
     <h1 style="font-size: 25px">Политика конфиденциальности мобильного приложения «Atonex Online Test»</h1>
     <p>Настоящая Политика конфиденциальности приложения «Atonex Online Test» (далее — Политика) действует в отношении
         всей информации, которую приложение может получить о пользователе во время использования им данного приложения.
