@@ -197,4 +197,13 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function actionEula()
+    {
+        $this->layout = 'empty';
+        return $this->render('eula');
+    }
 }
