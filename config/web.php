@@ -38,7 +38,7 @@ $config = [
                 'google' => [
                     'class' => 'yii\authclient\clients\Google',
                     'clientId' => $secure['oauth_google_client_id'],
-                    'clientSecret' => $secure['google_client_secret'],
+                    'clientSecret' => $secure['oauth_google_client_secret'],
                 ],
             ],
         ],

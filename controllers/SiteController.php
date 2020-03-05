@@ -18,7 +18,6 @@ use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 
@@ -79,6 +78,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->identity->help_is_read){
+            return $this->redirect(['site/help']);
+        }
+
         $letters = Letter::find()->orderBy(['id' => SORT_ASC])->all();
         $lettersLevel = LetterLevel::mapCntLevel();
         $cntLevels = UserAchievement::getLevelsForLetters();
@@ -132,8 +135,10 @@ class SiteController extends Controller
     public function onAuthSuccess($client)
     {
         $attributes = $client->getUserAttributes();
-        var_dump($attributes);
-        exit();
+        if (empty($attributes['email'])) {
+            Yii::$app->session->setFlash('error', "Ошибка авторизации. Не задан обязательный аттрибут Email");
+            return;
+        }
 
         /* @var $auth Auth */
         $auth = Auth::find()->where([
@@ -148,17 +153,16 @@ class SiteController extends Controller
                 return;
             }
             // регистрация
-            if (User::find()->where(['login' => $attributes['login']])->exists()) {
-                Yii::$app->getSession()->setFlash('error', [
-                    "Пользователь с логином {$attributes['login']} уже существует, но {$client->getTitle()} c ним не связан. Для начала войдите на сайт используя свой логин для сайта, для того, что бы связать её."
-                ]);
+            if (User::find()->where(['login' => $attributes['email']])->exists()) {
+                Yii::$app->session->setFlash('error', "Пользователь с логином {$attributes['email']} уже существует, но {$client->getTitle()} c ним не связан. Для начала войдите на сайт используя свой логин для сайта, для того, что бы связать её.");
+                return;
             }
 
             $form = new RegistrationForm();
             $form->password = Yii::$app->security->generateRandomString(6);
-            $form->login = $attributes['login'];
-            $form->email = ArrayHelper::getValue($attributes, 'email');
-            $form->name = ArrayHelper::getValue($attributes, 'name', $attributes['login']);
+            $form->login = $attributes['email'];
+            $form->email = $attributes['email'];
+            $form->name = !empty($attributes['name']) ? $attributes['name'] : $attributes['email'];
 
             $transaction = Yii::$app->getDb()->beginTransaction();
             try {
@@ -284,5 +288,13 @@ class SiteController extends Controller
     public function actionHelp()
     {
         return $this->render('help');
+    }
+
+    public function actionReadHelp(){
+        /** @var User $user */
+        $user = Yii::$app->user->identity;
+        $user->help_is_read = 1;
+        $user->save(false, ['help_is_read']);
+        return $this->goHome();
     }
 }

@@ -30,6 +30,7 @@ use yii\web\IdentityInterface;
  * @property string $rolesString Список ролей в тексте
  * @property string $position Должность
  * @property string $phone Телефон
+ * @property int $help_is_read Справка прочитана?
  *
  * @property AuthItem[] $roles Список ролей
  * @property TestTask[] $testTasks
@@ -74,6 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['login', 'name'], 'required'],
             [['roles'], 'safe'],
+            [['help_is_read'], 'integer'],
             [['login', 'email', 'name'] , 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['login'], 'unique', 'message' => 'Пользователь с таким логином уже зарегистрирован.'],
@@ -97,6 +99,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Добавлен',
             'roles' => 'Роли',
             'rolesString' => 'Роли',
+            'help_is_read' => 'Справка прочитана',
         ];
     }
 
