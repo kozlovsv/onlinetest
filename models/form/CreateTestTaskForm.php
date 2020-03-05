@@ -53,7 +53,7 @@ class CreateTestTaskForm extends Model
 
     public static function mapLetters()
     {
-        $items = Letter::find()->where(['exists', UserAchievement::find()->own()->select('letter_id')->where('user_achievement.letter_id = letter.id')])->orderBy(['id' => SORT_ASC])->all();
+        $items = Letter::find()->where(['exists', UserAchievement::find()->own()->select('letter_id')->andWhere('user_achievement.letter_id = letter.id')])->orderBy(['id' => SORT_ASC])->all();
         return ArrayHelper::map($items, 'id', 'title');
     }
 
