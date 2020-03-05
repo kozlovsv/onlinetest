@@ -132,7 +132,8 @@ class SiteController extends Controller
     public function onAuthSuccess($client)
     {
         $attributes = $client->getUserAttributes();
-        dd($attributes);
+        var_dump($attributes);
+        exit();
 
         /* @var $auth Auth */
         $auth = Auth::find()->where([
