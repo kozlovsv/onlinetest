@@ -47,6 +47,7 @@ set('repository', "https://github.com/kozlovsv/onlinetest.git");
 set('shared_files', array_merge(get('shared_files'), [
     'config/db.php',
     'config/mail.php',
+    'config/secure.ini',
 ]));
 
 

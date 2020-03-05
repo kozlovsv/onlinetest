@@ -18,7 +18,9 @@ class RequestAccess extends AccessControl
         [
             'allow' => true,
             'actions' => [
+                'auth',
                 'eula',
+                'help',
                 'login',
                 'error',
                 'registration',

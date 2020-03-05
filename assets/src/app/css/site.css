@@ -317,16 +317,71 @@ a.desc:after {
 /* =============================  /YII2 CRUD Customise =============================*/
 
 /* Site Login */
-.site-login {
-    padding-top: 80px;
+@media (min-width: 768px) {
+    .omb_row-sm-offset-3 div:first-child[class*="col-"] {
+        margin-left: 25%;
+    }
 }
 
-.site-login h1 {
-    font-size: 30px;
-    margin-top: 20px;
-    font-weight: 500;
+.omb_login .omb_authTitle {
+    text-align: center;
+    line-height: 300%;
+    font-size: 25px;
 }
 
+.omb_login .omb_socialButtons a {
+    color: white;
+    opacity:0.9;
+}
+
+.omb_login .omb_socialButtons a:hover {
+    color: white;
+    opacity:1;
+}
+.omb_login .omb_socialButtons .omb_btn-facebook {background: #3b5998;}
+.omb_login .omb_socialButtons .omb_btn-twitter {background: #00aced;}
+.omb_login .omb_socialButtons .omb_btn-google {background: #c32f10;}
+
+
+.omb_login .omb_loginOr {
+    position: relative;
+    font-size: 1.5em;
+    color: #aaa;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.omb_login .omb_loginOr .omb_hrOr {
+    background-color: #cdcdcd;
+    height: 1px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.omb_login .omb_loginOr .omb_spanOr {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -0.6em;
+    margin-left: -1.5em;
+    background-color: white;
+    width: 3em;
+    text-align: center;
+}
+
+.omb_login .omb_loginForm .input-group.i {
+    width: 2em;
+}
+.omb_login .omb_loginForm  .help-block {
+    color: red;
+}
+
+@media (min-width: 768px) {
+    .omb_login .omb_forgotPwd {
+        text-align: right;
+        margin-top:10px;
+    }
+}
 
 #login-form .form-group .form-control {
     height: auto;
@@ -335,11 +390,15 @@ a.desc:after {
     margin-bottom: 15px;
 }
 
-#login-form .form-group button {
-    width: 100%;
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.3333333;
+/* Registration */
+.site-register {
+    padding-top: 80px;
+}
+
+.site-register h1 {
+    font-size: 30px;
+    margin-top: 20px;
+    font-weight: 500;
 }
 
 /* Search Form (filters) */
@@ -369,6 +428,8 @@ a.desc:after {
 .auth-editor label{
     font-weight:600
 }
+
+
 
 /* --------------- Skill Tree Main Page --------------*/
 

@@ -1,5 +1,9 @@
 <?php
 
+use yii\authclient\Collection;
+
+$secure = parse_ini_file(__DIR__ .'/secure.ini', true);
+
 $config = [
     'id' => 'basic',
     'name' => 'Словарные слова',
@@ -27,6 +31,16 @@ $config = [
         'authManager' => [
             'class' => 'app\components\AuthManager',
             'cache' => 'cache',
+        ],
+        'authClientCollection' => [
+            'class'   => Collection::class,
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => $secure['oauth_google_client_id'],
+                    'clientSecret' => $secure['google_client_secret'],
+                ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Auth;
 use app\models\form\LoginForm;
 use app\models\form\PasswordResetRequestForm;
 use app\models\form\RegistrationForm;
@@ -9,11 +10,15 @@ use app\models\form\ResetPasswordForm;
 use app\models\Letter;
 use app\models\LetterLevel;
 use app\models\TestTask;
+use app\models\User;
 use app\models\UserAchievement;
 use Yii;
+use yii\authclient\ClientInterface;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 
@@ -58,6 +63,10 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onAuthSuccess'],
+            ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -77,7 +86,7 @@ class SiteController extends Controller
 
         $storage = [];
         $flag = true;
-        foreach ($letters as  $i => $letter) {
+        foreach ($letters as $i => $letter) {
             if ($flag) {
                 $storage[] = $letter;
                 $flag = false;
@@ -115,6 +124,67 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * @param ClientInterface $client
+     */
+    public function onAuthSuccess($client)
+    {
+        $attributes = $client->getUserAttributes();
+        dd($attributes);
+
+        /* @var $auth Auth */
+        $auth = Auth::find()->where([
+            'source' => $client->getId(),
+            'source_id' => $attributes['id'],
+        ])->one();
+
+        if (Yii::$app->user->isGuest) {
+            if ($auth) { // авторизация
+                $user = $auth->user;
+                Yii::$app->user->login($user);
+                return;
+            }
+            // регистрация
+            if (User::find()->where(['login' => $attributes['login']])->exists()) {
+                Yii::$app->getSession()->setFlash('error', [
+                    "Пользователь с логином {$attributes['login']} уже существует, но {$client->getTitle()} c ним не связан. Для начала войдите на сайт используя свой логин для сайта, для того, что бы связать её."
+                ]);
+            }
+
+            $form = new RegistrationForm();
+            $form->password = Yii::$app->security->generateRandomString(6);
+            $form->login = $attributes['login'];
+            $form->email = ArrayHelper::getValue($attributes, 'email');
+            $form->name = ArrayHelper::getValue($attributes, 'name', $attributes['login']);
+
+            $transaction = Yii::$app->getDb()->beginTransaction();
+            try {
+                if (!$form->save(false)) throw new Exception('При сохранении нового пользователя в базу произошла ошибка. ' . implode(',', $form->errors));
+                $auth = new Auth([
+                    'user_id' => $form->id,
+                    'source' => $client->getId(),
+                    'source_id' => (string)$attributes['id'],
+                ]);
+                if (!$auth->save()) throw new Exception('При сохранении связки Auth пользователя в базу произошла ошибка. ' . implode(',', $auth->errors));
+                $transaction->commit();
+
+                $user = $form->user;
+                Yii::$app->user->login($user);
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                Yii::error('Авторизация клиента OAuth.' . $e->getMessage());
+                return;
+            }
+        } elseif (!$auth) { // добавляем внешний сервис аутентификации
+            $auth = new Auth([
+                'user_id' => Yii::$app->user->id,
+                'source' => $client->getId(),
+                'source_id' => $attributes['id'],
+            ]);
+            $auth->save();
+        }
     }
 
     /**
@@ -185,7 +255,7 @@ class SiteController extends Controller
         }
 
         $model = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post())){
+        if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->save()) {
                 Yii::$app->user->login($user);
                 Yii::$app->session->setFlash('success', 'Вы успешно зарегистрировались в системе.');
@@ -205,5 +275,13 @@ class SiteController extends Controller
     {
         $this->layout = 'empty';
         return $this->render('eula');
+    }
+
+    /**
+     * @return string
+     */
+    public function actionHelp()
+    {
+        return $this->render('help');
     }
 }

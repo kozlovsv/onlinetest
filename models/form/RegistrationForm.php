@@ -38,6 +38,11 @@ class RegistrationForm extends Model
      */
     public $name;
 
+    /**
+     * @var User
+     */
+    public $user;
+
 
     /**
      * @inheritdoc
@@ -68,9 +73,10 @@ class RegistrationForm extends Model
 
     /**
      * Зарегистрировать
+     * @param bool $sendMail
      * @return User|null
      */
-    public function save()
+    public function save($sendMail = true)
     {
         if (!$this->validate()) {
             return null;
@@ -86,7 +92,8 @@ class RegistrationForm extends Model
             $user->roles = [User::ROLE_STUDENT];
             if ($user->save(false)) {
                 $this->id = $user->id;
-                $this->sendRegistrationEmail();
+                $this->user = $user;
+                if ($sendMail) $this->sendRegistrationEmail();
                 return $user;
             } else {
                 throw new Exception('Не удалось сохранить данные о пользователе: ' . VarDumper::dumpAsString($user->errors));

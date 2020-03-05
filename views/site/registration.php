@@ -13,7 +13,7 @@ use kozlovsv\crud\widgets\ToolBarPanelContainer;
 $this->title = 'Регистрация на ' . Yii::$app->params['brand'];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
+<div class="site-register">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-lg-offset-3">
