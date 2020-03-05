@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="omb_spanOr">или</span>
                 </div>
             </div>
-            <?php $form = ActiveForm::begin(['id' => 'login-form', 'options' => ['class' => 'form-omb_loginForm']]); ?>
+            <?php $form = ActiveForm::begin(['id' => 'login-form', 'options' => ['class' => 'form-omb_loginForm'], 'enableClientValidation' => false]); ?>
                 <div class="row omb_row-sm-offset-3">
                     <div class="col-xs-12 col-sm-6">
                         <?= $form->field($model, 'login', ['template' => "{input}\n{hint}\n{error}"])->textInput(['autofocus' => true, 'placeholder' => $model->getAttributeLabel('login')]) ?>
