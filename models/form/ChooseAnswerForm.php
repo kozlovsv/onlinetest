@@ -56,7 +56,7 @@ class ChooseAnswerForm extends Model
     public function attributeLabels()
     {
         return [
-            'choice' => $this->getQuestionType() ? 'Введите значение' : 'Выберите вариант',
+            'choice' => $this->getQuestionType() ==  TestTaskQuestion::TYPE_INPUT ? 'Введите значение' : 'Выберите вариант',
         ];
     }
 
@@ -77,7 +77,8 @@ class ChooseAnswerForm extends Model
         assert($this->getTestTaskQuestion());
         if (is_null($this->result)) {
             $word = VocabularyWord::findOne($this->getTestTaskQuestion()->vocabulary_word_id);
-            $this->result = mb_strtolower($word->title) == mb_strtolower($this->choice);
+            $this->result = $this->getQuestionType() == TestTaskQuestion::TYPE_INPUT ?
+                mb_strtolower($word->title) == mb_strtolower($this->choice)  : $word->title == $this->choice;
         }
         return $this->result;
     }
