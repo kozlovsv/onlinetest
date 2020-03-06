@@ -17,6 +17,14 @@ use yii\helpers\Url;
  * @var $wordsCount int
  */
 
+$this->registerJs("
+    var mySound = new buzz.sound('/audio/words/{$word->id}.ogg');
+    buzz.all().play();
+    $('#btn-sound').click(function() {
+        buzz.all().play();
+    });
+");
+
 $this->title = 'Обучение слову ' . $word->title;
 
 $numWord = $offset + 1;
@@ -27,7 +35,7 @@ echo Progress::widget([
     'barOptions' => ['class' => 'progress-bar-info'],
     'options' => ['style' => 'margin-bottom: 40px'],
 ]);
-echo Html::tag('h1', Html::icon('ok') . '  ' . Html::encode($word->title), ['class' => 'form-header', 'style' => 'font-size: 30px; color: #5cb85c']);
+echo Html::tag('h1', Html::a(Html::icon('volume-up'), null, ['class' => ['btn', 'btn-success', 'btn-lg'], 'id' => 'btn-sound']) . ' '. Html::encode($word->title), ['class' => 'form-header', 'style' => 'font-size: 30px; color: #5cb85c']);
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
             CrudButton::cancelButton('Закрыть', [Url::home()], ['class' => 'btn btn-warning btn-lg form-cancel']),

@@ -678,7 +678,7 @@ a.desc:after {
 
 /* -- Panda Box ----*/
 
-.panda-bubble-box {
+.bubble-box {
     bottom: 0;
     left: 0;
     pointer-events: none;
@@ -717,6 +717,15 @@ a.desc:after {
     text-decoration: none;
 }
 
+.corona-bubble-box-inner {
+    top: 60px;
+    position: fixed;
+    left: 16px;
+    z-index: 198;
+    height: 96px;
+    width: 96px;
+}
+
 @media (min-width: 700px) {
 
     .site-index{
@@ -734,5 +743,10 @@ a.desc:after {
     .panda-bubble-box-inner {
         bottom: 40px;
         right: auto;
+    }
+    .corona-bubble-box-inner {
+        bottom: 40px;
+        left: auto;
+        right: 16px;
     }
 }

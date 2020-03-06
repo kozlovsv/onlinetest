@@ -14,7 +14,6 @@ use yii\web\View;
  * @var $level int
  */
 
-$this->registerJsFile('//cdnjs.cloudflare.com/ajax/libs/buzz/1.2.0/buzz.min.js');
 $this->registerJs('
     var mySound = new buzz.sound("/audio/win.ogg");
     buzz.all().play();

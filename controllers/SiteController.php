@@ -85,6 +85,7 @@ class SiteController extends Controller
         $letters = Letter::find()->orderBy(['id' => SORT_ASC])->all();
         $lettersLevel = LetterLevel::mapCntLevel();
         $cntLevels = UserAchievement::getLevelsForLetters();
+        $cntAllAchievement = UserAchievement::find()->own()->count();
         $chunckLetters = [];
 
         $storage = [];
@@ -106,7 +107,7 @@ class SiteController extends Controller
         }
         $chunckLetters = array_chunk($chunckLetters, 5);
         $pandaLevel = TestTask::getPandaLevel();
-        return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel', 'pandaLevel'));
+        return $this->render('index', compact('chunckLetters', 'cntLevels', 'lettersLevel', 'pandaLevel', 'cntAllAchievement'));
     }
 
     /**
@@ -297,4 +298,23 @@ class SiteController extends Controller
         $user->save(false, ['help_is_read']);
         return $this->goHome();
     }
+
+
+   /* //Функция озвучки слов.
+    public function actionGrabSound()
+    {
+        $words = \app\models\VocabularyWord::find()->select(['id', 'title'])->where(['>', 'id', 328])->orderBy('id')->asArray()->all();
+        foreach ($words as $word) {
+            $word_title = urlencode($word['title']);
+            $url = "https://tts.voicetech.yandex.net/generate?key=22fe10e2-aa2f-4a58-a934-54f2c1c4d908&text={$word_title}&format=mp3&lang=ru-RU&speed=0.9&emotion=neutral&speaker=oksana&robot=1";
+            $path = Yii::$app->basePath . "/web/audio/words/src/{$word['id']}.mp3";
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            file_put_contents($path, $data);
+            echo $word['id'] . '</br>';
+        }
+        echo 'Ok';
+    }*/
 }

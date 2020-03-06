@@ -17,6 +17,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/main.js',
+        '//cdnjs.cloudflare.com/ajax/libs/buzz/1.2.0/buzz.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

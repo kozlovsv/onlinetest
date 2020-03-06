@@ -6,6 +6,7 @@
  * @var array $cntLevels
  * @var array $lettersLevel
  * @var array $pandaLevel
+ * @var int $cntAllAchievement
  *
  */
 
@@ -99,7 +100,7 @@ echo LetterPopup::widget();
             </div>
             <?php endforeach;?>
         </div>
-        <div class="panda-bubble-box">
+        <div class="bubble-box">
             <div class="panda-bubble-box-inner" style="z-index: 500">
                 <div class="panda-bubble-box-panda">
                     <a title="Накорми панду!" href="/test-task/create" class="panda-bubble">
@@ -116,6 +117,16 @@ echo LetterPopup::widget();
                         <img alt="Достижения" class="tree-node-corona-img" src="/images/<?= $pandaLevel ? 'corona.svg' : 'corona-disabled.svg'?>">
                         <div class="tree-node-corona-level-text"><?= $pandaLevel ? $pandaLevel : ''?></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="bubble-box">
+            <div class="corona-bubble-box-inner" style="z-index: 500">
+                <div class="panda-bubble-box-panda">
+
+                        <img alt="Корона" src="/images/<?= $cntAllAchievement ? 'corona.svg' : 'corona-disabled.svg'?>" style="height: 60px; width: 60px">
+                        <div class="tree-node-corona-level-text"><?= $cntAllAchievement ? $cntAllAchievement : ''?></div>
+
                 </div>
             </div>
         </div>
