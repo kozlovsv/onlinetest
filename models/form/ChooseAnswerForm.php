@@ -77,7 +77,7 @@ class ChooseAnswerForm extends Model
         assert($this->getTestTaskQuestion());
         if (is_null($this->result)) {
             $word = VocabularyWord::findOne($this->getTestTaskQuestion()->vocabulary_word_id);
-            $this->result = $word->title == $this->choice;
+            $this->result = mb_strtolower($word->title) == mb_strtolower($this->choice);
         }
         return $this->result;
     }
