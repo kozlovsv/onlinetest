@@ -13,12 +13,24 @@ use yii\db\ActiveRecord;
  * @property int $vocabulary_word_id Словарное слово
  * @property string $answer Ответ
  * @property int $result Результат
+ * @property int $type Тип
  *
  * @property TestTask $testTask
  * @property VocabularyWord $vocabularyWord
  */
 class TestTaskQuestion extends ActiveRecord
 {
+    /**
+     * Новый
+     */
+    const TYPE_CHOICE = 0;
+
+    /**
+     * Пройден
+     */
+    const TYPE_INPUT = 1;
+
+
     /**
      * {@inheritdoc}
      */
@@ -34,7 +46,7 @@ class TestTaskQuestion extends ActiveRecord
     {
         return [
             [['test_task_id', 'vocabulary_word_id'], 'required'],
-            [['test_task_id', 'vocabulary_word_id', 'result'], 'integer'],
+            [['test_task_id', 'vocabulary_word_id', 'result', 'type'], 'integer'],
             [['answer'], 'string', 'max' => 255],
             [['test_task_id'], 'exist', 'skipOnError' => true, 'targetClass' => TestTask::class, 'targetAttribute' => ['test_task_id' => 'id']],
             [['vocabulary_word_id'], 'exist', 'skipOnError' => true, 'targetClass' => VocabularyWord::class, 'targetAttribute' => ['vocabulary_word_id' => 'id']],
@@ -52,6 +64,8 @@ class TestTaskQuestion extends ActiveRecord
             'answer' => 'Ваш ответ',
             'result' => 'Результат',
             'resultLabel' => 'Результат',
+            'type' => 'Тип',
+            'typeLabel' => 'Тип',
         ];
     }
 
@@ -87,5 +101,25 @@ class TestTaskQuestion extends ActiveRecord
         $this->answer = '';
         $this->result = 0;
         return $this->save(false, ['answer', 'result']);
+    }
+
+    /**
+     * @return array
+     */
+    public static function typeMap()
+    {
+        return [
+            self::TYPE_CHOICE => 'Выбор',
+            self::TYPE_INPUT => 'Ввод',
+        ];
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getTypeLabel()
+    {
+        $map = self::typeMap();
+        return isset($map[$this->type]) ? $map[$this->type] : $this->type;
     }
 }

@@ -259,6 +259,10 @@ class TestTask extends ActiveRecord
         $map = self::statusMap();
         return isset($map[$this->status]) ? $map[$this->status] : $this->status;
     }
+
+    /**
+     * @return string
+     */
     public function getisRepetitionLabel() {
         return $this->is_repetition ? 'Да' : 'Нет';
     }
@@ -301,6 +305,7 @@ class TestTask extends ActiveRecord
                 $testTaskQuestion = new TestTaskQuestion();
                 $testTaskQuestion->test_task_id = $testTask->id;
                 $testTaskQuestion->vocabulary_word_id = $word['id'];
+                $testTaskQuestion->type = rand(0,1);
                 if (!$testTaskQuestion->save(false)) throw new Exception('Не удалось сохранить вопрос нового теста в БД');
             }
             $transaction->commit();

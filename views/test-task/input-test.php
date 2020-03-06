@@ -38,9 +38,8 @@ echo FormBuilder::widget([
     'model' => $model,
     'attributes' => [
         'choice' => [
-            'type' => FormBuilder::INPUT_RADIO_BUTTON_GROUP,
-            'items' => $model->mapQuesions(),
-            'options' => ['class' => ['btn-group-vertical', 'btn-group-lg'], 'style' => 'display: block; margin-top:10px; border-top-right-radius: 4px;']
+            'type' => FormBuilder::INPUT_TEXT,
+            'options' => ['class' => [], 'spellcheck' => 'false', 'autocomplete' => 'off']
         ],
         'test_task_question_id' => [
             'type' => FormBuilder::INPUT_HIDDEN

@@ -43,9 +43,10 @@ class ChooseAnswerForm extends Model
     public function rules()
     {
         return [
-            [['choice', 'test_task_question_id'], 'required', 'message' => 'Необходимо выбрать хотя бы один вариант'],
+            [['choice', 'test_task_question_id'], 'required', 'message' => 'Необходимо ввести или выбрать значение'],
             [['choice'], 'string'],
             [['test_task_question_id'], 'integer'],
+            [['choice'], 'trimChoice'],
         ];
     }
 
@@ -55,7 +56,7 @@ class ChooseAnswerForm extends Model
     public function attributeLabels()
     {
         return [
-            'choice' => 'Выберите вариант',
+            'choice' => $this->getQuestionType() ? 'Введите значение' : 'Выберите вариант',
         ];
     }
 
@@ -113,5 +114,17 @@ class ChooseAnswerForm extends Model
             $this->test_task_question_id = $this->_testTaskQuestion->id;
         }
         return $this->_testTaskQuestion;
+    }
+
+    public function getQuestionType() {
+        $testTaskQuestion = $this->getTestTaskQuestion();
+        assert($testTaskQuestion);
+        return $testTaskQuestion->type;
+    }
+
+    public function trimChoice()
+    {
+        if (!$this->getQuestionType()) return;
+        $this->choice = trim(str_replace('ё', 'е', $this->choice));
     }
 }

@@ -136,7 +136,8 @@ function getTestStatusAttribute($model, $statusClass) {
                 'columns' => [
                     'vocabularyWord.title',
                     'answer',
-                    'resultLabel'
+                    'resultLabel',
+                    'typeLabel'
                 ],
                 'rowOptions' => function ($model) {
                     return $model->result ? ['class' => 'success'] : ['class' => 'danger'];

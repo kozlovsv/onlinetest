@@ -126,7 +126,7 @@ class TestTaskController extends CrudController
             $model = new ChooseAnswerForm();
             if ($model->load(Yii::$app->request->post())) {
                 if (!$model->save($testTask->is_repetition))
-                    return $this->renderIfAjax('test', compact('model', 'testTask'));
+                    return $this->renderIfAjax($model->getQuestionType() ? 'input-test' : 'test', compact('model', 'testTask'));
 
                 if ($model->checkResult())
                     return $this->redirect(Url::to(['test', 'id' => $id]));
@@ -162,7 +162,7 @@ class TestTaskController extends CrudController
                 }
             }
 
-            return $this->renderIfAjax('test', compact('model', 'testTask'));
+            return $this->renderIfAjax($model->getQuestionType() ? 'input-test' : 'test', compact('model', 'testTask'));
         } catch (Exception $e) {
             if (YII_ENV_DEV) throw $e;
             Yii::error($e->getMessage());
@@ -282,7 +282,7 @@ class TestTaskController extends CrudController
             throw new NotFoundHttpException('Запись не найдена');
         }
         $letterLevel = LetterLevel::find()->andWhere(['letter_id' => $model->letter_id])->one();
-        $level = UserAchievement::find()->andWhere(['letter_id' => $model->letter_id])->count();
+        $level = UserAchievement::find()->own()->andWhere(['letter_id' => $model->letter_id])->count();
         return $this->render('win', compact('model', 'letterLevel', 'level'));
     }
 
