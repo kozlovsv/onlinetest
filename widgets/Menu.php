@@ -73,6 +73,16 @@ class Menu extends Widget
                 'url' => ['/site/help'],
             ],
             [
+                'label' => 'Контроль',
+                'items' => [
+                    [
+                        'label' => 'Тесты учеников',
+                        'url' => ['/student-test-task/index'],
+                        'visible' => Yii::$app->user->can('student_test_task.view'),
+                    ],
+                ],
+            ],
+            [
                 'label' => 'Управление',
                 'items' => [
                     [

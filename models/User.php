@@ -313,4 +313,16 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(UserAchievement::class, ['user_id' => 'id']);
     }
+
+    /**
+     * @param string $roleName
+     * @param null | array $sort
+     * @return array
+     */
+    public static function mapByRole($roleName, $sort = null)
+    {
+        $sorting = $sort ? $sort : ['name' => SORT_ASC];
+        $items = self::find()->joinWith(['roles'])->andWhere([AuthItem::tableName() . '.name' => $roleName])->orderBy($sorting)->all();
+        return ArrayHelper::map($items, 'id', 'name');
+    }
 }

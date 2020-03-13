@@ -3,6 +3,7 @@
 namespace app\models\query;
 
 use app\models\TestTask;
+use app\modules\auth\models\AuthItem;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -21,6 +22,18 @@ class TestTaskQuery extends ActiveQuery
     public function own()
     {
         return $this->andWhere(['user_id' => Yii::$app->user->id]);
+    }
+
+    /**
+     * По роли
+     * @param $roleName
+     * @return $this
+     */
+    public function byUserRole($roleName)
+    {
+        $this->joinWith(['user', 'user.roles'])
+            ->andWhere([AuthItem::tableName() . '.name' => $roleName]);
+        return $this;
     }
 
     /**

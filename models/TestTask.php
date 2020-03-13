@@ -84,8 +84,8 @@ class TestTask extends ActiveRecord
             'questionsTestStayCount' => 'Осталось пройти',
             'grade' => 'Оценка',
             'rating' => 'Рейтинг, %',
-            'is_repetition' => 'Повторение?',
-            'isRepetitionLabel' => 'Повторение?',
+            'is_repetition' => 'На оценку?',
+            'isRepetitionLabel' => 'На оценку?',
             'letter_id' => 'Буква',
         ];
     }
@@ -249,6 +249,13 @@ class TestTask extends ActiveRecord
             self::STATUS_NEW => 'Не пройден',
             self::STATUS_FINISHED => 'Пройден',
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function isRepetitionMap() {
+        return [ 0 => 'Нет', 1 => 'Да',];
     }
 
     /**
