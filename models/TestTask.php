@@ -205,7 +205,17 @@ class TestTask extends ActiveRecord
     public function getGrade()
     {
         if ($this->status == self::STATUS_NEW) return 0;
-        $rating = $this->rating;
+        return self::ratingToGrade($this->rating);
+    }
+
+    /**
+     * Перевод рейтинга в оценку по 5 бальной шкале.
+     * @param int $rating
+     * @return int
+     */
+    public static function ratingToGrade($rating)
+    {
+        if (!$rating) return 0;
         if ($rating >= self::GRADE_5) return 5;
         if ($rating >= self::GRADE_4) return 4;
         if ($rating >= self::GRADE_3) return 3;

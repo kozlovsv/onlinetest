@@ -3,7 +3,7 @@
 namespace app\models\query;
 
 use app\models\TestTask;
-use app\modules\auth\models\AuthItem;
+use app\modules\auth\models\AuthAssignment;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -32,7 +32,7 @@ class TestTaskQuery extends ActiveQuery
     public function byUserRole($roleName)
     {
         $this->joinWith(['user', 'user.roles'])
-            ->andWhere([AuthItem::tableName() . '.name' => $roleName]);
+            ->andWhere([AuthAssignment::tableName() . '.item_name' => $roleName]);
         return $this;
     }
 
@@ -46,12 +46,22 @@ class TestTaskQuery extends ActiveQuery
     }
 
     /**
-     * Текущий день
+     * Завершенные
      * @return $this
      */
     public function finished()
     {
         return $this->andWhere(['status' => TestTask::STATUS_FINISHED]);
+    }
+
+    /**
+     * Контрольная?
+     * @param int $is_repetition
+     * @return $this
+     */
+    public function repetition($is_repetition = 1)
+    {
+        return $this->andWhere(['is_repetition' => $is_repetition]);
     }
 
     /**

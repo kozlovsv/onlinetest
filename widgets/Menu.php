@@ -81,6 +81,11 @@ class Menu extends Widget
                         'visible' => Yii::$app->user->can('student_test_task.view'),
                     ],
                     [
+                        'label' => 'Рейтинг учеников',
+                        'url' => ['/user-rating/index'],
+                        'visible' => Yii::$app->user->can('student_test_task.view'),
+                    ],
+                    [
                         'label' => 'Статистика ошибок',
                         'url' => ['/error-answer-statistic/index'],
                         'visible' => Yii::$app->user->can('student_test_task.view'),

@@ -3,7 +3,9 @@
 namespace app\models;
 
 use app\components\AuthManager;
+use app\models\query\TestTaskQuery;
 use app\models\traits\MapTrait;
+use app\modules\auth\models\AuthAssignment;
 use app\modules\auth\models\AuthItem;
 use app\widgets\Menu;
 use Yii;
@@ -297,7 +299,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[TestTasks]].
      *
-     * @return ActiveQuery
+     * @return ActiveQuery| TestTaskQuery
      */
     public function getTestTasks()
     {
@@ -322,7 +324,52 @@ class User extends ActiveRecord implements IdentityInterface
     public static function mapByRole($roleName, $sort = null)
     {
         $sorting = $sort ? $sort : ['name' => SORT_ASC];
-        $items = self::find()->joinWith(['roles'])->andWhere([AuthItem::tableName() . '.name' => $roleName])->orderBy($sorting)->all();
+        $items = self::find()->joinWith(['roles'])->andWhere([AuthAssignment::tableName() . '.item_name' => $roleName])->orderBy($sorting)->all();
         return ArrayHelper::map($items, 'id', 'name');
+    }
+
+    /**
+     * Получить кол-во звезд
+     * @return int
+     */
+    public function getUserAchievementsCount()
+    {
+        return $this->getUserAchievements()->count();
+    }
+
+    /**
+     * Запрос на список пройденных контрольных
+     * @return ActiveQuery
+     */
+    public function getTestTaskRepetition()
+    {
+        return $this->getTestTasks()->finished()->repetition();
+    }
+
+    /**
+     * Получить кол-во пройденных контрольных
+     * @return int
+     */
+    public function getTestTaskRepetitionCount()
+    {
+        return $this->getTestTaskRepetition()->count();
+    }
+
+    /**
+     * Получить стредний рейтинг по контрольным
+     * @return float
+     */
+    public function getAverageRating()
+    {
+        return $this->getTestTaskRepetition()->average('rating');
+    }
+
+    /**
+     * Получить средняя оценка по контрольным
+     * @return float
+     */
+    public function getAverageGrade()
+    {
+        return TestTask::ratingToGrade($this->getAverageRating());
     }
 }
