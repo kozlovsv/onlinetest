@@ -32,7 +32,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -53,7 +53,7 @@
             "version": "3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
             },
             "dist": {
@@ -92,7 +92,7 @@
             "version": "3.2.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:sciactive/pnotify.git",
+                "url": "https://github.com/sciactive/pnotify.git",
                 "reference": "56d7a345485d3af0195069e2ebdce97c349064b4"
             },
             "dist": {
@@ -113,7 +113,7 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bestiejs/punycode.js.git",
+                "url": "https://github.com/bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
@@ -1342,12 +1342,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kozlovsv/yii2-crud.git",
-                "reference": "e7d6a03c688ee071605a950958aef0dc93e47b64"
+                "reference": "a3238338110487d7ef7f775b3c3a7ce18941390d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kozlovsv/yii2-crud/zipball/e7d6a03c688ee071605a950958aef0dc93e47b64",
-                "reference": "e7d6a03c688ee071605a950958aef0dc93e47b64",
+                "url": "https://api.github.com/repos/kozlovsv/yii2-crud/zipball/a3238338110487d7ef7f775b3c3a7ce18941390d",
+                "reference": "a3238338110487d7ef7f775b3c3a7ce18941390d",
                 "shasum": ""
             },
             "require": {
@@ -1386,7 +1386,7 @@
                 "source": "https://github.com/kozlovsv/yii2-crud/tree/master",
                 "issues": "https://github.com/kozlovsv/yii2-crud/issues"
             },
-            "time": "2020-02-12T11:53:58+00:00"
+            "time": "2020-03-16T15:25:22+00:00"
         },
         {
             "name": "kozlovsv/yii2-widget-datetimepicker",
