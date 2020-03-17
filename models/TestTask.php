@@ -74,7 +74,6 @@ class TestTask extends ActiveRecord
         return [
             'id' => '№',
             'user_id' => 'Ученик',
-            'user.name' => 'Ученик',
             'status' => 'Тест',
             'statusLabel' => 'Тест',
             'created_at' => 'Создан',
@@ -87,6 +86,7 @@ class TestTask extends ActiveRecord
             'is_repetition' => 'На оценку?',
             'isRepetitionLabel' => 'На оценку?',
             'letter_id' => 'Буква',
+            'userName' => 'Ученик'
         ];
     }
 
@@ -339,5 +339,9 @@ class TestTask extends ActiveRecord
         $this->rating = $this->calcRating();
         $this->save(false);
         UserAchievement::addAchievement($this);
+    }
+
+    public function getUserName(){
+        return $this->user->name;
     }
 }

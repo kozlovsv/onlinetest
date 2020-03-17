@@ -80,6 +80,11 @@ class Menu extends Widget
                         'url' => ['/student-test-task/index'],
                         'visible' => Yii::$app->user->can('student_test_task.view'),
                     ],
+                    [
+                        'label' => 'Статистика ошибок',
+                        'url' => ['/error-answer-statistic/index'],
+                        'visible' => Yii::$app->user->can('student_test_task.view'),
+                    ],
                 ],
             ],
             [

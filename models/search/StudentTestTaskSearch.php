@@ -16,6 +16,8 @@ class StudentTestTaskSearch extends TestTask
 {
     public $is_repetition = 1;
     public $status = TestTask::STATUS_FINISHED;
+    public $userName;
+    public $grade;
 
     /**
      * @inheritdoc
@@ -24,7 +26,7 @@ class StudentTestTaskSearch extends TestTask
     {
         return [
             [['id', 'user_id', 'letter_id', 'is_repetition', 'status'], 'integer'],
-            [['created_at', 'passed_at'], 'safe'],
+            [['created_at', 'passed_at', 'userName', 'grade'], 'safe'],
         ];
     }
 
@@ -50,7 +52,21 @@ class StudentTestTaskSearch extends TestTask
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['passed_at'=>SORT_DESC]]
+            'sort'=> [
+                'defaultOrder' => ['passed_at'=>SORT_DESC],
+                'attributes' => [
+                    'id',
+                    'passed_at',
+                    'userName' => [
+                        'asc' => ['user.name' => SORT_ASC],
+                        'desc' => ['user.name' => SORT_DESC],
+                    ],
+                    'grade' => [
+                        'asc' => ['rating' => SORT_ASC],
+                        'desc' => ['rating' => SORT_DESC],
+                    ]
+                ]
+            ]
         ]);
 
         $this->load($params);

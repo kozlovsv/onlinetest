@@ -15,19 +15,6 @@ use yii\web\NotFoundHttpException;
  */
 class StudentTestTaskController extends CrudController
 {
-
-    /*public function init()
-    {
-        parent::init();
-        $permissionCategory = $this->getPermissionCategory();
-        $this->accessRules = [
-            [
-                'actions' => ['test', 'test-letter', 're-test', 'letter-popup', 'letter-full-popup', 'test-cancel', 'training-letter', 'training-test', 'win', 'repetition-finish'],
-                'allow' => ModelPermission::canCreate($permissionCategory),
-            ],
-        ];
-    }*/
-
     /**
      * Возвращает модель для поиска
      * @return StudentTestTaskSearch|ActiveRecord

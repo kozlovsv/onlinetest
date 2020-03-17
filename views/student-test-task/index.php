@@ -80,7 +80,7 @@ echo GridView::widget(
         'isModal' => $isModal,
         'permissionCategory' => 'student_test_task',
         'columns' => [
-            'user.name',
+            'userName',
             'statusLabel',
             'letter.title',
             'grade',

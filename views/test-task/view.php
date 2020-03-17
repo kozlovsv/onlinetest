@@ -1,5 +1,6 @@
 <?php
 
+use app\helpers\TestTaskHtmlHelper;
 use app\models\TestTask;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\helpers\Html;
@@ -19,57 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = false;
 
-/**
- * @param TestTask $model
- * @return string
- */
-function getGradeColor($model)
-{
-    switch ($model->getGrade()) {
-        case 5:
-            return 'success';
-            break;
-        case 4:
-            return 'info';
-            break;
-        case 3:
-            return 'warning';
-            break;
-        default:
-            return 'danger';
-    }
-}
-
-$gradeClass = getGradeColor($model);
+$gradeClass = TestTaskHtmlHelper::getGradeColor($model);
 $statusClass = ($model->status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $questionsStayCountClass = $model->getQuestionsTestStayCount() <> 0 ? 'danger' : '';
-
-/**
- * @param TestTask $model
- * @param $statusClass
- * @return array
- * @throws Exception
- */
-
-function getTestStatusAttribute($model, $statusClass) {
-    if ($model->status == TestTask::STATUS_FINISHED || $model->getQuestionsPassedTestCount() == 0) {
-       return  [
-            'attribute' => 'statusLabel',
-            'contentOptions' => ['class' => $statusClass],
-            'captionOptions' => ['class' => $statusClass],
-        ];
-    }
-    return [
-        'attribute' => 'status',
-        'format' => 'raw',
-        'value' => Progress::widget([
-            'label' => $model->getQuestionsPassedTestCount() . ' / ' . $model->getQuestionsCount(),
-            'percent' => $model->passedTestPercent,
-            'barOptions' => ['class' => 'progress-bar-success'],
-        ])
-    ];
-}
-
 ?>
 <div class="test-task-view">
     <h1><?= Html::encode("$this->title ") ?></h1>
@@ -114,7 +67,7 @@ function getTestStatusAttribute($model, $statusClass) {
                         'barOptions' => ['class' => 'progress-bar-info'],
                     ])
                 ],
-                getTestStatusAttribute($model, $statusClass),
+                TestTaskHtmlHelper::getTestStatusAttribute($model, $statusClass),
             ],
         ]
     );
