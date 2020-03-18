@@ -1,7 +1,9 @@
 <?php
 
+use app\models\search\UserRatingViewSearch;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\helpers\Html;
+use kozlovsv\crud\widgets\GridView;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\ReturnUrl;
 
@@ -14,6 +16,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Рейтинг учеников', 
 $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = true;
+//Вызываем создание этой модели тут, чотбы не переопределять стандартный CRUD метод View. Да я знаю что так нельзя!!!
+$userRatingViewSearch = new UserRatingViewSearch();
+$userRatingListDataProvider = $userRatingViewSearch->search($model->id);
+
 ?>
 <div class="user-view">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -21,7 +27,7 @@ $isModal = true;
     echo ToolBarPanelContainer::widget(
         [
             'buttonsLeft' => [
-                CrudButton::cancelButton('Закрыть'),
+                CrudButton::cancelButton('Назад'),
             ],
             'buttonsRight' => [
             ],
@@ -30,8 +36,7 @@ $isModal = true;
     );
     ?>
     <div class="clearfix"></div>
-    <?php
-    echo yii\widgets\DetailView::widget(
+    <?= yii\widgets\DetailView::widget(
         [
             'model' => $model,
             'attributes' => [
@@ -43,4 +48,38 @@ $isModal = true;
         ]
     );
     ?>
+    <div style="margin-bottom: 10px">
+        <?= GridView::widget(
+            [
+                'dataProvider' => $userRatingListDataProvider,
+                'layout' => '{items}',
+                'actionColumnsBefore' => [],
+                'actionColumnsAfter' => [],
+                'columns' => [
+                    'title',
+                    [
+                        'attribute' => 'corona_cnt',
+                        'contentOptions' => function ($data) {
+                            /** @var UserRatingViewSearch $data */
+                            return ['class' => $data->getLevelIsFull()? 'level-full ': ''];
+                        },
+                    ],
+                    'repetition_cnt',
+                    'average_rating:money',
+                ],
+                'rowOptions' => /**
+                 * @param $model UserRatingViewSearch
+                 * @return array
+                 */ function ($model) {
+                    if ($model->averageGrade == 5) {
+                        return ['class' => 'success'];
+                    } elseif ($model->averageGrade == 4) {
+                        return ['class' => 'info'];
+                    }
+                    return ['class' => 'warning'];
+                },
+            ]
+        );
+        ?>
+    </div>
 </div>

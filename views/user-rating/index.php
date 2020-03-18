@@ -21,14 +21,13 @@ echo GridView::widget(
     [
         'dataProvider' => $dataProvider,
         'actionColumnsAfter' => [],
-        'isModal' => true,
+        'isModal' => false,
         'permissionCategory' => 'student_test_task',
         'columns' => [
             'name',
             'corona_cnt',
             'repetition_cnt',
             'average_rating:money',
-            'averageGrade',
         ],
         'rowOptions'=> /**
          * @param $model UserRatingSearch

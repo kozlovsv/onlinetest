@@ -28,7 +28,7 @@ class UserRatingSearch extends ActiveRecord
         return [
             'name' => 'Ученик',
             'corona_cnt' => 'Корон',
-            'repetition_cnt' => 'Контрольных',
+            'repetition_cnt' => 'Панд',
             'average_rating' => 'Рейтинг',
             'averageGrade' => 'Оценка',
         ];
@@ -100,11 +100,6 @@ class UserRatingSearch extends ActiveRecord
                         'asc' => ['average_rating' => SORT_ASC],
                         'desc' => ['average_rating' => SORT_DESC],
                     ],
-                    'averageGrade' => [
-                        'asc' => ['average_rating' => SORT_ASC],
-                        'desc' => ['average_rating' => SORT_DESC],
-                    ]
-
                 ]
             ]
         ]);
