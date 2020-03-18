@@ -301,6 +301,20 @@ class TestTask extends ActiveRecord
 
 
     /**
+     * @param int $cntPassedTests Колво пройденных тестов
+     * @param int $minRandInterval Минимальное значение случайного интервала
+     * @param int $maxRandInterval Максимальное значение случайного интервала
+     * @param int $thresholdMax Максимальный порог
+     * @param int $thresholdCntTests Количество тестов для прохождения максимального порога
+     * @return int
+     */
+    public static function getRandomTypeViaPassedTests($cntPassedTests, $minRandInterval = 0, $maxRandInterval = 100, $thresholdMax = 50, $thresholdCntTests = 10) {
+        $cntPassedTests = min($cntPassedTests, $thresholdCntTests);
+        $threshold = intval(round($thresholdMax * $cntPassedTests /  $thresholdCntTests));
+        $rand = rand($minRandInterval, $maxRandInterval);
+        return $rand >= $threshold ? TestTaskQuestion::TYPE_CHOICE : TestTaskQuestion::TYPE_INPUT;
+    }
+    /**
      * @param $words array
      * @param bool $isRepetition
      * @param int $letterId
@@ -308,6 +322,7 @@ class TestTask extends ActiveRecord
      */
     public static function createTestTaskForCurrentUser($words, $isRepetition, $letterId){
         if (!$words) return null;
+        $cntTests = TestTask::find()->own()->finished()->passedToday()->count();
         $transaction = Yii::$app->getDb()->beginTransaction();
         try {
             $testTask = new TestTask();
@@ -322,7 +337,7 @@ class TestTask extends ActiveRecord
                 $testTaskQuestion = new TestTaskQuestion();
                 $testTaskQuestion->test_task_id = $testTask->id;
                 $testTaskQuestion->vocabulary_word_id = $word['id'];
-                $testTaskQuestion->type = rand(0,1);
+                $testTaskQuestion->type = self::getRandomTypeViaPassedTests($cntTests);
                 if (!$testTaskQuestion->save(false)) throw new Exception('Не удалось сохранить вопрос нового теста в БД');
             }
             $transaction->commit();

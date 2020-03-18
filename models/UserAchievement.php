@@ -139,7 +139,7 @@ class UserAchievement extends ActiveRecord
         foreach ($words as $word) {
             $cntWords ++;
             if ($cntWords > $cnt_word_in_level) {
-                $cntWords = 0;
+                $cntWords = 1;
                 $userAchievment = self::createAchievment($testTask);
             }
             $rec = new UserAchievementWord();
