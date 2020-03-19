@@ -302,16 +302,18 @@ class TestTask extends ActiveRecord
 
     /**
      * @param int $cntPassedTests Колво пройденных тестов
-     * @param int $minRandInterval Минимальное значение случайного интервала
-     * @param int $maxRandInterval Максимальное значение случайного интервала
-     * @param int $thresholdMax Максимальный порог
+     * @param int $cntTypeInput Кол-во уже выбранных ранее типов вопроса Ввод (для того чтобы не превысить порог)
+     * @param int $cntAll Кол-во всего вопросов
+     * @param float $thresholdPart Максимальный порог вероятности выбора TestTaskQuestion::TYPE_CHOICE
      * @param int $thresholdCntTests Количество тестов для прохождения максимального порога
      * @return int
      */
-    public static function getRandomTypeViaPassedTests($cntPassedTests, $minRandInterval = 0, $maxRandInterval = 100, $thresholdMax = 50, $thresholdCntTests = 10) {
+    public static function getRandomTypeViaPassedTests($cntPassedTests, $cntTypeInput, $cntAll, $thresholdPart = 0.5, $thresholdCntTests = 10) {
+        $partTypeInput  = $cntTypeInput / $cntAll;
         $cntPassedTests = min($cntPassedTests, $thresholdCntTests);
-        $threshold = intval(round($thresholdMax * $cntPassedTests /  $thresholdCntTests));
-        $rand = rand($minRandInterval, $maxRandInterval);
+        $threshold = intval(round(($thresholdPart * 100 * $cntPassedTests) /  $thresholdCntTests));
+        if ($partTypeInput >= $threshold / 100) return TestTaskQuestion::TYPE_CHOICE;
+        $rand = rand(0, 100);
         return $rand >= $threshold ? TestTaskQuestion::TYPE_CHOICE : TestTaskQuestion::TYPE_INPUT;
     }
     /**
@@ -332,12 +334,17 @@ class TestTask extends ActiveRecord
             assert($letterId);
             $testTask->letter_id = $letterId;
             if (!$testTask->save(false)) throw new Exception('Не удалось сохранить новый тест в БД');
-
+            $cntTypeInput = 0;
+            $cntAll = count($words);
             foreach ($words as $word)  {
+                $type = self::getRandomTypeViaPassedTests($cntTests, $cntTypeInput, $cntAll);
+                if ($type == TestTaskQuestion::TYPE_INPUT) {
+                    $cntTypeInput++;
+                }
                 $testTaskQuestion = new TestTaskQuestion();
                 $testTaskQuestion->test_task_id = $testTask->id;
                 $testTaskQuestion->vocabulary_word_id = $word['id'];
-                $testTaskQuestion->type = self::getRandomTypeViaPassedTests($cntTests);
+                $testTaskQuestion->type = $type;
                 if (!$testTaskQuestion->save(false)) throw new Exception('Не удалось сохранить вопрос нового теста в БД');
             }
             $transaction->commit();
