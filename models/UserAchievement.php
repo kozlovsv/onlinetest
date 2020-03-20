@@ -15,8 +15,10 @@ use yii\helpers\ArrayHelper;
  * @property int $user_id Пользователь
  * @property int $letter_id Буква
  * @property string $created_at Дата создания
+ * @property int $test_task_id Тест
  *
  * @property Letter $letter
+ * @property TestTask $testTask
  * @property User $user
  * @property UserAchievementWord[] $userAchievementWords
  *
@@ -40,7 +42,7 @@ class UserAchievement extends ActiveRecord
     {
         return [
             [['user_id', 'letter_id'], 'required'],
-            [['user_id', 'letter_id'], 'integer'],
+            [['user_id', 'letter_id', 'test_task_id'], 'integer'],
             [['created_at'], 'safe'],
             [['letter_id'], 'exist', 'skipOnError' => true, 'targetClass' => Letter::class, 'targetAttribute' => ['letter_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -57,6 +59,7 @@ class UserAchievement extends ActiveRecord
             'user_id' => 'Пользователь',
             'letter_id' => 'Буква',
             'created_at' => 'Дата создания',
+            'test_task_id' => 'Тест',
         ];
     }
 
@@ -68,6 +71,16 @@ class UserAchievement extends ActiveRecord
     public function getLetter()
     {
         return $this->hasOne(Letter::class, ['id' => 'letter_id']);
+    }
+
+    /**
+     * Gets query for [[TestTask]].
+     *
+     * @return ActiveQuery
+     */
+    public function getTestTask()
+    {
+        return $this->hasOne(TestTask::class, ['id' => 'test_task_id']);
     }
 
     /**
@@ -119,6 +132,7 @@ class UserAchievement extends ActiveRecord
         $userAchievment = new self();
         $userAchievment->user_id = Yii::$app->user->id;
         $userAchievment->letter_id = $testTask->letter_id;
+        $userAchievment->test_task_id = $testTask->id;
         $userAchievment->save(false);
         return $userAchievment;
     }
