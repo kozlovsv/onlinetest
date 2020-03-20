@@ -78,6 +78,10 @@ class CreateTestTaskForm extends Model
 
     public function getWords()
     {
-        return VocabularyWord::geLearnedWords($this->letters, $this->cnt_words);
+        $words = VocabularyWord::getLearnedWords($this->letters, $this->cnt_words, true);
+        if (count($words) == 0 || count($words) < $this->cnt_words) {
+            $words = VocabularyWord::getLearnedWords($this->letters, $this->cnt_words, false);
+        }
+        return $words;
     }
 }

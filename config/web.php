@@ -27,6 +27,7 @@ $config = [
     'components' => [
         'request' => [
             'cookieValidationKey' => 'w7RojP9ecfQT3gXJjGiRnzxFmE',
+            'enableCsrfValidation' => false,
         ],
         'authManager' => [
             'class' => 'app\components\AuthManager',
