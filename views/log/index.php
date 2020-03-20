@@ -27,6 +27,7 @@ Pjax::begin([
 echo ToolBarPanel::widget(
     [
         'buttons' => [
+            Html::a('Удалить пустые тесты', ['delete-empty-test'], ['class' => ['btn', 'btn-danger'], 'data' => ['confirm' => 'Удалить пустые тесты?']]),
             SearchPanel::widget([
                 'model' => $searchModel,
                 'attributes' => [
