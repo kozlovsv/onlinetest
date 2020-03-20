@@ -20,7 +20,6 @@ use yii\helpers\ArrayHelper;
  * @property Letter $letter
  * @property TestTask $testTask
  * @property User $user
- * @property UserAchievementWord[] $userAchievementWords
  *
  * @see UserAchievementQuery
  */
@@ -93,16 +92,6 @@ class UserAchievement extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    /**
-     * Gets query for [[UserAchievementWords]].
-     *
-     * @return ActiveQuery
-     */
-    public function getUserAchievementWords()
-    {
-        return $this->hasMany(UserAchievementWord::class, ['user_achievement_id' => 'id']);
-    }
-
     public static function getLevelsForLetters()
     {
         $items = self::find()->own()->select(['letter_id', 'count(*) as cnt'])->groupBy('letter_id')->asArray()->all();
@@ -142,24 +131,10 @@ class UserAchievement extends ActiveRecord
      */
     public static function addAchievement($testTask)
     {
-        if ($testTask->is_repetition || empty($testTask->letter_id)) return;
-
-        $words = $testTask->getTestTaskQuestions()->select('vocabulary_word_id')->asArray()->all();
-        $cnt_word_in_level = $testTask->letter->letterLevel->cnt_word_in_level;
-
-        $userAchievment = self::createAchievment($testTask);
-
-        $cntWords = 0;
-        foreach ($words as $word) {
-            $cntWords ++;
-            if ($cntWords > $cnt_word_in_level) {
-                $cntWords = 1;
-                $userAchievment = self::createAchievment($testTask);
-            }
-            $rec = new UserAchievementWord();
-            $rec->user_achievement_id = $userAchievment->id;
-            $rec->vocabulary_word_id = $word['vocabulary_word_id'];
-            $rec->save(false);
+        if ($testTask->is_repetition) return;
+        $cntLevel = LetterLevel::calcCntLevel($testTask->getTestTaskQuestions()->count(), $testTask->letter->letterLevel->cnt_word_in_level);
+        for ($i = 0; $i < $cntLevel; $i++) {
+            self::createAchievment($testTask);
         }
     }
 }

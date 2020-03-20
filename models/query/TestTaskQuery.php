@@ -65,6 +65,31 @@ class TestTaskQuery extends ActiveQuery
     }
 
     /**
+     * Свой тест
+     * @param $letterId int | array
+     * @return $this
+     */
+    public function letter($letterId)
+    {
+        return $this->andWhere(['letter_id' => $letterId]);
+    }
+
+    /**
+     * Список выученных слов
+     * @param $letterId int | array
+     * @return $this
+     */
+    public function learnedWords($letterId) {
+        return $this
+            ->own()
+            ->finished()
+            ->repetition(0)
+            ->letter($letterId)
+            ->innerJoin('test_task_question', 'test_task_question.test_task_id = test_task.id');
+    }
+
+
+    /**
      * @inheritdoc
      * @return TestTask[]|array
      */

@@ -45,17 +45,6 @@ class UserAchievementQuery extends ActiveQuery
     }
 
     /**
-     * Список выученных слов
-     * @param $letterId int | array
-     * @return UserAchievementQuery
-     */
-    public function learnedWords($letterId) {
-        return $this->own()
-            ->letter($letterId)
-            ->innerJoin('user_achievement_word', 'user_achievement_word.user_achievement_id = user_achievement.id');
-    }
-
-    /**
      * @inheritdoc
      * @return TestTask|array|null
      */

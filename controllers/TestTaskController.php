@@ -180,7 +180,6 @@ class TestTaskController extends CrudController
             $letter = $this->findLetterModel($id);
             $all = Yii::$app->request->get('all', 0);
             if (!$all) {
-
                 $cntWords = $letter->letterLevel->cnt_word_in_level;
             } else {
                 $cntWords = 0;

@@ -71,10 +71,14 @@ class LetterLevel extends ActiveRecord
             if (!$cntWords) continue;
             $l = new LetterLevel();
             $l->letter_id = $level['letter_id'];
-            $l->cnt_level = intval(ceil($cntWords / $cntWordsInLevel));
+            $l->cnt_level = self::calcCntLevel($cntWords, $cntWordsInLevel);
             $l->cnt_word_in_level = $cntWordsInLevel;
             $l->save(false);
         }
+    }
+
+    public static function calcCntLevel($cntWords, $cntWordsInLevel) {
+        return intval(ceil($cntWords / $cntWordsInLevel));
     }
 
     public static function mapCntLevel(){

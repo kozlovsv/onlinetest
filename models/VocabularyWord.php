@@ -86,7 +86,7 @@ class VocabularyWord extends ActiveRecord
      */
     public static function getNotLearnedWords($letterId, $wordsCount = 0)
     {
-        $learnedWordsQuery = UserAchievement::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
+        $learnedWordsQuery = TestTask::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
         $words = VocabularyWord::find()
             ->select(['id'])
             ->where(['letter_id' => $letterId])
@@ -106,13 +106,14 @@ class VocabularyWord extends ActiveRecord
      */
     public static function getLearnedWords($letterId, $wordsCount = 0, $excludeTestetTodayWords = true)
     {
-        $learnedWordsQuery = UserAchievement::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
+        $learnedWordsQuery = TestTask::find()->learnedWords($letterId)->select(['vocabulary_word_id']);
         $words = VocabularyWord::find()
             ->select(['id'])
             ->where(['letter_id' => $letterId])
             ->andWhere(['in', 'id', $learnedWordsQuery]);
         if ($excludeTestetTodayWords) {
-            $TestetTodayWordsQuery = TestTask::find()->innerJoinWith(['testTaskQuestions', 'testTaskQuestions.vocabularyWord'])->own()->finished()->passedToday()->repetition(1)->andWhere(['vocabulary_word.letter_id' => $letterId])->select('test_task_question.vocabulary_word_id');
+            //Исключаем слова уже пройденные и без ошибок.
+            $TestetTodayWordsQuery = TestTask::find()->innerJoinWith(['testTaskQuestions', 'testTaskQuestions.vocabularyWord'])->own()->finished()->passedToday()->repetition(1)->andWhere(['vocabulary_word.letter_id' => $letterId, 'test_task_question.result' => 1])->select('test_task_question.vocabulary_word_id');
             $words = $words->andWhere(['not in', 'id', $TestetTodayWordsQuery]);
         }
 
