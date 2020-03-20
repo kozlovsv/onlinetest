@@ -96,6 +96,19 @@ $config = [
                         'yii\web\HttpException:403',
                     ],
                 ],
+                [
+                    'class' => 'yii\log\EmailTarget',
+                    'levels' => ['error'],
+                    'except' => [
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:403',
+                    ],
+                    'message' => [
+                        'from' => ['info@atonex.ru'],
+                        'to' => ['kozlovsv78@gmail.com'],
+                        'subject' => 'Журнал ошибок приложения',
+                    ],
+                ],
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
