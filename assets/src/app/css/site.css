@@ -750,3 +750,9 @@ a.desc:after {
         right: 16px;
     }
 }
+
+.footer {
+    position: relative;
+    padding: 40px 0 30px;
+    background: #F5F5F5;
+}
