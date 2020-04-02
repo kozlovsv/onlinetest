@@ -445,7 +445,6 @@ a.desc:after {
     align-items: center;
     display: flex;
     flex-direction: column;
-    padding-bottom: 324px;
     position: relative;
 }
 
@@ -737,7 +736,6 @@ a.desc:after {
 
     .skill-main{
         margin-top: 0;
-        padding-bottom: 0;
     }
 
     .panda-bubble-box-inner {

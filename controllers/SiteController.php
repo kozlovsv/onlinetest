@@ -78,6 +78,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'main-footer';
         if (!Yii::$app->user->identity->help_is_read){
             return $this->redirect(['site/help']);
         }

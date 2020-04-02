@@ -58,7 +58,7 @@ echo FormBuilder::widget([
 
 echo ToolBarPanelContainer::widget([
         'buttonsRight' => [
-            CrudButton::cancelButton('Закончить тест', $testTask->is_repetition ?  ['view', 'id' => $testTask->id] : Url::home(), $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
+            CrudButton::cancelButton('Закончить', $testTask->is_repetition ?  ['view', 'id' => $testTask->id] : Url::home(), $options = ['class' => 'btn btn-warning btn-lg form-cancel']),
         ],
         'buttonsLeft' => [
             CrudButton::saveButton('Ответить', $options = ['class' => 'btn btn-success btn-lg']),

@@ -57,7 +57,7 @@ class ChooseAnswerForm extends Model
     public function attributeLabels()
     {
         return [
-            'choice' => $this->getQuestionType() ==  TestTaskQuestion::TYPE_INPUT ? 'Введите значение' : 'Выберите вариант',
+            'choice' => $this->getQuestionType() ==  TestTaskQuestion::TYPE_INPUT ? 'Введите слово на клавиатуре' : 'Выберите слово',
         ];
     }
 
