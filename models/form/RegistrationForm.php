@@ -52,6 +52,7 @@ class RegistrationForm extends Model
         return [
             [['login', 'name', 'password'], 'required', 'message' => 'Заполните "{attribute}"'],
             [['login', 'email', 'name', 'password'], 'string', 'max' => 255],
+            [['login', 'email', 'name', 'password'], 'trim',],
             [['email'], 'email'],
             [['login'], 'unique', 'targetClass' => User::class, 'message' => 'Пользователь с таким логином уже зарегистрирован.'],
         ];

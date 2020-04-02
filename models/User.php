@@ -79,6 +79,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['roles'], 'safe'],
             [['help_is_read'], 'integer'],
             [['login', 'email', 'name'] , 'string', 'max' => 255],
+            [['login', 'email', 'name'] , 'trim'],
             [['auth_key'], 'string', 'max' => 32],
             [['login'], 'unique', 'message' => 'Пользователь с таким логином уже зарегистрирован.'],
             [['email'], 'email'],

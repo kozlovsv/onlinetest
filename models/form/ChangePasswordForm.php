@@ -47,6 +47,7 @@ class ChangePasswordForm extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['password', 'trim'],
         ];
     }
 
