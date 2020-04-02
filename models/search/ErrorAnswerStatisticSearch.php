@@ -2,6 +2,7 @@
 
 namespace app\models\search;
 
+use app\models\TestTask;
 use app\models\TestTaskQuestion;
 use kozlovsv\crud\helpers\DateTimeHelper;
 use yii\base\Model;
@@ -74,10 +75,10 @@ class ErrorAnswerStatisticSearch extends ActiveRecord
     {
         $query = self::find()
             ->select(['COUNT(*) as cnt', 'vocabulary_word_id as id', 'vocabulary_word.title as word_title', 'letter.title as letter_title'])
-            ->andWhere(['test_task_question.result' => 0])
             ->innerJoin('vocabulary_word', 'test_task_question.vocabulary_word_id = vocabulary_word.id')
             ->innerJoin('letter', 'vocabulary_word.letter_id = letter.id')
             ->innerJoin('test_task', 'test_task_question.test_task_id = test_task.id')
+            ->andWhere(['test_task_question.result' => 0, 'test_task.status' => TestTask::STATUS_FINISHED])
             ->groupBy(['vocabulary_word_id']);
 
         // add conditions that should always apply here

@@ -2,6 +2,7 @@
 
 namespace app\models\search;
 
+use app\models\TestTask;
 use app\models\TestTaskQuestion;
 use kozlovsv\crud\helpers\DateTimeHelper;
 use Yii;
@@ -109,7 +110,11 @@ class ErrorAnswerSearch extends ActiveRecord
             ->select(['user_name' => 'user.name' , 'answer', 'passed_at', 'test_task_id', 'test_task_question.id', 'test_task_question.type'])
             ->innerJoin('test_task', 'test_task_question.test_task_id = test_task.id')
             ->innerJoin('user', 'test_task.user_id = user.id')
-            ->andWhere(['test_task_question.result' => 0, 'vocabulary_word_id' => $vocabulary_word_id]);
+            ->andWhere([
+                'test_task_question.result' => 0,
+                'test_task.status' => TestTask::STATUS_FINISHED,
+                'vocabulary_word_id' => $vocabulary_word_id
+            ]);
 
         // add conditions that should always apply here
 
