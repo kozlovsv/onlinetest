@@ -28,6 +28,7 @@ $userRatingListDataProvider = $userRatingViewSearch->search($model->id);
         [
             'buttonsLeft' => [
                 CrudButton::cancelButton('Назад'),
+                Html::a('Тесты', ['/student-test-task', 'StudentTestTaskSearch[user_id]' => $model->id], ['class' => ['btn', 'btn-primary']]),
             ],
             'buttonsRight' => [
             ],
