@@ -6,6 +6,7 @@ use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\widgets\GridView;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\ReturnUrl;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -13,7 +14,7 @@ use kozlovsv\crud\helpers\ReturnUrl;
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Рейтинг учеников', 'url' => ReturnUrl::getBackUrl()];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Html::a($this->title, ['/user/view', 'id' => $model->id], ['data' => ['modal' => 1]]), 'encode' => false];
 
 $isModal = true;
 //Вызываем создание этой модели тут, чотбы не переопределять стандартный CRUD метод View. Да я знаю что так нельзя!!!
@@ -27,8 +28,10 @@ $userRatingListDataProvider = $userRatingViewSearch->search($model->id);
     echo ToolBarPanelContainer::widget(
         [
             'buttonsLeft' => [
-                CrudButton::cancelButton('Назад'),
-                Html::a('Тесты', ['/student-test-task', 'StudentTestTaskSearch[user_id]' => $model->id], ['class' => ['btn', 'btn-primary']]),
+                CrudButton::cancelButton(Html::icon('arrow-left')),
+                Html::a('Тесты',
+                    ['/student-test-task', 'StudentTestTaskSearch[user_id]' => $model->id, ReturnUrl::REQUEST_PARAM_NAME => Url::to(['/user-rating/view', 'id' => $model->id])],
+                    ['class' => ['btn', 'btn-primary'], 'data' => ['pjax' => 0]])
             ],
             'buttonsRight' => [
             ],

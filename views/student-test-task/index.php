@@ -3,6 +3,9 @@
 use app\models\Letter;
 use app\models\TestTask;
 use app\models\User;
+use kozlovsv\crud\helpers\CrudButton;
+use kozlovsv\crud\helpers\Html;
+use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\widgets\DatePicker;
 use kozlovsv\crud\widgets\FormBuilder;
 use kozlovsv\crud\widgets\GridView;
@@ -26,9 +29,12 @@ Pjax::begin([
     'formSelector' => false,
 ]);
 
+$backButton = ReturnUrl::getReturnUrlParam() ? CrudButton::cancelButton(Html::icon('arrow-left'), ['index'], ['class' => 'btn btn-default form-cancel', 'data' => ['pjax' => 0]]) : '';
+
 echo ToolBarPanel::widget(
     [
         'buttons' => [
+            $backButton,
             SearchPanel::widget([
                 'model' => $searchModel,
                 'attributes' => [
