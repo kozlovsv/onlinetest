@@ -45,6 +45,7 @@ class ChooseAnswerForm extends Model
         return [
             [['choice', 'test_task_question_id'], 'required', 'message' => 'Необходимо ввести или выбрать значение'],
             [['choice'], 'string'],
+            [['choice'], 'trim'],
             [['test_task_question_id'], 'integer'],
             [['choice'], 'trimChoice'],
         ];
@@ -78,7 +79,7 @@ class ChooseAnswerForm extends Model
         if (is_null($this->result)) {
             $word = VocabularyWord::findOne($this->getTestTaskQuestion()->vocabulary_word_id);
             $this->result = $this->getQuestionType() == TestTaskQuestion::TYPE_INPUT ?
-                mb_strtolower($word->title) == mb_strtolower($this->choice)  : $word->title == $this->choice;
+                mb_strtolower(trim($word->title)) == mb_strtolower(trim($this->choice))  : $word->title == $this->choice;
         }
         return $this->result;
     }

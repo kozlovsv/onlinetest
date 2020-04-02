@@ -55,6 +55,7 @@ class VocabularyWordForm extends Model
         return [
             [['title', 'variant1'], 'required'],
             [['title', 'variant1', 'variant2', 'variant3', 'variant4', 'variant5'], 'string', 'max' => 255],
+            [['title', 'variant1', 'variant2', 'variant3', 'variant4', 'variant5'], 'trim'],
             [['title'], 'unique', 'message' => 'Данное слово уже есть в базе', 'targetClass' => VocabularyWord::class, 'targetAttribute' => 'title'],
         ];
     }

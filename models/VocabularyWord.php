@@ -36,6 +36,7 @@ class VocabularyWord extends ActiveRecord
             [['title'], 'required'],
             [['title'], 'string', 'max' => 255],
             [['title'], 'unique'],
+            [['title'], 'trim'],
         ];
     }
 

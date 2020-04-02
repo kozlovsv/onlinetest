@@ -33,6 +33,7 @@ class VocabularyWordVariant extends ActiveRecord
             [['title'], 'required'],
             [['vocabulary_word_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
+            ['title', 'trim'],
             [['vocabulary_word_id'], 'exist', 'skipOnError' => true, 'targetClass' => VocabularyWord::class, 'targetAttribute' => ['vocabulary_word_id' => 'id']],
         ];
     }
