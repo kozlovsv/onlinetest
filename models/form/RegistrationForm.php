@@ -94,7 +94,9 @@ class RegistrationForm extends Model
             if ($user->save(false)) {
                 $this->id = $user->id;
                 $this->user = $user;
-                if ($sendMail) $this->sendRegistrationEmail();
+                if ($sendMail) {
+                    if (!$this->sendRegistrationEmail()) Yii::error("При попытке отправить письмо с регистрационными данными на email {$this->email} произошел сбой. Возможно указан некорректный Email.");
+                }
                 return $user;
             } else {
                 throw new Exception('Не удалось сохранить данные о пользователе: ' . VarDumper::dumpAsString($user->errors));
@@ -112,10 +114,15 @@ class RegistrationForm extends Model
     public function sendRegistrationEmail()
     {
         if (!$this->email) return true;
-        return Yii::$app->mailer->compose('registration', ['form' => $this])
-            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
-            ->setTo($this->email)
-            ->setSubject('Регистрация на портале ' . Yii::$app->name)
-            ->send();
+        try {
+            return Yii::$app->mailer->compose('registration', ['form' => $this])
+                ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
+                ->setTo($this->email)
+                ->setSubject('Регистрация на портале ' . Yii::$app->name)
+                ->send();
+        } catch (Exception $e) {
+            Yii::error('Ошибка отправки письма с регистрацией. ' . $e->getMessage());
+            return false;
+        }
     }
 }
