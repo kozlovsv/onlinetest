@@ -30,7 +30,7 @@ class Alert extends Widget
      * Таймаут скрытия
      * @var int
      */
-    public $closeTimeout = 3000;
+    public $closeTimeout = 4000;
 
     /**
      * Initializes the widget.
