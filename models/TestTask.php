@@ -264,6 +264,14 @@ class TestTask extends ActiveRecord
     /**
      * @return array
      */
+    public static function gradeList()
+    {
+        return [5, 4, 3, 2];
+    }
+
+    /**
+     * @return array
+     */
     public static function isRepetitionMap() {
         return [ 0 => 'Нет', 1 => 'Да',];
     }

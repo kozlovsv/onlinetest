@@ -11,12 +11,12 @@ use yii\bootstrap\Progress;
 class TestTaskHtmlHelper
 {
     /**
-     * @param TestTask $model
+     * @param int $grade
      * @return string
      */
-    public static function getGradeColor($model)
+    public static function getGradeColor($grade)
     {
-        switch ($model->getGrade()) {
+        switch ($grade) {
             case 5:
                 return 'success';
                 break;

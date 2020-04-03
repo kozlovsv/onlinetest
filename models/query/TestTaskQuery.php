@@ -21,7 +21,22 @@ class TestTaskQuery extends ActiveQuery
      */
     public function own()
     {
-        return $this->andWhere(['user_id' => Yii::$app->user->id]);
+        return $this->andWhere([TestTask::tableName().'.user_id' => Yii::$app->user->id]);
+    }
+
+    /**
+     * Выборка по оценке
+     * @param int $grade
+     * @return TestTaskQuery
+     */
+    public function grade($grade)
+    {
+        if (empty($grade)) return $this;
+        $field = TestTask::tableName().'.rating';
+        if ($grade == 5) return $this->andWhere(['>=', $field, TestTask::GRADE_5]);
+        if ($grade == 4) return $this->andWhere(['<', $field, TestTask::GRADE_5])->andWhere(['>=', $field, TestTask::GRADE_4]);
+        if ($grade == 3) return $this->andWhere(['<', $field, TestTask::GRADE_4])->andWhere(['>=', $field, TestTask::GRADE_3]);
+        return $this->andWhere(['<', $field, TestTask::GRADE_3]);
     }
 
     /**
@@ -79,7 +94,8 @@ class TestTaskQuery extends ActiveQuery
      * @param $letterId int | array
      * @return $this
      */
-    public function learnedWords($letterId) {
+    public function learnedWords($letterId)
+    {
         return $this
             ->own()
             ->finished()

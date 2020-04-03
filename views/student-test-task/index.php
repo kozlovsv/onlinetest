@@ -70,6 +70,14 @@ echo ToolBarPanel::widget(
                             'pluginOptions' => ['minimumResultsForSearch' => -1]
                         ],
                     ],
+                    'grade' => [
+                        'type' => FormBuilder::INPUT_WIDGET,
+                        'widgetClass' => Select2::class,
+                        'options' => [
+                            'data' => array_combine(TestTask::gradeList(), TestTask::gradeList()),
+                            'pluginOptions' => ['minimumResultsForSearch' => -1]
+                        ],
+                    ],
                     'passed_at' => [
                         'type' => FormBuilder::INPUT_WIDGET,
                         'widgetClass' => DatePicker::class,

@@ -25,8 +25,9 @@ class StudentTestTaskSearch extends TestTask
     public function rules()
     {
         return [
-            [['id', 'user_id', 'letter_id', 'is_repetition', 'status'], 'integer'],
-            [['created_at', 'passed_at', 'userName', 'grade'], 'safe'],
+            [['id', 'user_id', 'letter_id', 'is_repetition', 'status', 'grade'], 'integer'],
+            [['created_at', 'passed_at', 'userName'], 'safe'],
+            ['grade', 'in', 'range' => self::gradeList()],
         ];
     }
 
@@ -85,7 +86,7 @@ class StudentTestTaskSearch extends TestTask
             'is_repetition' => $this->is_repetition,
             'DATE(passed_at)' => DateTimeHelper::convertBySave($this->passed_at),
             'DATE(created_at)' => DateTimeHelper::convertBySave($this->created_at),
-        ]);
+        ])->grade($this->grade);
         return $dataProvider;
     }
 }

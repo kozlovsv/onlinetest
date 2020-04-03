@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $isModal = false;
 
-$gradeClass = TestTaskHtmlHelper::getGradeColor($model);
+$gradeClass = TestTaskHtmlHelper::getGradeColor($model->getGrade());
 $statusClass = ($model->status == TestTask::STATUS_NEW) ? 'warning' : 'success';
 $questionsStayCountClass = $model->getQuestionsTestStayCount() <> 0 ? 'danger' : '';
 ?>

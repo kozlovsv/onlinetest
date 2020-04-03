@@ -7,20 +7,23 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\TestTask;
 
-
 /**
  * TestTaskSearch represents the model behind the search form of `app\models\TestTask`.
  */
 class TestTaskSearch extends TestTask
 {
+    public $status = TestTask::STATUS_FINISHED;
+    public $grade;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['status', 'created_at'], 'safe'],
+            [['id', 'status', 'grade'], 'integer'],
+            [['created_at', 'passed_at'], 'safe'],
+            ['grade', 'in', 'range' => self::gradeList()],
         ];
     }
 
@@ -46,6 +49,9 @@ class TestTaskSearch extends TestTask
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> [
+                'defaultOrder' => ['passed_at'=>SORT_DESC],
+            ]
         ]);
 
         $this->load($params);
@@ -60,8 +66,10 @@ class TestTaskSearch extends TestTask
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'DATE(created_at)' => DateTimeHelper::convertBySave($this->created_at)
-        ]);
+            'DATE(passed_at)' => DateTimeHelper::convertBySave($this->passed_at),
+            'DATE(created_at)' => DateTimeHelper::convertBySave($this->created_at),
+        ])->grade($this->grade);
+
         return $dataProvider;
     }
 }

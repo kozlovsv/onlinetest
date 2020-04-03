@@ -8,6 +8,7 @@ use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\SearchPanel;
 use kozlovsv\crud\widgets\Select2;
 use kozlovsv\crud\widgets\ToolBarPanel;
+use app\helpers\TestTaskHtmlHelper;
 
 
 /* @var $this yii\web\View */
@@ -30,6 +31,14 @@ echo ToolBarPanel::widget(
             SearchPanel::widget([
                 'model' => $searchModel,
                 'attributes' => [
+                    'grade' => [
+                        'type' => FormBuilder::INPUT_WIDGET,
+                        'widgetClass' => Select2::class,
+                        'options' => [
+                            'data' => array_combine(TestTask::gradeList(), TestTask::gradeList()),
+                            'pluginOptions' => ['minimumResultsForSearch' => -1]
+                        ],
+                    ],
                     'status' => [
                         'type' => FormBuilder::INPUT_WIDGET,
                         'widgetClass' => Select2::class,
@@ -38,7 +47,7 @@ echo ToolBarPanel::widget(
                             'pluginOptions' => ['minimumResultsForSearch' => -1]
                         ],
                     ],
-                    'created_at' => [
+                    'passed_at' => [
                         'type' => FormBuilder::INPUT_WIDGET,
                         'widgetClass' => DatePicker::class,
                     ],
@@ -57,7 +66,7 @@ echo GridView::widget(
             'statusLabel',
             'letter.title',
             'grade',
-            'created_at:datetime',
+            'passed_at:datetime',
         ],
         'rowOptions'=> /**
          * @param $model TestTask
@@ -65,12 +74,8 @@ echo GridView::widget(
          */ function($model){
                 if($model->status == TestTask::STATUS_NEW){
                     return ['class' => 'danger'];
-                } elseif ($model->grade == 5) {
-                    return ['class' => 'success'];
-                } elseif ($model->grade == 4) {
-                    return ['class' => 'info'];
                 }
-                return ['class' => 'warning'];
+                return ['class' => TestTaskHtmlHelper::getGradeColor($model->grade)];
          },
     ]
 );
