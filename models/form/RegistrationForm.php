@@ -95,7 +95,7 @@ class RegistrationForm extends Model
                 $this->id = $user->id;
                 $this->user = $user;
                 if ($sendMail) {
-                    if (!$this->sendRegistrationEmail()) Yii::error("При попытке отправить письмо с регистрационными данными на email {$this->email} произошел сбой. Возможно указан некорректный Email.");
+                    if (!$this->sendRegistrationEmail())  Yii::$app->session->setFlash('error', "При попытке отправить письмо с регистрационными данными на email {$this->email} произошел сбой. Возможно указан некорректный Email.");
                 }
                 return $user;
             } else {
