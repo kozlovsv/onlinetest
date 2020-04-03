@@ -2,6 +2,7 @@
 
 namespace app\models\form;
 
+use Exception;
 use Yii;
 use yii\base\Model;
 use app\models\User;
@@ -50,10 +51,15 @@ class PasswordResetRequestForm extends Model
             }
         }
 
-        return Yii::$app->mailer->compose('reset-password', ['user' => $user])
-            ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
-            ->setTo($user->email)
-            ->setSubject('Сброс пароля для ' . Yii::$app->name)
-            ->send();
+        try {
+            return Yii::$app->mailer->compose('reset-password', ['user' => $user])
+                ->setFrom([Yii::$app->params['robotEmail'] => Yii::$app->name])
+                ->setTo($user->email)
+                ->setSubject('Сброс пароля для ' . Yii::$app->name)
+                ->send();
+        } catch (Exception $e) {
+            Yii::error('Ошибка отправки письма с восстановлением пароля. ' . $e->getMessage());
+            return false;
+        }
     }
 }
