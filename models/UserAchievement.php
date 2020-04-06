@@ -131,7 +131,9 @@ class UserAchievement extends ActiveRecord
      */
     public static function addAchievement($testTask)
     {
-        if ($testTask->is_repetition) return;
+        //Иногда при нескольких Update одновременных сохраняется лишнее кол-во записей
+        if (($testTask->is_repetition) ||
+            ($testTask->user->getUserAchievements()->andWhere(['test_task_id' => $testTask->id])->count() > 0)) return;
         $cntPassedLevel = $testTask->user->getUserAchievements()->andWhere(['letter_id' => $testTask->letter_id])->count();
         $enabledCntLevel = $testTask->letter->letterLevel->cnt_level - $cntPassedLevel;
         $cntLevel = LetterLevel::calcCntLevel($testTask->getTestTaskQuestions()->count(), $testTask->letter->letterLevel->cnt_word_in_level);
