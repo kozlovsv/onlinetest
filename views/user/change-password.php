@@ -4,6 +4,7 @@ use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
 
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Изменить пароль';
 
 <div class="user-update">
     <?php
-
+    Pjax::begin(['id' => 'pjax-form']);
     $form = ActiveForm::begin();
 
 
@@ -43,5 +44,6 @@ $this->params['breadcrumbs'][] = 'Изменить пароль';
     );
 
     ActiveForm::end();
+    Pjax::end();
     ?>
 </div>

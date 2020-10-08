@@ -71,14 +71,15 @@ $config = [
             ],
         ],
         'formatter' => [
-            'class' => 'app\components\Formatter',
+            'class' => 'kozlovsv\crud\components\Formatter',
             'nullDisplay' => '',
             'locale' => 'ru_RU',
             'dateFormat' => 'dd.MM.yyyy',
             'datetimeFormat' => 'dd.MM.yyyy HH:mm',
             'decimalSeparator' => '.',
             'thousandSeparator' => ' ',
-            'timeZone' => 'UTC', //Устанавливаем зону в UTC. Чтобы при конвертации не переводило в другую зону. Так как все данные храним в Зоне Екатеринбурга.
+            'timeZone' => 'Asia/Yekaterinburg',
+            'defaultTimeZone' => 'Asia/Yekaterinburg',
         ],
         'user' => [
             'identityClass' => 'app\models\User',

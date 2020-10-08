@@ -5,6 +5,7 @@ use kozlovsv\crud\helpers\Html;
 use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 
 
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">
     <?php
+    Pjax::begin(['id' => 'pjax-form']);
     $form = ActiveForm::begin();
 
 
@@ -45,5 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
     );
 
     ActiveForm::end();
+    Pjax::end();
     ?>
 </div>

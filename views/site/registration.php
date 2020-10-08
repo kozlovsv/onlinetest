@@ -8,6 +8,7 @@ use app\models\form\LoginForm;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 
 $this->title = 'Регистрация на ' . Yii::$app->params['brand'];
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-4 col-lg-offset-3">
                 <h1>Регистрация в системе</h1>
                 <?php
+                Pjax::begin(['id' => 'pjax-form']);
                 $form = ActiveForm::begin(
                     [
                         'options' => [
@@ -50,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 );
                 ActiveForm::end();
+                Pjax::end();
                 ?>
             </div>
         </div>

@@ -117,7 +117,7 @@ class Menu extends Widget
                     ],
                     [
                         'label' => 'Логи приложения',
-                        'url' => ['/log/index'],
+                        'url' => ['/log/default/index'],
                         'visible' => Yii::$app->user->can('log.view'),
                     ],
                 ],

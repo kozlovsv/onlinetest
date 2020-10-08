@@ -4,6 +4,7 @@ use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
 
@@ -18,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vocabulary-word-create">
     <?php
+        Pjax::begin(['id' => 'pjax-form']);
         $form = ActiveForm::begin();
         echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header']);
         echo FormBuilder::widget([
@@ -43,5 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         );
         ActiveForm::end();
+        Pjax::end();
     ?>
 </div>
