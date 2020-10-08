@@ -1,6 +1,6 @@
 <?php
 
-use app\components\RbacManager;
+use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
 class m200130_160101_auth_item_vocabulary_word_add extends Migration

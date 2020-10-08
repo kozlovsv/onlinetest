@@ -4,7 +4,7 @@
 /* @var $content string */
 
 use app\assets\AppAsset;
-use app\widgets\Alert;
+use kozlovsv\crud\widgets\Alert;
 use yii\helpers\Html;
 use yii\web\View;
 

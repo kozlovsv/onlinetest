@@ -1,6 +1,6 @@
 <?php
 
-use app\components\RbacManager;
+use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
 class m200313_140101_auth_item_student_test_task_add extends Migration

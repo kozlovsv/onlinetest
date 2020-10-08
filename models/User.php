@@ -2,12 +2,12 @@
 
 namespace app\models;
 
-use app\components\AuthManager;
 use app\models\query\TestTaskQuery;
 use app\models\traits\MapTrait;
-use app\modules\auth\models\AuthAssignment;
-use app\modules\auth\models\AuthItem;
-use app\widgets\Menu;
+use kozlovsv\crud\components\AuthManager;
+use kozlovsv\crud\modules\auth\models\AuthAssignment;
+use kozlovsv\crud\modules\auth\models\AuthItem;
+use kozlovsv\crud\widgets\Menu;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
@@ -289,12 +289,11 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Очистка кэшей
-     * @inheritdoc
      */
     protected function clearCache()
     {
-        Yii::$app->cache->delete(AuthManager::getCacheKey($this->id));
-        Yii::$app->cache->delete(Menu::CACHE_PREFIX . $this->id);
+        AuthManager::clearCache($this->id);
+        Menu::clearCache($this->id);
     }
 
     /**

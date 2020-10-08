@@ -6,7 +6,6 @@ use app\models\TestTask;
 use app\models\TestTaskQuestion;
 use kozlovsv\crud\helpers\DateTimeHelper;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
@@ -102,7 +101,6 @@ class ErrorAnswerSearch extends ActiveRecord
      * @param $vocabulary_word_id
      * @param array $params
      * @return ActiveDataProvider
-     * @throws InvalidConfigException
      */
     public function search($vocabulary_word_id, $params)
     {

@@ -21,7 +21,10 @@ $config = [
     ],
     'modules' => [
         'auth' => [
-            'class' => 'app\modules\auth\Module',
+            'class' => 'kozlovsv\crud\modules\auth\Module',
+        ],
+        'log' => [
+            'class' => 'kozlovsv\crud\modules\log\Module',
         ],
     ],
     'components' => [
@@ -30,7 +33,7 @@ $config = [
             'enableCsrfValidation' => false,
         ],
         'authManager' => [
-            'class' => 'app\components\AuthManager',
+            'class' => 'kozlovsv\crud\components\AuthManager',
             'cache' => 'cache',
         ],
         'authClientCollection' => [
@@ -128,7 +131,16 @@ $config = [
         ],
     ],
     'as beforeRequest' => [
-        'class' => 'app\components\RequestAccess',
+        'class' => 'kozlovsv\crud\components\RequestAccess',
+        'allow_not_auth_actions' => [
+            'auth',
+            'eula',
+            'login',
+            'error',
+            'registration',
+            'request-password-reset',
+            'reset-password',
+        ],
     ],
     'params' => require(__DIR__ . '/params.php'),
 ];
@@ -160,7 +172,8 @@ if (YII_ENV_DEV) {
     function d($var,$caller=null)
     {
         if(!isset($caller)){
-            $caller = array_shift(debug_backtrace(1));
+            $arr = debug_backtrace(1);
+            $caller = array_shift($arr);
         }
         echo '<code>File: '.$caller['file'].' / Line: '.$caller['line'].'</code>';
         echo '<pre>';
@@ -175,7 +188,8 @@ if (YII_ENV_DEV) {
      */
     function dd($var)
     {
-        $caller = array_shift(debug_backtrace(1));
+        $arr = debug_backtrace(1);
+        $caller = array_shift($arr);
         d($var,$caller);
         die();
     }

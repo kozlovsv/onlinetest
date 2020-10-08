@@ -1,7 +1,8 @@
 <?php
 
 use app\models\User;
-use app\modules\auth\models\AuthAssignment;
+
+use kozlovsv\crud\modules\auth\models\AuthAssignment;
 use yii\db\Migration;
 
 

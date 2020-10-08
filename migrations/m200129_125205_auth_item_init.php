@@ -1,6 +1,6 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
-use app\components\RbacManager;
+use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
 class m200129_125205_auth_item_init extends Migration

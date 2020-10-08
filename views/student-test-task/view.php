@@ -1,4 +1,5 @@
 <?php
+/** @noinspection DuplicatedCode */
 
 use app\helpers\TestTaskHtmlHelper;
 use app\models\TestTask;

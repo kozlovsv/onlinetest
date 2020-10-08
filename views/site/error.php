@@ -8,6 +8,7 @@
 use yii\helpers\Html;
 
 
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
 $this->context->layout = 'empty';
 $this->title = $name;
 ?>

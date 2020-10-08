@@ -1,6 +1,6 @@
 <?php
 
-use app\components\RbacManager;
+use kozlovsv\crud\components\RbacManager;
 use yii\db\Migration;
 
 class m200225_120101_auth_item_letter_level_add extends Migration

@@ -4,13 +4,14 @@ use kozlovsv\crud\helpers\CrudButton;
 use kozlovsv\crud\helpers\ReturnUrl;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\VocabularyWordVariant */
-
+Pjax::begin(['id' => 'pjax-form']);
 $form = ActiveForm::begin();
 echo Html::tag('h1', Html::encode($this->title), ['class' => 'form-header']);
 echo FormBuilder::widget([
@@ -32,3 +33,4 @@ echo ToolBarPanelContainer::widget([
 );
 
 ActiveForm::end();
+Pjax::end();

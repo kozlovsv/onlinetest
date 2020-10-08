@@ -1,16 +1,17 @@
 <?php
 
-use app\modules\auth\models\AuthItem;
 use kozlovsv\crud\helpers\CrudButton;
+use kozlovsv\crud\modules\auth\models\AuthItem;
 use kozlovsv\crud\widgets\ActiveForm;
 use kozlovsv\crud\widgets\FormBuilder;
+use kozlovsv\crud\widgets\Pjax;
 use kozlovsv\crud\widgets\ToolBarPanelContainer;
 use kozlovsv\crud\helpers\Html;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
-
+Pjax::begin(['id' => 'pjax-form']);
 $form = ActiveForm::begin();
 
 $attributes =  [
@@ -45,3 +46,4 @@ echo ToolBarPanelContainer::widget([
 );
 
 ActiveForm::end();
+Pjax::end();

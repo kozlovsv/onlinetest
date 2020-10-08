@@ -3,7 +3,7 @@
 namespace app\models\query;
 
 use app\models\TestTask;
-use app\modules\auth\models\AuthAssignment;
+use kozlovsv\crud\modules\auth\models\AuthAssignment;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
