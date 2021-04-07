@@ -32,7 +32,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -53,7 +53,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -71,7 +71,7 @@
             "version": "1.12.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/components/jqueryui.git",
+                "url": "git@github.com:components/jqueryui.git",
                 "reference": "44ecf3794cc56b65954cc19737234a3119d036cc"
             },
             "dist": {
@@ -113,7 +113,7 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:bestiejs/punycode.js.git",
+                "url": "https://github.com/bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
@@ -1197,12 +1197,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-icons.git",
-                "reference": "5d4c96a2350b014cb8871ed6251db879f014c834"
+                "reference": "cb95e3baa367019dcf681fb1cc7f429d4db9d401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-icons/zipball/5d4c96a2350b014cb8871ed6251db879f014c834",
-                "reference": "5d4c96a2350b014cb8871ed6251db879f014c834",
+                "url": "https://api.github.com/repos/kartik-v/yii2-icons/zipball/cb95e3baa367019dcf681fb1cc7f429d4db9d401",
+                "reference": "cb95e3baa367019dcf681fb1cc7f429d4db9d401",
                 "shasum": ""
             },
             "require": {
@@ -1241,7 +1241,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2020-06-09T03:45:58+00:00"
+            "time": "2021-01-22T04:58:27+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -1407,19 +1407,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kozlovsv/yii2-crud.git",
-                "reference": "364cc3f8862974dd41fed61cc713bcd7fde15b53"
+                "reference": "d8737581432ae4fa045db0e9f5e3c9df887d69c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kozlovsv/yii2-crud/zipball/364cc3f8862974dd41fed61cc713bcd7fde15b53",
-                "reference": "364cc3f8862974dd41fed61cc713bcd7fde15b53",
+                "url": "https://api.github.com/repos/kozlovsv/yii2-crud/zipball/d8737581432ae4fa045db0e9f5e3c9df887d69c9",
+                "reference": "d8737581432ae4fa045db0e9f5e3c9df887d69c9",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "kartik-v/yii2-builder": "*",
                 "kartik-v/yii2-widget-select2": "2.1.7",
                 "kozlovsv/yii2-widget-datetimepicker": "*",
                 "yiisoft/yii2-bootstrap": "@dev"
+            },
+            "require-dev": {
+                "yiisoft/yii2-debug": "*",
+                "yiisoft/yii2-faker": "*",
+                "yiisoft/yii2-gii": "*"
             },
             "type": "yii2-extension",
             "autoload": {
@@ -1437,6 +1443,7 @@
                     "homepage": "http://atonex.ru/"
                 }
             ],
+            "description": "Набор библиотек для быстрого построение CRUD приложений",
             "homepage": "https://github.com/kozlovsv/yii2-crud",
             "keywords": [
                 "crud",
@@ -1449,7 +1456,7 @@
                 "source": "https://github.com/kozlovsv/yii2-crud/tree/master",
                 "issues": "https://github.com/kozlovsv/yii2-crud/issues"
             },
-            "time": "2020-10-07T14:22:23+00:00"
+            "time": "2021-04-02T19:09:27+00:00"
         },
         {
             "name": "kozlovsv/yii2-widget-datetimepicker",
@@ -1547,16 +1554,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.29",
+            "version": "2.0.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "497856a8d997f640b4a516062f84228a772a48a8"
+                "reference": "233a920cb38636a43b18d428f9a8db1f0a1a08f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/497856a8d997f640b4a516062f84228a772a48a8",
-                "reference": "497856a8d997f640b4a516062f84228a772a48a8",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/233a920cb38636a43b18d428f9a8db1f0a1a08f4",
+                "reference": "233a920cb38636a43b18d428f9a8db1f0a1a08f4",
                 "shasum": ""
             },
             "require": {
@@ -1564,7 +1571,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.7",
-                "phpunit/phpunit": "^4.8.35|^5.7|^6.0",
+                "phpunit/phpunit": "^4.8.35|^5.7|^6.0|^9.4",
                 "squizlabs/php_codesniffer": "~2.0"
             },
             "suggest": {
@@ -1648,7 +1655,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-08T04:24:43+00:00"
+            "time": "2021-04-06T13:56:45+00:00"
         },
         {
             "name": "psr/cache",
@@ -4257,6 +4264,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
